@@ -714,34 +714,34 @@
   </div>
 
   <div class="home-manifesto">
-    <p class="home-manifesto-text">O mercado não se vence por sorte nem por receita pronta — vence-se por processo. A Prumo não vende sinal, fórmula ou atalho. Aqui você não vai encontrar promessa de lucro garantido. Vai encontrar análises que ampliam sua visão e ferramentas para construir uma rotina sólida capaz de revelar e evoluir os seus padrões reais — não os que você imagina ter. Um caminho de evolução medido pela sua dedicação, não pelo resultado de um único dia.</p>
-    <p class="home-manifesto-text">A Prumo nasce de quem já operou o suficiente para saber que resultado é consequência, não ponto de partida. Para quem quer entender o mercado norte-americano com profundidade — fluxo, volume, contexto — antes de tentar prevê-lo. Para quem prefere construir uma curva de capital sustentável a perseguir uma vitória pontual.</p>
+    <p class="home-manifesto-text">A Prumo nasce de quem já operou o suficiente para saber que resultado é consequência, não ponto de partida. E nasce para quem quer entender o mercado norte-americano com profundidade — fluxo, volume, contexto — antes de tentar prevê-lo. Para quem prefere construir uma curva de capital sustentável a perseguir uma vitória pontual.</p>
+    <p class="home-manifesto-text">A Prumo não vende sinal, fórmula ou atalho. Aqui você não vai encontrar promessas de lucro ou garantias. Vai encontrar análises que ampliam sua visão e ferramentas para construir uma rotina sólida capaz de revelar e evoluir os seus padrões reais de comportamento — não os que você imagina ter. Um caminho de evolução medido pela sua dedicação e persistência.</p>
     <p class="home-manifesto-quote">Faça por merecer o que o mercado tem a lhe oferecer.</p>
   </div>
 
   <div class="home-grid">
-    <button type="button" class="home-card" onclick="goToSection('mercado')">
-      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg></span>
-      <h3>Análise de Mercado</h3>
-      <p>Leitura diária do mercado, avaliação e comentários. Foco em S&amp;P 500.</p>
-    </button>
-
-    <button type="button" class="home-card" onclick="goToSection('sala')">
-      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 5-3 7.5-7 9-4-1.5-7-4-7-9V7z"></path></svg></span>
-      <h3>Gestão de Risco</h3>
-      <p>Orientações sobre como ganhar mais arriscando menos — da escolha da conta até a trava de segurança do BlackArrow.</p>
-    </button>
-
     <button type="button" class="home-card" onclick="goToSection('rotina')">
       <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><polyline points="8 12 11 15 16 9"></polyline></svg></span>
       <h3>Rotina Pré-Abertura</h3>
       <p>Lista de tarefas para preparar a sessão antes do mercado abrir.</p>
     </button>
 
+    <button type="button" class="home-card" onclick="goToSection('mercado')">
+      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg></span>
+      <h3>Análise de Mercado</h3>
+      <p>Leitura diária do mercado, avaliação e comentários. Foco em S&amp;P 500.</p>
+    </button>
+
     <button type="button" class="home-card" onclick="goToSection('diario')">
       <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"></path><line x1="9" y1="7" x2="15" y2="7"></line><line x1="9" y1="11" x2="13" y2="11"></line></svg></span>
       <h3>Diário de Trader</h3>
       <p>Registre sessões, acompanhe o histórico e veja sua evolução.</p>
+    </button>
+
+    <button type="button" class="home-card" onclick="goToSection('sala')">
+      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 5-3 7.5-7 9-4-1.5-7-4-7-9V7z"></path></svg></span>
+      <h3>Gestão de Risco</h3>
+      <p>Orientações sobre como ganhar mais arriscando menos — da escolha da conta até a trava de segurança do BlackArrow.</p>
     </button>
 
     <button type="button" class="home-card" onclick="goToSection('educacional')">
@@ -2117,61 +2117,53 @@
   // ---------- PUBLICAR RELATÓRIO ----------
   const statusAnalise = document.getElementById('status-analise');
   let publishedReports = [];
-  let reportIdSeq = 0;
-
   let editingReportId = null;
 
-  document.getElementById('publish-analise-btn').addEventListener('click', () => {
+  function adminAuthHeader() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(ADMIN_AUTH_KEY) || 'null');
+      return saved && saved.token ? { Authorization: 'Bearer ' + saved.token } : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  document.getElementById('publish-analise-btn').addEventListener('click', async () => {
     const filled = questionFields.filter(f => f.value.trim() !== '');
     if (filled.length === 0) {
       showToast('Preencha pelo menos uma pergunta antes de publicar.', true);
-      return;
-    }
-    const now = new Date();
-
-    if (editingReportId !== null) {
-      const report = publishedReports.find(r => r.id === editingReportId);
-      if (report) {
-        report.macro = document.getElementById('stage-macro').value.trim();
-        report.tecnica = document.getElementById('stage-tecnica').value.trim();
-        report.resumo = document.getElementById('stage-resumo').value.trim();
-        report.image = uploadedImageData;
-      }
-      cancelEditReport();
-      renderFeed();
-      showToast('Relatório atualizado em "Análise de Mercado".');
       return;
     }
 
     const macroVal = document.getElementById('stage-macro').value.trim();
     const tecnicaVal = document.getElementById('stage-tecnica').value.trim();
     const resumoVal = document.getElementById('stage-resumo').value.trim();
+    const body = JSON.stringify({ macro: macroVal, tecnica: tecnicaVal, resumo: resumoVal, image: uploadedImageData });
 
-    const isDuplicate = publishedReports.some(r =>
-      r.macro === macroVal && r.tecnica === tecnicaVal && r.resumo === resumoVal && r.image === uploadedImageData
-    );
-    if (isDuplicate) {
-      showToast('Esse relatório é idêntico a um já publicado. Altere o conteúdo antes de publicar.', true);
-      return;
+    try {
+      if (editingReportId !== null) {
+        await apiFetch('/market/reports/' + editingReportId, {
+          method: 'PUT',
+          headers: adminAuthHeader(),
+          body
+        });
+        cancelEditReport();
+        await renderFeed();
+        showToast('Relatório atualizado em "Análise de Mercado".');
+        return;
+      }
+
+      const now = new Date();
+      await apiFetch('/market/reports', { method: 'POST', headers: adminAuthHeader(), body });
+
+      statusAnalise.textContent = 'Publicado em ' + now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      statusAnalise.classList.add('published');
+
+      await renderFeed();
+      showToast('Relatório publicado em "Análise de Mercado".');
+    } catch (err) {
+      showToast(err.message, true);
     }
-
-    statusAnalise.textContent = 'Publicado em ' + now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
-    statusAnalise.classList.add('published');
-
-    publishedReports.unshift({
-      id: ++reportIdSeq,
-      time: now,
-      macro: macroVal,
-      tecnica: tecnicaVal,
-      resumo: resumoVal,
-      image: uploadedImageData,
-      evaluation: null,
-      likeCount: 0,
-      liked: false,
-      comments: []
-    });
-    renderFeed();
-    showToast('Relatório publicado em "Análise de Mercado".');
   });
 
   function editReport(id) {
@@ -2203,7 +2195,7 @@
     renderPreview();
     analiseUpdateStageDots();
     goToSection('admin');
-    showToast('Editando relatório de ' + report.time.toLocaleDateString('pt-BR') + '. Ajuste o texto e clique em "Salvar edição".');
+    showToast('Editando relatório de ' + new Date(report.time).toLocaleDateString('pt-BR') + '. Ajuste o texto e clique em "Salvar edição".');
   }
 
   function cancelEditReport() {
@@ -2212,12 +2204,16 @@
     document.getElementById('cancel-edit-btn').style.display = 'none';
   }
 
-  function deleteReport(id) {
+  async function deleteReport(id) {
     if (!confirm('Excluir esse relatório? Os comentários e a avaliação dele também serão apagados.')) return;
-    publishedReports = publishedReports.filter(r => r.id !== id);
-    if (editingReportId === id) cancelEditReport();
-    renderFeed();
-    showToast('Relatório excluído.');
+    try {
+      await apiFetch('/market/reports/' + id, { method: 'DELETE', headers: adminAuthHeader() });
+      if (editingReportId === id) cancelEditReport();
+      await renderFeed();
+      showToast('Relatório excluído.');
+    } catch (err) {
+      showToast(err.message, true);
+    }
   }
 
   // ---------- AVALIAÇÃO / ESTRELAS ----------
@@ -2236,7 +2232,7 @@
 
   const statusAvaliacao = document.getElementById('status-avaliacao');
 
-  document.getElementById('publish-avaliacao-btn').addEventListener('click', () => {
+  document.getElementById('publish-avaliacao-btn').addEventListener('click', async () => {
     const rating = Number(ratingInput.value);
     const texto = document.getElementById('avaliacao-texto').value.trim();
     if (rating === 0 && texto === '') {
@@ -2247,13 +2243,22 @@
       showToast('Publique um relatório de análise antes de avaliar.', true);
       return;
     }
-    const now = new Date();
-    statusAvaliacao.textContent = 'Publicado em ' + now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
-    statusAvaliacao.classList.add('published');
 
-    publishedReports[0].evaluation = { rating, text: texto, time: now };
-    renderFeed();
-    showToast('Avaliação publicada.');
+    try {
+      await apiFetch('/market/reports/' + publishedReports[0].id + '/evaluation', {
+        method: 'POST',
+        headers: adminAuthHeader(),
+        body: JSON.stringify({ rating, text: texto })
+      });
+      const now = new Date();
+      statusAvaliacao.textContent = 'Publicado em ' + now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      statusAvaliacao.classList.add('published');
+
+      await renderFeed();
+      showToast('Avaliação publicada.');
+    } catch (err) {
+      showToast(err.message, true);
+    }
   });
 
   // ---------- ÁREA PÚBLICA: FEED DE RELATÓRIOS ----------
@@ -2270,9 +2275,33 @@
     return html;
   }
 
-  // o array já fica com o mais novo em primeiro (unshift), então o feed
-  // renderiza nessa mesma ordem: novo relatório sempre empurra os outros pra baixo
-  function renderFeed() {
+  // ids dos relatórios que esse navegador já curtiu — como curtir não exige
+  // login (decisão do produto), o controle de "já curti" é só local mesmo.
+  function likedReportIds() {
+    try { return JSON.parse(localStorage.getItem('prumoLikedReports') || '[]'); } catch (e) { return []; }
+  }
+  function setReportLiked(id, liked) {
+    const ids = likedReportIds();
+    const idx = ids.indexOf(id);
+    if (liked && idx === -1) ids.push(id);
+    if (!liked && idx !== -1) ids.splice(idx, 1);
+    localStorage.setItem('prumoLikedReports', JSON.stringify(ids));
+  }
+
+  // busca o feed publicado no servidor — chamada ao carregar a página (pra
+  // qualquer visitante, sem precisar de login) e de novo após qualquer ação
+  // de publicar/editar/excluir/avaliar.
+  async function renderFeed() {
+    try {
+      const data = await apiFetch('/market/reports');
+      publishedReports = data.reports || [];
+    } catch (err) {
+      console.error(err);
+    }
+    renderFeedFromCache();
+  }
+
+  function renderFeedFromCache() {
     if (publishedReports.length === 0) {
       mercadoEmpty.style.display = 'flex';
       mercadoContent.style.display = 'none';
@@ -2285,6 +2314,7 @@
 
   function renderFeedEntry(report) {
     const id = report.id;
+    const reportTime = new Date(report.time);
     let body = '';
     if (report.macro) {
       body += '<div class="preview-item"><div class="q">' + reportTitles['stage-macro'] + '</div><div class="a">' + escapeHtml(report.macro) + '</div></div>';
@@ -2306,13 +2336,15 @@
         '</div>'
       : '';
 
+    const liked = likedReportIds().includes(id);
+
     let html = '<div class="feed-entry" data-report-id="' + id + '">';
     html += '<div class="card"><div class="card-head"><h3>Análise de Mercado</h3><div class="card-head-right"><span class="status-badge published">' +
-      'Publicado em ' + report.time.toLocaleDateString('pt-BR') + ' às ' + report.time.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' }) +
+      'Publicado em ' + reportTime.toLocaleDateString('pt-BR') + ' às ' + reportTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) +
       '</span>' + adminActions + '</div></div><div>' + body + '</div></div>';
 
     html += '<div class="actions-row">' +
-      '<button type="button" class="action-btn' + (report.liked ? ' active' : '') + '" onclick="toggleLike(' + id + ')">' +
+      '<button type="button" class="action-btn' + (liked ? ' active' : '') + '" onclick="toggleLike(' + id + ')">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 10-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path></svg>' +
       '<span>' + report.likeCount + '</span> curtidas</button></div>';
 
@@ -2341,10 +2373,10 @@
     }
     return report.comments.map(c => {
       let h = '<div class="comment-item">';
-      h += '<div class="comment-meta"><span class="comment-author">' + escapeHtml(c.author) + '</span><span class="comment-time">' + c.time.toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }) + '</span></div>';
+      h += '<div class="comment-meta"><span class="comment-author">' + escapeHtml(c.author) + '</span><span class="comment-time">' + new Date(c.time).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '</span></div>';
       h += '<div class="comment-text">' + escapeHtml(c.text) + '</div>';
       if (c.reply) {
-        h += '<div class="comment-reply"><div class="comment-meta"><span class="comment-author">Analista</span><span class="comment-time">' + c.reply.time.toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }) + '</span></div><div class="comment-text">' + escapeHtml(c.reply.text) + '</div></div>';
+        h += '<div class="comment-reply"><div class="comment-meta"><span class="comment-author">Analista</span><span class="comment-time">' + new Date(c.reply.time).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '</span></div><div class="comment-text">' + escapeHtml(c.reply.text) + '</div></div>';
       } else if (isAdminAuthenticated) {
         h += '<button type="button" class="reply-toggle-btn" onclick="toggleReplyForm(' + report.id + ',' + c.id + ')">Responder</button>';
         h += '<div class="reply-form" id="reply-form-' + report.id + '-' + c.id + '">';
@@ -2357,25 +2389,39 @@
     }).join('');
   }
 
-  function toggleLike(reportId) {
-    const report = publishedReports.find(r => r.id === reportId);
-    if (!report) return;
-    report.liked = !report.liked;
-    report.likeCount += report.liked ? 1 : -1;
-    renderFeed();
+  async function toggleLike(reportId) {
+    const alreadyLiked = likedReportIds().includes(reportId);
+    try {
+      const data = await apiFetch('/market/reports/' + reportId + (alreadyLiked ? '/unlike' : '/like'), { method: 'POST' });
+      setReportLiked(reportId, !alreadyLiked);
+      const report = publishedReports.find(r => r.id === reportId);
+      if (report) report.likeCount = data.likeCount;
+      renderFeedFromCache();
+    } catch (err) {
+      showToast(err.message, true);
+    }
   }
 
-  function submitComment(reportId) {
-    const report = publishedReports.find(r => r.id === reportId);
-    if (!report) return;
-    const author = document.getElementById('comment-author-' + reportId).value.trim() || 'Visitante';
-    const text = document.getElementById('comment-text-' + reportId).value.trim();
+  async function submitComment(reportId) {
+    const authorInput = document.getElementById('comment-author-' + reportId);
+    const textInput = document.getElementById('comment-text-' + reportId);
+    const author = authorInput.value.trim();
+    const text = textInput.value.trim();
     if (!text) {
       showToast('Escreva um comentário antes de publicar.', true);
       return;
     }
-    report.comments.push({ id: Date.now(), author, text, time: new Date(), reply: null });
-    renderFeed();
+    try {
+      const data = await apiFetch('/market/reports/' + reportId + '/comments', {
+        method: 'POST',
+        body: JSON.stringify({ author, text })
+      });
+      const report = publishedReports.find(r => r.id === reportId);
+      if (report) report.comments.push(data.comment);
+      renderFeedFromCache();
+    } catch (err) {
+      showToast(err.message, true);
+    }
   }
 
   function toggleReplyForm(reportId, commentId) {
@@ -2383,20 +2429,33 @@
     if (form) form.classList.toggle('open');
   }
 
-  function submitReply(reportId, commentId) {
-    const report = publishedReports.find(r => r.id === reportId);
-    if (!report) return;
+  async function submitReply(reportId, commentId) {
     const textarea = document.getElementById('reply-text-' + reportId + '-' + commentId);
     const text = textarea.value.trim();
     if (!text) {
       showToast('Escreva uma resposta antes de publicar.', true);
       return;
     }
-    const comment = report.comments.find(c => c.id === commentId);
-    comment.reply = { text, time: new Date() };
-    renderFeed();
-    showToast('Resposta publicada.');
+    try {
+      const data = await apiFetch('/market/comments/' + commentId + '/reply', {
+        method: 'POST',
+        headers: adminAuthHeader(),
+        body: JSON.stringify({ text })
+      });
+      const report = publishedReports.find(r => r.id === reportId);
+      if (report) {
+        const comment = report.comments.find(c => c.id === commentId);
+        if (comment) comment.reply = data.comment.reply;
+      }
+      renderFeedFromCache();
+      showToast('Resposta publicada.');
+    } catch (err) {
+      showToast(err.message, true);
+    }
   }
+
+  // primeira carga do feed — pública, não depende de nenhum login
+  renderFeed();
 
   // ---------- ALARME (captura e-mail, simulado) ----------
   let alarmActive = false;
