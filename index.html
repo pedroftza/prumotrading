@@ -130,7 +130,7 @@
     padding:24px 14px;
   }
 
-  .brand{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0;padding:8px 8px 4px;margin-bottom:6px;}
+  .brand{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0;padding:8px 8px 4px;margin-bottom:40px;}
   .brand-mark{
     width:102px;height:102px;border-radius:27px;flex-shrink:0;
     background:var(--bg-elevated);
@@ -840,6 +840,16 @@
               <div class="date-line" id="today-label">—</div>
             </div>
             <button class="btn-logout" id="logout-btn">Sair</button>
+          </div>
+
+          <div class="card" id="subscribers-card">
+            <div class="card-head"><h3>Inscritos para aviso de nova análise</h3><span class="status-badge" id="subscribers-count">0</span></div>
+            <div id="subscribers-list" class="jr-empty">Carregando...</div>
+          </div>
+
+          <div class="card" id="contact-messages-card">
+            <div class="card-head"><h3>Mensagens de contato</h3><span class="status-badge" id="contact-messages-count">0</span></div>
+            <div id="contact-messages-list" class="jr-empty">Carregando...</div>
           </div>
 
           <!-- FORM 1: Análise de Mercado -->
@@ -1721,6 +1731,8 @@
     adminPanel.style.display = 'block';
     isAdminAuthenticated = true;
     renderFeed();
+    renderSubscribers();
+    renderContactMessages();
   }
 
   function lockAdmin() {
@@ -1941,7 +1953,7 @@
   // ---------- FORMULÁRIO DE CONTATO ----------
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
-    contactForm.addEventListener('submit', e => {
+    contactForm.addEventListener('submit', async e => {
       e.preventDefault();
       const name = document.getElementById('contact-name').value.trim();
       const email = document.getElementById('contact-email').value.trim();
@@ -1952,14 +1964,16 @@
         return;
       }
 
-      const subject = 'Contato pelo site — ' + name;
-      const body = 'Nome: ' + name + '\nE-mail: ' + email + '\n\nMensagem:\n' + message;
-      const mailtoUrl = 'mailto:prumotrading@prumo.com'
-        + '?subject=' + encodeURIComponent(subject)
-        + '&body=' + encodeURIComponent(body);
-
-      window.location.href = mailtoUrl;
-      showToast('Abrindo seu aplicativo de e-mail para enviar a mensagem.');
+      try {
+        await apiFetch('/contact', {
+          method: 'POST',
+          body: JSON.stringify({ name, email, message })
+        });
+        contactForm.reset();
+        showToast('Mensagem enviada! Vou te responder o quanto antes.');
+      } catch (err) {
+        showToast(err.message, true);
+      }
     });
   }
 
@@ -2450,7 +2464,7 @@
   // primeira carga do feed — pública, não depende de nenhum login
   renderFeed();
 
-  // ---------- ALARME (captura e-mail, simulado) ----------
+  // ---------- ALARME (e-mail salvo de verdade no banco) ----------
   let alarmActive = false;
   const alarmBtn = document.getElementById('alarm-btn');
   const alarmForm = document.getElementById('alarm-form');
@@ -2464,18 +2478,81 @@
     alarmForm.style.display = alarmForm.style.display === 'flex' ? 'none' : 'flex';
   });
 
-  document.getElementById('alarm-confirm-btn').addEventListener('click', () => {
+  document.getElementById('alarm-confirm-btn').addEventListener('click', async () => {
     const email = document.getElementById('alarm-email').value.trim();
-    if (!email.includes('@') || !email.includes('.')) {
-      showToast('Digite um e-mail válido.', true);
-      return;
+    try {
+      await apiFetch('/market/subscribe', {
+        method: 'POST',
+        body: JSON.stringify({ email })
+      });
+      alarmActive = true;
+      alarmForm.style.display = 'none';
+      alarmBtn.classList.add('active');
+      alarmLabel.textContent = 'Alarme ativado';
+      showToast('Pronto! Seu e-mail foi salvo — o envio automático ainda está em construção.');
+    } catch (err) {
+      showToast(err.message, true);
     }
-    alarmActive = true;
-    alarmForm.style.display = 'none';
-    alarmBtn.classList.add('active');
-    alarmLabel.textContent = 'Alarme ativado';
-    showToast('Alarme ativado. O envio de e-mail real será ligado quando integrarmos o backend.');
   });
+
+  // mensagens de contato, visível só pro admin
+  async function renderContactMessages() {
+    const listEl = document.getElementById('contact-messages-list');
+    const countEl = document.getElementById('contact-messages-count');
+    if (!listEl) return;
+    try {
+      const data = await apiFetch('/contact', { headers: adminAuthHeader() });
+      const msgs = data.messages || [];
+      const unread = msgs.filter(m => !m.read).length;
+      countEl.textContent = unread > 0 ? unread + ' nova(s)' : msgs.length;
+      if (msgs.length === 0) {
+        listEl.innerHTML = '<div class="jr-empty">Ainda não há mensagens.</div>';
+        return;
+      }
+      listEl.innerHTML = msgs.map(m =>
+        '<div class="comment-item">' +
+        '<div class="comment-meta"><span class="comment-author">' + escapeHtml(m.name) + (m.read ? '' : ' · não lida') + '</span>' +
+        '<span class="comment-time">' + new Date(m.time).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '</span></div>' +
+        '<div class="comment-text">' + escapeHtml(m.email) + '</div>' +
+        '<div class="comment-text">' + escapeHtml(m.message) + '</div>' +
+        (m.read ? '' : '<button type="button" class="feed-admin-btn" onclick="markMessageRead(' + m.id + ')">Marcar como lida</button>') +
+        '</div>'
+      ).join('');
+    } catch (err) {
+      listEl.innerHTML = '<div class="jr-empty">Não foi possível carregar as mensagens.</div>';
+    }
+  }
+
+  async function markMessageRead(id) {
+    try {
+      await apiFetch('/contact/' + id + '/read', { method: 'PATCH', headers: adminAuthHeader() });
+      renderContactMessages();
+    } catch (err) {
+      showToast(err.message, true);
+    }
+  }
+
+  // lista de inscritos, visível só pro admin
+  async function renderSubscribers() {
+    const listEl = document.getElementById('subscribers-list');
+    const countEl = document.getElementById('subscribers-count');
+    if (!listEl) return;
+    try {
+      const data = await apiFetch('/market/subscribers', { headers: adminAuthHeader() });
+      const subs = data.subscribers || [];
+      countEl.textContent = subs.length;
+      if (subs.length === 0) {
+        listEl.innerHTML = '<div class="jr-empty">Ainda não há ninguém inscrito.</div>';
+        return;
+      }
+      listEl.innerHTML = subs.map(s =>
+        '<div class="comment-item"><span class="comment-text">' + escapeHtml(s.email) + '</span> ' +
+        '<span class="comment-time">' + new Date(s.created_at).toLocaleDateString('pt-BR') + '</span></div>'
+      ).join('');
+    } catch (err) {
+      listEl.innerHTML = '<div class="jr-empty">Não foi possível carregar a lista.</div>';
+    }
+  }
 
   // ---------- ROTINA PRÉ-ABERTURA (checklist em memória, sem persistência) ----------
   function routineToggle(el) {
