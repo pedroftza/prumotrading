@@ -141,15 +141,6 @@
   .brand-name{font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.01em;color:var(--accent);}
   .brand-sub{font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;}
 
-  .stage-pill{
-    margin:14px auto 22px;
-    font-family:var(--font-mono);font-size:10.5px;color:var(--accent);
-    background:var(--accent-soft);
-    border:1px solid rgba(217,119,87,0.3);
-    border-radius:99px;padding:5px 10px;
-    width:fit-content;letter-spacing:0.03em;
-  }
-
   .nav-list{display:flex;flex-direction:column;gap:3px;flex:1;}
   .nav-item{
     display:flex;align-items:center;gap:11px;
@@ -167,12 +158,6 @@
     margin-left:auto;width:13px;height:13px;color:var(--text-tertiary);flex-shrink:0;
   }
   .nav-item.active .badge-lock{color:var(--accent);}
-
-  .sidebar-footer{
-    font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);
-    padding:10px 8px 4px;border-top:1px solid var(--border);margin-top:14px;
-    line-height:1.5;
-  }
 
   .main{flex:1;display:flex;flex-direction:column;min-width:0;}
   .content{flex:1;overflow-y:auto;padding:40px 48px 24px;}
@@ -685,10 +670,8 @@
       padding:12px 14px;gap:10px;overflow-x:auto;
     }
     .brand{margin-bottom:0;}
-    .stage-pill{display:none;}
     .nav-list{flex-direction:row;flex:none;}
     .nav-item{flex-direction:row;white-space:nowrap;}
-    .sidebar-footer{display:none;}
     .content{padding:28px 20px;}
     .site-footer{padding:14px 20px;}
   }
@@ -781,7 +764,6 @@
         <span class="brand-sub">Direção para o seu trading</span>
       </div>
     </div>
-    <div class="stage-pill">Protótipo · Etapa 1 de 5</div>
 
     <nav class="nav-list">
       <button class="nav-item active" data-section="admin">
@@ -789,21 +771,21 @@
         <span>Analista</span>
         <span class="badge-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0110 0v4"></path></svg></span>
       </button>
-      <button class="nav-item" data-section="mercado">
-        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg></span>
-        <span>Análise de Mercado</span>
-      </button>
-      <button class="nav-item" data-section="sala">
-        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 5-3 7.5-7 9-4-1.5-7-4-7-9V7z"></path></svg></span>
-        <span>Gestão de Risco</span>
-      </button>
       <button class="nav-item" data-section="rotina">
         <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><polyline points="8 12 11 15 16 9"></polyline></svg></span>
         <span>Rotina Pré-Abertura</span>
       </button>
+      <button class="nav-item" data-section="mercado">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg></span>
+        <span>Análise de Mercado</span>
+      </button>
       <button class="nav-item" data-section="diario">
         <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"></path><line x1="9" y1="7" x2="15" y2="7"></line><line x1="9" y1="11" x2="13" y2="11"></line></svg></span>
         <span>Diário de Trader</span>
+      </button>
+      <button class="nav-item" data-section="sala">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 5-3 7.5-7 9-4-1.5-7-4-7-9V7z"></path></svg></span>
+        <span>Gestão de Risco</span>
       </button>
       <button class="nav-item" data-section="educacional">
         <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"></path><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"></path></svg></span>
@@ -814,10 +796,6 @@
         <span>Sobre</span>
       </button>
     </nav>
-
-    <div class="sidebar-footer">
-      prumo-painel.html<br>build local · sem persistência
-    </div>
   </aside>
 
   <!-- ===================== MAIN ===================== -->
@@ -833,15 +811,14 @@
             <div class="lock-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0110 0v4"></path></svg>
             </div>
-            <h2>Área restrita</h2>
-            <p>Apenas o administrador vê esta área. Os formulários abaixo alimentam o relatório público.</p>
+            <h2>Área restrita aos analistas</h2>
             <div class="lock-form" id="admin-login-form">
               <input type="email" id="admin-email" placeholder="E-mail" autocomplete="off">
               <input type="password" id="admin-password" placeholder="Senha" autocomplete="off">
               <button type="button" id="login-submit-btn" class="btn-primary">Entrar</button>
             </div>
             <div class="lock-note">
-              Primeiro acesso? <a href="#" id="admin-setup-toggle" class="inline-link">Criar conta de administrador</a>
+              Primeiro acesso? <a href="#" id="admin-setup-toggle" class="inline-link">Criar conta de analista</a>
             </div>
 
             <div class="lock-form" id="admin-setup-form" style="display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
@@ -849,7 +826,7 @@
               <input type="email" id="setup-admin-email" placeholder="E-mail" autocomplete="off">
               <input type="password" id="setup-admin-password" placeholder="Senha (mín. 6 caracteres)" autocomplete="off">
               <input type="text" id="setup-admin-code" placeholder="Código de configuração" autocomplete="off">
-              <button type="button" id="setup-admin-btn" class="btn-secondary">Criar conta de administrador</button>
+              <button type="button" id="setup-admin-btn" class="btn-secondary">Criar conta de analista</button>
             </div>
           </div>
         </div>
@@ -2384,9 +2361,25 @@
         h += '<div><button type="button" class="btn-secondary" onclick="submitReply(' + report.id + ',' + c.id + ')">Publicar resposta</button></div>';
         h += '</div>';
       }
+      if (isAdminAuthenticated) {
+        h += '<button type="button" class="feed-admin-btn danger" style="margin-top:6px;" onclick="deleteComment(' + report.id + ',' + c.id + ')">Excluir comentário</button>';
+      }
       h += '</div>';
       return h;
     }).join('');
+  }
+
+  async function deleteComment(reportId, commentId) {
+    if (!confirm('Excluir esse comentário?')) return;
+    try {
+      await apiFetch('/market/comments/' + commentId, { method: 'DELETE', headers: adminAuthHeader() });
+      const report = publishedReports.find(r => r.id === reportId);
+      if (report) report.comments = report.comments.filter(c => c.id !== commentId);
+      renderFeedFromCache();
+      showToast('Comentário excluído.');
+    } catch (err) {
+      showToast(err.message, true);
+    }
   }
 
   async function toggleLike(reportId) {
