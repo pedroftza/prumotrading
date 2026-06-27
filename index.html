@@ -1881,6 +1881,7 @@
       localStorage.setItem(JR_AUTH_KEY, JSON.stringify(data));
       document.getElementById('jr-login-password').value = '';
       jrUpdateAuthView();
+      await jrFetchEntries();
       showToast('Bem-vindo(a), ' + data.user.name + '.');
     } catch (err) {
       showToast(err.message, true);
@@ -1905,6 +1906,7 @@
       localStorage.setItem(JR_AUTH_KEY, JSON.stringify(data));
       document.getElementById('jr-register-password').value = '';
       jrUpdateAuthView();
+      await jrFetchEntries();
       showToast('Conta criada. Bem-vindo(a), ' + data.user.name + '.');
     } catch (err) {
       showToast(err.message, true);
@@ -1931,6 +1933,7 @@
   if (jrLogoutBtn) {
     jrLogoutBtn.addEventListener('click', () => {
       localStorage.removeItem(JR_AUTH_KEY);
+      jrEntries = [];
       jrUpdateAuthView();
       goHome();
     });
@@ -1942,6 +1945,7 @@
     if (!saved || !saved.token) return;
     try {
       await apiFetch('/auth/me', { headers: { Authorization: 'Bearer ' + saved.token } });
+      await jrFetchEntries();
     } catch (err) {
       localStorage.removeItem(JR_AUTH_KEY);
     }
@@ -2450,12 +2454,30 @@
 
   routineUpdateProgress();
 
-  // ---------- DIÁRIO DE TRADER (em memória, sem persistência) ----------
+  // ---------- DIÁRIO DE TRADER (persistido no servidor, por usuário) ----------
   let jrEntries = [];
   const jrDiscValues = {};
   let jrCurrentFilter = 'all';
   let jrCurrentPeriod = 'week';
   let jrChartDrawn = false;
+
+  function jrAuthHeader() {
+    const auth = jrGetAuth();
+    if (!auth || !auth.token) return {};
+    return { Authorization: 'Bearer ' + auth.token };
+  }
+
+  async function jrFetchEntries() {
+    try {
+      const data = await apiFetch('/journal', { headers: jrAuthHeader() });
+      jrEntries = data.entries || [];
+    } catch (err) {
+      showToast('Não foi possível carregar seu histórico: ' + err.message, true);
+      jrEntries = [];
+    }
+    jrRenderHistory(jrCurrentFilter);
+    jrRenderStats(jrCurrentPeriod);
+  }
 
   // sub-navegação entre Registrar / Histórico / Dashboard
   function jrShowView(view, btn) {
@@ -2789,7 +2811,7 @@
   }
 
   // salvar sessão
-  function jrSaveDay() {
+  async function jrSaveDay() {
     const date = document.getElementById('jr-date').value;
     if (!date) {
       showToast('Informe a data antes de salvar.', true);
@@ -2818,16 +2840,21 @@
       discStar: Number(jrDiscInput.value) || 0,
       good: document.getElementById('jr-good').value,
       improve: document.getElementById('jr-improve').value,
-      intent: document.getElementById('jr-intent').value,
-      savedAt: Date.now()
+      intent: document.getElementById('jr-intent').value
     };
 
-    jrEntries = jrEntries.filter(d => d.date !== date);
-    jrEntries.push(entry);
-    jrEntries.sort((a, b) => b.date.localeCompare(a.date));
-
-    jrResetForm();
-    showToast('Sessão salva.');
+    try {
+      await apiFetch('/journal', {
+        method: 'POST',
+        headers: jrAuthHeader(),
+        body: JSON.stringify(entry)
+      });
+      await jrFetchEntries();
+      jrResetForm();
+      showToast('Sessão salva.');
+    } catch (err) {
+      showToast('Não foi possível salvar a sessão: ' + err.message, true);
+    }
   }
 
   function jrResetForm() {
@@ -2925,11 +2952,16 @@
     head.nextElementSibling.classList.toggle('open');
   }
 
-  function jrDeleteDay(date) {
+  async function jrDeleteDay(date) {
     if (!confirm('Excluir a sessão de ' + date + '?')) return;
-    jrEntries = jrEntries.filter(d => d.date !== date);
-    jrRenderHistory(jrCurrentFilter);
-    showToast('Sessão excluída.');
+    try {
+      await apiFetch('/journal/' + date, { method: 'DELETE', headers: jrAuthHeader() });
+      jrEntries = jrEntries.filter(d => d.date !== date);
+      jrRenderHistory(jrCurrentFilter);
+      showToast('Sessão excluída.');
+    } catch (err) {
+      showToast('Não foi possível excluir a sessão: ' + err.message, true);
+    }
   }
 
   // dashboard
