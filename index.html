@@ -836,11 +836,20 @@
             <h2>Área restrita</h2>
             <p>Apenas o administrador vê esta área. Os formulários abaixo alimentam o relatório público.</p>
             <div class="lock-form" id="admin-login-form">
-              <input type="password" id="admin-password" placeholder="Senha de administrador" autocomplete="off">
+              <input type="email" id="admin-email" placeholder="E-mail" autocomplete="off">
+              <input type="password" id="admin-password" placeholder="Senha" autocomplete="off">
               <button type="button" id="login-submit-btn" class="btn-primary">Entrar</button>
             </div>
             <div class="lock-note">
-              Login de demonstração — qualquer senha entra neste protótipo. A autenticação real (com backend) é uma etapa futura do projeto.
+              Primeiro acesso? <a href="#" id="admin-setup-toggle" class="inline-link">Criar conta de administrador</a>
+            </div>
+
+            <div class="lock-form" id="admin-setup-form" style="display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
+              <input type="text" id="setup-admin-name" placeholder="Seu nome" autocomplete="off">
+              <input type="email" id="setup-admin-email" placeholder="E-mail" autocomplete="off">
+              <input type="password" id="setup-admin-password" placeholder="Senha (mín. 6 caracteres)" autocomplete="off">
+              <input type="text" id="setup-admin-code" placeholder="Código de configuração" autocomplete="off">
+              <button type="button" id="setup-admin-btn" class="btn-secondary">Criar conta de administrador</button>
             </div>
           </div>
         </div>
@@ -1294,15 +1303,24 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </div>
             <h2>Entre para acessar seu Diário</h2>
-            <p>Seu histórico, suas estatísticas e suas personalizações ficam vinculadas ao seu login neste navegador.</p>
+            <p>Seu histórico, suas estatísticas e suas personalizações ficam vinculadas à sua conta.</p>
+
+            <div class="jr-subnav" style="justify-content:center;margin-bottom:18px;">
+              <button type="button" class="jr-subnav-btn active" id="jr-auth-tab-entrar" onclick="jrShowAuthTab('entrar', this)">Entrar</button>
+              <button type="button" class="jr-subnav-btn" id="jr-auth-tab-criar" onclick="jrShowAuthTab('criar', this)">Criar conta</button>
+            </div>
+
             <div class="lock-form" id="jr-login-form">
-              <input type="text" id="jr-login-name" placeholder="Seu nome" autocomplete="off">
               <input type="email" id="jr-login-email" placeholder="Seu e-mail" autocomplete="off">
               <input type="password" id="jr-login-password" placeholder="Senha" autocomplete="off">
               <button type="button" id="jr-login-btn" class="btn-primary">Entrar</button>
             </div>
-            <div class="lock-note">
-              Login de demonstração — qualquer e-mail e senha entram neste protótipo. A autenticação real (com backend) é uma etapa futura do projeto.
+
+            <div class="lock-form" id="jr-register-form" style="display:none;">
+              <input type="text" id="jr-register-name" placeholder="Seu nome" autocomplete="off">
+              <input type="email" id="jr-register-email" placeholder="Seu e-mail" autocomplete="off">
+              <input type="password" id="jr-register-password" placeholder="Senha (mín. 6 caracteres)" autocomplete="off">
+              <button type="button" id="jr-register-btn" class="btn-primary">Criar conta</button>
             </div>
           </div>
         </div>
@@ -1666,6 +1684,24 @@
 </div>
 
 <script>
+  // ---------- API (backend de autenticação) ----------
+  // IMPORTANTE: troque pela URL real do seu serviço depois de criá-lo no Render
+  // (ex.: 'https://prumo-backend-xxxx.onrender.com/api').
+  const API_BASE = 'https://SEU-BACKEND.onrender.com/api';
+
+  async function apiFetch(path, options) {
+    options = options || {};
+    const headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers || {});
+    const res = await fetch(API_BASE + path, Object.assign({}, options, { headers }));
+    let data = null;
+    try { data = await res.json(); } catch (e) { /* resposta sem corpo */ }
+    if (!res.ok) {
+      const message = (data && data.error) ? data.error : 'Erro ao conectar com o servidor.';
+      throw new Error(message);
+    }
+    return data;
+  }
+
   // ---------- NAVEGAÇÃO ----------
   const navButtons = document.querySelectorAll('.nav-item[data-section]');
   const sections = document.querySelectorAll('.section');
@@ -1697,9 +1733,10 @@
   const todayStr = new Date().toLocaleDateString('pt-BR', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
   todayLabel.textContent = todayStr;
 
-  // ---------- LOGIN (cosmético) ----------
+  // ---------- LOGIN DO ADMINISTRADOR ----------
   const lockScreen = document.getElementById('admin-lock');
   const adminPanel = document.getElementById('admin-panel');
+  const ADMIN_AUTH_KEY = 'prumoAdminAuth';
   let isAdminAuthenticated = false;
 
   function unlockAdmin() {
@@ -1708,17 +1745,90 @@
     isAdminAuthenticated = true;
     renderFeed();
   }
-  document.getElementById('login-submit-btn').addEventListener('click', unlockAdmin);
-  document.getElementById('admin-password').addEventListener('keydown', e => {
-    if (e.key === 'Enter') unlockAdmin();
-  });
-  document.getElementById('logout-btn').addEventListener('click', () => {
+
+  function lockAdmin() {
     adminPanel.style.display = 'none';
     lockScreen.style.display = 'flex';
-    document.getElementById('admin-password').value = '';
     isAdminAuthenticated = false;
     renderFeed();
+  }
+
+  async function adminLogin() {
+    const email = document.getElementById('admin-email').value.trim();
+    const password = document.getElementById('admin-password').value.trim();
+    if (!email || !password) {
+      showToast('Informe e-mail e senha.', true);
+      return;
+    }
+    try {
+      const data = await apiFetch('/auth/admin-login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password })
+      });
+      localStorage.setItem(ADMIN_AUTH_KEY, JSON.stringify(data));
+      document.getElementById('admin-password').value = '';
+      unlockAdmin();
+      showToast('Bem-vindo(a), ' + data.user.name + '.');
+    } catch (err) {
+      showToast(err.message, true);
+    }
+  }
+
+  document.getElementById('login-submit-btn').addEventListener('click', adminLogin);
+  document.getElementById('admin-password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') adminLogin();
   });
+  document.getElementById('admin-email').addEventListener('keydown', e => {
+    if (e.key === 'Enter') adminLogin();
+  });
+
+  document.getElementById('admin-setup-toggle').addEventListener('click', e => {
+    e.preventDefault();
+    const form = document.getElementById('admin-setup-form');
+    form.style.display = form.style.display === 'none' ? 'flex' : 'none';
+  });
+
+  document.getElementById('setup-admin-btn').addEventListener('click', async () => {
+    const name = document.getElementById('setup-admin-name').value.trim();
+    const email = document.getElementById('setup-admin-email').value.trim();
+    const password = document.getElementById('setup-admin-password').value.trim();
+    const setupCode = document.getElementById('setup-admin-code').value.trim();
+    if (!name || !email || !password || !setupCode) {
+      showToast('Preencha todos os campos para criar a conta de administrador.', true);
+      return;
+    }
+    try {
+      const data = await apiFetch('/auth/setup-admin', {
+        method: 'POST',
+        body: JSON.stringify({ name, email, password, setupCode })
+      });
+      localStorage.setItem(ADMIN_AUTH_KEY, JSON.stringify(data));
+      unlockAdmin();
+      showToast('Conta de administrador criada. Bem-vindo(a), ' + data.user.name + '.');
+    } catch (err) {
+      showToast(err.message, true);
+    }
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    localStorage.removeItem(ADMIN_AUTH_KEY);
+    document.getElementById('admin-email').value = '';
+    document.getElementById('admin-password').value = '';
+    lockAdmin();
+  });
+
+  // ao carregar a página, confirma com o servidor se a sessão salva ainda é válida
+  (async function restoreAdminSession() {
+    const saved = localStorage.getItem(ADMIN_AUTH_KEY);
+    if (!saved) return;
+    try {
+      const { token } = JSON.parse(saved);
+      await apiFetch('/auth/me', { headers: { Authorization: 'Bearer ' + token } });
+      unlockAdmin();
+    } catch (err) {
+      localStorage.removeItem(ADMIN_AUTH_KEY);
+    }
+  })();
 
   // ---------- LOGIN DO VISITANTE (Diário de Trader) ----------
   const JR_AUTH_KEY = 'prumoTraderAuth';
@@ -1736,31 +1846,69 @@
     const auth = jrGetAuth();
     const lock = document.getElementById('jr-lock');
     const content = document.getElementById('jr-content');
-    if (auth && auth.name) {
+    if (auth && auth.user && auth.user.name) {
       lock.style.display = 'none';
       content.style.display = 'block';
       const welcome = document.getElementById('jr-welcome-text');
-      if (welcome) welcome.textContent = 'Bem-vindo(a) de volta, ' + auth.name + '. Registre a sessão, acompanhe o histórico e veja sua evolução.';
+      if (welcome) welcome.textContent = 'Bem-vindo(a) de volta, ' + auth.user.name + '. Registre a sessão, acompanhe o histórico e veja sua evolução.';
     } else {
       lock.style.display = 'flex';
       content.style.display = 'none';
     }
   }
 
-  function jrLogin() {
-    const name = document.getElementById('jr-login-name').value.trim();
+  function jrShowAuthTab(tab, btn) {
+    document.querySelectorAll('#jr-lock .jr-subnav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('jr-login-form').style.display = tab === 'entrar' ? 'flex' : 'none';
+    document.getElementById('jr-register-form').style.display = tab === 'criar' ? 'flex' : 'none';
+  }
+
+  async function jrLogin() {
     const email = document.getElementById('jr-login-email').value.trim();
     const password = document.getElementById('jr-login-password').value.trim();
 
-    if (!name || !email || !password) {
-      showToast('Preencha nome, e-mail e senha para entrar.', true);
+    if (!email || !password) {
+      showToast('Informe e-mail e senha para entrar.', true);
       return;
     }
 
-    localStorage.setItem(JR_AUTH_KEY, JSON.stringify({ name, email, loggedInAt: Date.now() }));
-    document.getElementById('jr-login-password').value = '';
-    jrUpdateAuthView();
-    showToast('Bem-vindo(a), ' + name + '.');
+    try {
+      const data = await apiFetch('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password })
+      });
+      localStorage.setItem(JR_AUTH_KEY, JSON.stringify(data));
+      document.getElementById('jr-login-password').value = '';
+      jrUpdateAuthView();
+      showToast('Bem-vindo(a), ' + data.user.name + '.');
+    } catch (err) {
+      showToast(err.message, true);
+    }
+  }
+
+  async function jrRegister() {
+    const name = document.getElementById('jr-register-name').value.trim();
+    const email = document.getElementById('jr-register-email').value.trim();
+    const password = document.getElementById('jr-register-password').value.trim();
+
+    if (!name || !email || !password) {
+      showToast('Preencha nome, e-mail e senha para criar a conta.', true);
+      return;
+    }
+
+    try {
+      const data = await apiFetch('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({ name, email, password })
+      });
+      localStorage.setItem(JR_AUTH_KEY, JSON.stringify(data));
+      document.getElementById('jr-register-password').value = '';
+      jrUpdateAuthView();
+      showToast('Conta criada. Bem-vindo(a), ' + data.user.name + '.');
+    } catch (err) {
+      showToast(err.message, true);
+    }
   }
 
   const jrLoginBtn = document.getElementById('jr-login-btn');
@@ -1768,6 +1916,14 @@
     jrLoginBtn.addEventListener('click', jrLogin);
     document.getElementById('jr-login-form').addEventListener('keydown', e => {
       if (e.key === 'Enter') jrLogin();
+    });
+  }
+
+  const jrRegisterBtn = document.getElementById('jr-register-btn');
+  if (jrRegisterBtn) {
+    jrRegisterBtn.addEventListener('click', jrRegister);
+    document.getElementById('jr-register-form').addEventListener('keydown', e => {
+      if (e.key === 'Enter') jrRegister();
     });
   }
 
@@ -1779,6 +1935,17 @@
       goHome();
     });
   }
+
+  // ao carregar a página, confirma com o servidor se a sessão salva ainda é válida
+  (async function restoreTraderSession() {
+    const saved = jrGetAuth();
+    if (!saved || !saved.token) return;
+    try {
+      await apiFetch('/auth/me', { headers: { Authorization: 'Bearer ' + saved.token } });
+    } catch (err) {
+      localStorage.removeItem(JR_AUTH_KEY);
+    }
+  })();
 
   // ---------- TOAST ----------
   function showToast(message, isError) {
