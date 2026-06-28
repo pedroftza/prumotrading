@@ -262,6 +262,13 @@
     display:flex;align-items:center;gap:10px;margin-bottom:20px;
   }
   #form-analise .progress-line{margin-bottom:8px;}
+  .format-hint{
+    font-size:12px;color:var(--text-tertiary);margin-bottom:18px;line-height:1.5;
+  }
+  .format-hint code{
+    font-family:var(--font-mono);background:var(--bg-elevated-2);padding:1px 5px;
+    border-radius:4px;font-size:11.5px;color:var(--text-secondary);
+  }
   .progress-track{flex:1;height:5px;background:var(--bg-elevated-2);border-radius:99px;overflow:hidden;}
   .progress-fill{height:100%;background:var(--accent);border-radius:99px;width:0%;transition:width .2s ease;}
   .progress-label{font-family:var(--font-mono);font-size:11px;color:var(--text-tertiary);white-space:nowrap;}
@@ -863,6 +870,8 @@
               <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
               <span class="progress-label" id="progress-label">0 de 3 etapas preenchidas</span>
             </div>
+
+            <div class="format-hint">Use <code>*texto*</code> para <strong>negrito</strong> e <code>_texto_</code> para <em>itálico</em> — igual no WhatsApp.</div>
 
             <div class="analise-stage" id="analise-stage-macro">
               <div class="stage-heading-row">
@@ -2073,16 +2082,16 @@
 
     let html = '';
     if (macroVal) {
-      html += '<div class="preview-item"><div class="q">' + reportTitles['stage-macro'] + '</div><div class="a">' + escapeHtml(macroVal) + '</div></div>';
+      html += '<div class="preview-item"><div class="q">' + reportTitles['stage-macro'] + '</div><div class="a">' + formatMarkup(macroVal) + '</div></div>';
     }
     if (uploadedImageData) {
       html += '<div class="preview-item"><div class="q">Print BlackArrow</div><img src="' + uploadedImageData + '" style="max-width:100%;border-radius:8px;border:1px solid var(--border);margin-top:4px;">' + printLegendHTML() + '</div>';
     }
     if (tecnicaVal) {
-      html += '<div class="preview-item"><div class="q">' + reportTitles['stage-tecnica'] + '</div><div class="a">' + escapeHtml(tecnicaVal) + '</div></div>';
+      html += '<div class="preview-item"><div class="q">' + reportTitles['stage-tecnica'] + '</div><div class="a">' + formatMarkup(tecnicaVal) + '</div></div>';
     }
     if (resumoVal) {
-      html += '<div class="preview-item"><div class="q">' + reportTitles['stage-resumo'] + '</div><div class="a">' + escapeHtml(resumoVal) + '</div></div>';
+      html += '<div class="preview-item"><div class="q">' + reportTitles['stage-resumo'] + '</div><div class="a">' + formatMarkup(resumoVal) + '</div></div>';
     }
     previewBody.innerHTML = html;
   }
@@ -2091,6 +2100,16 @@
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
+  }
+
+  // converte *negrito* e _itálico_ (mesma sintaxe do WhatsApp) em <strong>/<em>.
+  // o texto já sai escapado do escapeHtml antes de qualquer substituição,
+  // então mesmo que alguém digite <, > ou & dentro dos marcadores, já está seguro.
+  function formatMarkup(str) {
+    let safe = escapeHtml(str);
+    safe = safe.replace(/\*([^*\n]+)\*/g, '<strong>$1</strong>');
+    safe = safe.replace(/_([^_\n]+)_/g, '<em>$1</em>');
+    return safe;
   }
 
   questionFields.forEach(f => f.addEventListener('input', () => { renderPreview(); analiseUpdateStageDots(); }));
@@ -2308,16 +2327,16 @@
     const reportTime = new Date(report.time);
     let body = '';
     if (report.macro) {
-      body += '<div class="preview-item"><div class="q">' + reportTitles['stage-macro'] + '</div><div class="a">' + escapeHtml(report.macro) + '</div></div>';
+      body += '<div class="preview-item"><div class="q">' + reportTitles['stage-macro'] + '</div><div class="a">' + formatMarkup(report.macro) + '</div></div>';
     }
     if (report.image) {
       body += '<div class="preview-item"><div class="q">Print BlackArrow</div><img src="' + report.image + '" class="public-print-img" style="max-width:100%;border-radius:8px;border:1px solid var(--border);margin-top:4px;" onclick="openLightbox(this.src)">' + printLegendHTML() + '</div>';
     }
     if (report.tecnica) {
-      body += '<div class="preview-item"><div class="q">' + reportTitles['stage-tecnica'] + '</div><div class="a">' + escapeHtml(report.tecnica) + '</div></div>';
+      body += '<div class="preview-item"><div class="q">' + reportTitles['stage-tecnica'] + '</div><div class="a">' + formatMarkup(report.tecnica) + '</div></div>';
     }
     if (report.resumo) {
-      body += '<div class="preview-item"><div class="q">' + reportTitles['stage-resumo'] + '</div><div class="a">' + escapeHtml(report.resumo) + '</div></div>';
+      body += '<div class="preview-item"><div class="q">' + reportTitles['stage-resumo'] + '</div><div class="a">' + formatMarkup(report.resumo) + '</div></div>';
     }
 
     const adminActions = isAdminAuthenticated
