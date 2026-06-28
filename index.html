@@ -22,7 +22,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #000000;
+    --bg: #0f0f0f;
     --bg-elevated: #2e2d2b;
     --bg-elevated-2: #383735;
     --bg-input: #1f1e1c;
@@ -31,9 +31,9 @@
     --text-primary: #f5f4ef;
     --text-secondary: #b3b0a8;
     --text-tertiary: #7a7770;
-    --accent: #d97757;
-    --accent-hover: #c2664a;
-    --accent-soft: rgba(217,119,87,0.14);
+    --accent: #c1654a;
+    --accent-hover: #a3523b;
+    --accent-soft: rgba(193,101,74,0.14);
     --success: #84a07a;
     --success-soft: rgba(132,160,122,0.14);
     --danger: #c1666b;
@@ -51,7 +51,7 @@
   body{
     font-family:var(--font-body);
     background:
-      radial-gradient(circle at 100% 100%, rgba(217,119,87,0.24) 0%, rgba(217,119,87,0) 60%),
+      radial-gradient(circle at 50% 0%, rgba(193,101,74,0.05) 0%, rgba(193,101,74,0) 50%),
       var(--bg);
     background-attachment:fixed;
     color:var(--text-primary);
@@ -80,7 +80,7 @@
   }
   .home-header{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:8px;}
   .home-logo{
-    width:120px;height:120px;border-radius:30px;background:var(--bg);
+    width:120px;height:120px;border-radius:30px;background:transparent;
     display:flex;align-items:center;justify-content:center;margin-bottom:0;
   }
   .home-logo svg{width:96px;height:96px;}
@@ -126,8 +126,7 @@
 
   .sidebar{
     width:248px;flex-shrink:0;
-    background:rgba(217,119,87,0.06);
-    border-right:1px solid var(--accent);
+    background:transparent;
     display:flex;flex-direction:column;
     padding:24px 14px;
   }
@@ -141,7 +140,7 @@
   .brand-mark svg{width:72px;height:72px;}
   .brand-text{display:flex;flex-direction:column;align-items:center;line-height:1.15;margin-top:-12px;}
   .brand-name{font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.01em;color:var(--accent);}
-  .brand-sub{font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;}
+  .brand-sub{font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-top:12px;}
 
   .nav-list{display:flex;flex-direction:column;gap:3px;flex:1;}
   .nav-item{
@@ -359,7 +358,7 @@
   }
   .action-btn svg{width:16px;height:16px;flex-shrink:0;}
   .action-btn:hover{background:var(--bg-elevated-2);}
-  .action-btn.active{background:var(--accent-soft);border-color:rgba(217,119,87,0.4);color:var(--accent);}
+  .action-btn.active{background:var(--accent-soft);border-color:rgba(193,101,74,0.4);color:var(--accent);}
   .action-btn.pulse{animation:pulseScale .25s ease;}
   @keyframes pulseScale{0%{transform:scale(1);}50%{transform:scale(1.08);}100%{transform:scale(1);}}
 
@@ -421,7 +420,7 @@
     background:var(--accent-soft);border-radius:99px;padding:3px 10px;margin-bottom:10px;
     text-transform:uppercase;letter-spacing:0.05em;
   }
-  .service-title{font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:8px;line-height:1.3;color:#f0d9cc;}
+  .service-title{font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:8px;line-height:1.3;color:#ecd2c4;}
   .service-tagline{font-size:13.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:18px;flex:none;}
   .service-price{display:flex;align-items:baseline;gap:5px;margin-bottom:18px;flex-wrap:wrap;}
   .service-price .price-value{font-family:var(--font-display);font-size:25px;font-weight:600;color:var(--accent);}
@@ -440,7 +439,7 @@
 
   /* ---------- SOBRE ---------- */
   .about-card{padding:24px 26px;}
-  .about-heading{font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:10px;color:#f0d9cc;}
+  .about-heading{font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:10px;color:#ecd2c4;}
   .about-text{font-size:14px;color:var(--text-secondary);line-height:1.6;}
   .about-bio-row{display:flex;align-items:center;gap:16px;margin-bottom:14px;}
   .about-logo-col{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;}
@@ -455,7 +454,7 @@
     margin-top:14px;padding-top:12px;border-top:1px solid var(--border);
     font-size:11.5px;color:var(--text-tertiary);
   }
-  .inline-link{color:#e8a37e;text-decoration:none;cursor:pointer;}
+  .inline-link{color:#d9947a;text-decoration:none;cursor:pointer;}
   .inline-link:hover{text-decoration:underline;}
   .about-email{
     display:inline-flex;align-items:center;gap:9px;margin-top:6px;
@@ -474,7 +473,7 @@
 
   .routine-phase-header{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
   .routine-phase-time{font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;color:var(--accent);font-weight:500;white-space:nowrap;}
-  .routine-phase-title{font-family:var(--font-mono);font-size:12.5px;font-weight:500;color:#f0d9cc;text-transform:uppercase;letter-spacing:0.05em;}
+  .routine-phase-title{font-family:var(--font-mono);font-size:12.5px;font-weight:500;color:#ecd2c4;text-transform:uppercase;letter-spacing:0.05em;}
 
   .routine-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);margin-bottom:4px;cursor:pointer;transition:background .15s,border-color .15s;user-select:none;border:1px solid transparent;}
   .routine-item:hover{background:var(--bg-elevated-2);border-color:var(--border);}
@@ -491,8 +490,8 @@
 
   .routine-tag{display:inline-block;font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-left:7px;font-weight:500;vertical-align:middle;position:relative;top:-1px;background:var(--accent-soft);color:var(--accent);}
 
-  .routine-rules-box{background:var(--accent-soft);border:1px solid rgba(217,119,87,0.3);}
-  .routine-rules-title{font-family:var(--font-mono);font-size:11px;font-weight:500;color:#f0d9cc;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;}
+  .routine-rules-box{background:var(--accent-soft);border:1px solid rgba(193,101,74,0.3);}
+  .routine-rules-title{font-family:var(--font-mono);font-size:11px;font-weight:500;color:#ecd2c4;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;}
   .routine-rules-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
   .routine-rules-list li{font-size:13px;color:var(--text-primary);padding-left:16px;position:relative;line-height:1.5;}
   .routine-rules-list li::before{content:'—';position:absolute;left:0;color:var(--accent);}
@@ -517,7 +516,7 @@
     border-radius:99px;padding:9px 18px;font-size:13.5px;font-weight:500;transition:background .15s,color .15s,border-color .15s;
   }
   .jr-subnav-btn:hover{background:var(--bg-elevated-2);color:var(--text-primary);}
-  .jr-subnav-btn.active{background:var(--accent-soft);border-color:rgba(217,119,87,0.4);color:var(--accent);}
+  .jr-subnav-btn.active{background:var(--accent-soft);border-color:rgba(193,101,74,0.4);color:var(--accent);}
 
   .jr-view{display:none;}
   .jr-view.active{display:block;}
@@ -528,7 +527,7 @@
     border-radius:99px;padding:7px 14px;font-size:12.5px;font-weight:500;transition:background .15s,color .15s,border-color .15s;
   }
   .jr-filter-btn:hover{background:var(--bg-elevated-2);color:var(--text-primary);}
-  .jr-filter-btn.active{background:var(--accent-soft);border-color:rgba(217,119,87,0.4);color:var(--accent);}
+  .jr-filter-btn.active{background:var(--accent-soft);border-color:rgba(193,101,74,0.4);color:var(--accent);}
 
   #jr-pdf-input{display:none;}
   .jr-csv-hint{font-size:12px;color:var(--text-tertiary);margin-top:8px;line-height:1.5;}
@@ -554,7 +553,7 @@
     font-size:12.5px;color:var(--text-secondary);cursor:pointer;transition:background .15s,color .15s,border-color .15s;
   }
   .jr-pill:hover{border-color:var(--text-tertiary);color:var(--text-primary);}
-  .jr-pill.sel{background:var(--accent-soft);border-color:rgba(217,119,87,0.4);color:var(--accent);}
+  .jr-pill.sel{background:var(--accent-soft);border-color:rgba(193,101,74,0.4);color:var(--accent);}
 
   .jr-day-card{padding:0;overflow:hidden;}
   .jr-day-card-head{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;transition:background .15s;flex-wrap:wrap;}
@@ -1539,7 +1538,7 @@
 
           <div class="card service-card service-card-highlight">
             <h3 class="service-title">Workshop — Como usar a Prumo e construir consistência no trading</h3>
-            <p class="service-tagline">Um tour guiado pelas ferramentas do site e pelo porquê de consistência vir antes de resultado.</p>
+            <p class="service-tagline">Um tour guiado pelas ferramentas do site e pela metodologia da Prumo.</p>
             <div class="service-price"><span class="price-value">Gratuito</span></div>
             <ul class="service-features">
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Tour pelo Diário de Trader, Rotina Pré-Abertura e Análise de Mercado</li>
@@ -1551,7 +1550,7 @@
 
           <div class="card service-card service-card-highlight">
             <h3 class="service-title">E-book - Como analisar o mercado através do volume</h3>
-            <p class="service-tagline">Um guia prático para compreender a dinâmica e o funcionamento do mercado e tomar as melhores decisões.</p>
+            <p class="service-tagline">Um guia completo para compreender o funcionamento do mercado e tomar as melhores decisões.</p>
             <div class="service-price"><span class="price-value">R$ 47</span><span class="price-period">/único</span></div>
             <ul class="service-features">
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>E-book digital em PDF, leitura no celular ou computador</li>
@@ -1563,7 +1562,7 @@
 
           <div class="card service-card service-card-highlight">
             <h3 class="service-title">Sala ao Vivo</h3>
-            <p class="service-tagline">Acompanhe a operação em tempo real, todos os dias de pregão.</p>
+            <p class="service-tagline">Acompanhe o pregão em tempo real, todos os dias da semana.</p>
             <div class="service-price"><span class="price-value">R$ 197</span><span class="price-period">/mês</span></div>
             <ul class="service-features">
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Transmissão ao vivo das 10h às 13h</li>
