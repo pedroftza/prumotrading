@@ -51,7 +51,8 @@
   body{
     font-family:var(--font-body);
     background:
-      radial-gradient(circle at 50% 0%, rgba(193,101,74,0.05) 0%, rgba(193,101,74,0) 50%),
+      radial-gradient(circle at 50% -10%, rgba(193,101,74,0.13) 0%, rgba(193,101,74,0) 45%),
+      radial-gradient(circle at 92% 95%, rgba(193,101,74,0.06) 0%, rgba(193,101,74,0) 40%),
       var(--bg);
     background-attachment:fixed;
     color:var(--text-primary);
@@ -76,50 +77,62 @@
   /* ---------- HOME ---------- */
   .home-view{
     min-height:100vh;display:flex;flex-direction:column;align-items:center;
-    padding:28px 24px 56px;
+    padding:28px 24px 56px;position:relative;overflow:hidden;
   }
-  .home-header{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:8px;}
+  .home-hero-deco{
+    position:absolute;top:0;left:0;width:100%;height:520px;
+    opacity:0.08;color:var(--accent);z-index:0;pointer-events:none;
+  }
+  .home-header{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:8px;position:relative;z-index:1;}
   .home-logo{
     width:120px;height:120px;border-radius:30px;background:transparent;
     display:flex;align-items:center;justify-content:center;margin-bottom:0;
   }
   .home-logo svg{width:96px;height:96px;}
-  .home-title{font-family:var(--font-display);font-size:34px;font-weight:600;color:var(--accent);letter-spacing:-0.01em;margin-top:-28px;margin-bottom:6px;}
-  .home-tagline{font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.08em;}
-  .home-manifesto{max-width:960px;width:100%;text-align:center;margin:6px auto 16px;}
-  .home-manifesto-text{font-size:15px;color:var(--text-secondary);line-height:1.65;margin-bottom:12px;}
+  .home-title{font-family:var(--font-display);font-size:58px;font-weight:700;color:var(--accent);letter-spacing:-0.02em;margin-top:-28px;margin-bottom:8px;}
+  .home-tagline{font-family:var(--font-mono);font-size:14px;font-weight:500;color:var(--text-primary);text-transform:uppercase;letter-spacing:0.12em;}
+  .home-manifesto{max-width:760px;width:100%;text-align:center;margin:32px auto 56px;position:relative;z-index:1;}
+  .home-manifesto-text{font-size:16px;color:var(--text-secondary);line-height:1.7;margin-bottom:14px;}
   .home-manifesto-quote{
-    font-family:var(--font-mono);font-size:12.5px;color:var(--accent);
-    padding:10px 16px;margin:-10px 0 0;
-    line-height:1.6;display:inline-block;
+    font-family:var(--font-display);font-size:32px;font-weight:700;color:var(--accent);
+    padding:18px 0 0;margin:18px 0 0;
+    line-height:1.3;display:block;letter-spacing:-0.01em;
   }
   .home-footer{align-self:stretch;margin-top:48px;}
 
   .home-grid{
     display:grid;grid-template-columns:repeat(3,1fr);
-    gap:22px;max-width:1140px;width:100%;
+    gap:56px 40px;max-width:1240px;width:100%;position:relative;z-index:1;
+    margin-top:32px;
   }
   .home-card{
-    background:transparent;border:1px solid var(--accent);border-radius:var(--radius-lg);
-    padding:36px 30px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;
-    transition:border-color .15s,transform .15s,background .15s;
+    background:transparent;border:none;
+    padding:0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px;
+    width:100%;
+    transition:transform .2s;
   }
-  .home-card:hover{border-color:var(--accent-hover);background:var(--accent-soft);transform:translateY(-2px);}
+  .home-card:hover{transform:translateY(-3px);}
+  .home-card:hover .home-card-icon{color:var(--accent-hover);}
   .home-card-icon{
-    width:54px;height:54px;border-radius:14px;background:var(--accent-soft);color:var(--accent);
-    display:flex;align-items:center;justify-content:center;margin-bottom:20px;flex-shrink:0;
+    color:var(--accent);
+    display:flex;align-items:center;justify-content:center;
   }
-  .home-card-icon svg{width:26px;height:26px;}
-  .home-card h3{font-family:var(--font-display);font-size:19px;font-weight:600;color:var(--accent);margin-bottom:8px;}
-  .home-card p{font-size:14px;color:var(--text-secondary);line-height:1.55;}
+  .home-card-icon svg{width:50px;height:50px;}
+  .home-card .home-card-text{display:flex;flex-direction:column;align-items:center;text-align:center;}
+  .home-card h3{
+    font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--text-primary);
+    letter-spacing:0.01em;text-transform:uppercase;margin-bottom:10px;line-height:1.3;
+  }
+  .home-card p{font-size:15px;color:var(--text-secondary);line-height:1.6;max-width:300px;}
 
   @media (max-width:900px){
-    .home-grid{grid-template-columns:repeat(2,1fr);}
+    .home-grid{grid-template-columns:repeat(2,1fr);max-width:760px;}
   }
   @media (max-width:600px){
     .home-view{padding:48px 18px 40px;}
     .home-title{font-size:28px;}
-    .home-grid{grid-template-columns:1fr;}
+    .home-grid{grid-template-columns:1fr;gap:40px;}
+    .home-card p{max-width:320px;}
     .home-manifesto{margin:4px auto 14px;}
     .home-manifesto-text{font-size:14px;}
   }
@@ -140,9 +153,15 @@
   .brand-mark svg{width:72px;height:72px;}
   .brand-text{display:flex;flex-direction:column;align-items:center;line-height:1.15;margin-top:-12px;}
   .brand-name{font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.01em;color:var(--accent);}
-  .brand-sub{font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.07em;margin-top:12px;}
+  .brand-sub{font-family:var(--font-mono);font-size:10.5px;color:var(--text-primary);text-transform:uppercase;letter-spacing:0.07em;margin-top:12px;}
 
+  .grain-overlay{
+    position:fixed;inset:0;z-index:999;pointer-events:none;
+    opacity:0.05;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
   .nav-list{display:flex;flex-direction:column;gap:3px;flex:1;}
+
   .nav-item{
     display:flex;align-items:center;gap:11px;
     padding:10px 12px;border-radius:var(--radius-sm);
@@ -687,6 +706,22 @@
 <body>
 
 <div class="home-view" id="home-view">
+  <svg class="home-hero-deco" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <line x1="60" y1="60" x2="60" y2="340" stroke="var(--accent)" stroke-width="2"></line>
+    <rect x="44" y="160" width="32" height="90" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
+    <line x1="180" y1="20" x2="180" y2="300" stroke="var(--accent)" stroke-width="2"></line>
+    <rect x="164" y="90" width="32" height="130" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
+    <line x1="300" y1="100" x2="300" y2="380" stroke="var(--accent)" stroke-width="2"></line>
+    <rect x="284" y="200" width="32" height="100" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
+    <line x1="500" y1="40" x2="500" y2="320" stroke="var(--accent)" stroke-width="2"></line>
+    <rect x="484" y="120" width="32" height="140" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
+    <line x1="620" y1="120" x2="620" y2="360" stroke="var(--accent)" stroke-width="2"></line>
+    <rect x="604" y="200" width="32" height="90" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
+    <line x1="740" y1="60" x2="740" y2="300" stroke="var(--accent)" stroke-width="2"></line>
+    <rect x="724" y="100" width="32" height="120" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
+    <polyline points="60,200 180,150 300,250 500,180 620,240 740,160" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+  </svg>
+
   <div class="home-header">
     <div class="home-logo">
       <svg viewBox="0 0 34 34" role="img" aria-label="Bússola Prumo">
@@ -703,6 +738,7 @@
     <p class="home-tagline">Direção para o seu trading</p>
   </div>
 
+
   <div class="home-manifesto">
     <p class="home-manifesto-text">A Prumo nasce de quem já operou o suficiente para saber que resultado é consequência, não ponto de partida. E nasce para quem quer entender o mercado norte-americano com profundidade — fluxo, volume, contexto — antes de tentar prevê-lo. Para quem prefere construir uma curva de capital sustentável a perseguir uma vitória pontual.</p>
     <p class="home-manifesto-text">A Prumo não vende sinal, fórmula ou atalho. Aqui você não vai encontrar promessas de lucro ou garantias. Vai encontrar análises que ampliam sua visão e ferramentas para construir uma rotina sólida capaz de revelar e evoluir os seus padrões reais de comportamento — não os que você imagina ter. Um caminho de evolução medido pela sua dedicação e persistência.</p>
@@ -711,39 +747,51 @@
 
   <div class="home-grid">
     <button type="button" class="home-card" onclick="goToSection('rotina')">
-      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2C16 2.3 20.8 6 20 12C20.9 17.8 16.2 21.6 11.3 20.9C6.3 21.7 2.3 17.4 3.1 11.6C2.2 6.1 7.4 2.4 12 3.2Z"></path><path d="M7.8 12.6C8.8 13.9 9.6 15.1 10.2 15.8C11.6 13.6 13.8 10.6 16.3 8.4"></path></svg></span>
-      <h3>Rotina Pré-Abertura</h3>
-      <p>Lista de tarefas para preparar a sessão antes do mercado abrir.</p>
+      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2C16 2.3 20.8 6 20 12C20.9 17.8 16.2 21.6 11.3 20.9C6.3 21.7 2.3 17.4 3.1 11.6C2.2 6.1 7.4 2.4 12 3.2Z"></path><path d="M7.8 12.6C8.8 13.9 9.6 15.1 10.2 15.8C11.6 13.6 13.8 10.6 16.3 8.4"></path></svg></span>
+      <span class="home-card-text">
+        <h3>Rotina Pré-Abertura</h3>
+        <p>Lista de tarefas para preparar a sessão antes do mercado abrir.</p>
+      </span>
     </button>
 
     <button type="button" class="home-card" onclick="goToSection('mercado')">
-      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 3.4C4.2 7 4.9 8 4.5 12C4.9 16 4.2 17.4 4.7 21"></path><path d="M3 9.3C4.6 8.7 6.1 8.8 4.5 9.2C2.9 9.7 4.9 10 6.1 9.5"></path><path d="M12.2 2.6C11.7 6.6 12.5 9 12 13C12.5 17 11.7 18.4 12.3 21.4"></path><path d="M10.5 6.4C12.3 5.7 14 5.8 12 6.3C10 6.9 12.5 7.1 14 6.6"></path><path d="M19.6 3.8C19.2 7.6 19.9 10 19.5 14C19.9 17 19.2 18.6 19.7 21"></path><path d="M17.8 11.6C19.6 11 21.2 11.1 19.3 11.5C17.4 12 19.8 12.3 21.2 11.8"></path></svg></span>
-      <h3>Análise de Mercado</h3>
-      <p>Leitura diária do mercado, avaliação e comentários. Foco em S&amp;P 500.</p>
+      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 3.4C4.2 7 4.9 8 4.5 12C4.9 16 4.2 17.4 4.7 21"></path><path d="M3 9.3C4.6 8.7 6.1 8.8 4.5 9.2C2.9 9.7 4.9 10 6.1 9.5"></path><path d="M12.2 2.6C11.7 6.6 12.5 9 12 13C12.5 17 11.7 18.4 12.3 21.4"></path><path d="M10.5 6.4C12.3 5.7 14 5.8 12 6.3C10 6.9 12.5 7.1 14 6.6"></path><path d="M19.6 3.8C19.2 7.6 19.9 10 19.5 14C19.9 17 19.2 18.6 19.7 21"></path><path d="M17.8 11.6C19.6 11 21.2 11.1 19.3 11.5C17.4 12 19.8 12.3 21.2 11.8"></path></svg></span>
+      <span class="home-card-text">
+        <h3>Análise de Mercado</h3>
+        <p>Leitura diária do mercado, avaliação e comentários. Foco em S&amp;P 500.</p>
+      </span>
     </button>
 
     <button type="button" class="home-card" onclick="goToSection('diario')">
-      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 3.4C5.2 8 5.6 14 5.3 20.4C9 21 14.5 20.8 18.6 20.3C18.9 14.4 18.6 8.8 18.8 3.6C14.8 3 9.6 2.9 5.5 3.4Z"></path><path d="M3.2 5.4C3.6 5.1 4.1 5 4.6 5.2"></path><path d="M3 9.2C3.5 8.9 4 8.8 4.5 9"></path><path d="M2.9 13.1C3.4 12.8 3.9 12.7 4.4 12.9"></path><path d="M3.1 17C3.6 16.7 4.1 16.6 4.6 16.8"></path><path d="M8.2 8.6C11 8.3 13.8 8.4 16 8.7"></path><path d="M8.1 12.3C10.5 12.1 13 12.2 15.3 12.5"></path><path d="M8 16C9.8 15.8 11.6 15.9 13.2 16.1"></path></svg></span>
-      <h3>Diário de Trader</h3>
-      <p>Registre sessões, acompanhe o histórico e veja sua evolução.</p>
+      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 3.4C5.2 8 5.6 14 5.3 20.4C9 21 14.5 20.8 18.6 20.3C18.9 14.4 18.6 8.8 18.8 3.6C14.8 3 9.6 2.9 5.5 3.4Z"></path><path d="M3.2 5.4C3.6 5.1 4.1 5 4.6 5.2"></path><path d="M3 9.2C3.5 8.9 4 8.8 4.5 9"></path><path d="M2.9 13.1C3.4 12.8 3.9 12.7 4.4 12.9"></path><path d="M3.1 17C3.6 16.7 4.1 16.6 4.6 16.8"></path><path d="M8.2 8.6C11 8.3 13.8 8.4 16 8.7"></path><path d="M8.1 12.3C10.5 12.1 13 12.2 15.3 12.5"></path><path d="M8 16C9.8 15.8 11.6 15.9 13.2 16.1"></path></svg></span>
+      <span class="home-card-text">
+        <h3>Diário de Trader</h3>
+        <p>Registre sessões, acompanhe o histórico e veja sua evolução.</p>
+      </span>
     </button>
 
     <button type="button" class="home-card" onclick="goToSection('sala')">
-      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8C15 2 18.5 3.4 19.3 4C19.6 8 19.8 13.4 18.5 16.5C17 19.8 14 21.4 12 21.8C10 21.3 7 19.7 5.6 16.4C4.3 13.3 4.5 8 4.8 4C5.7 3.3 9 2 12 2.8Z"></path><path d="M9.5 13.2L12.3 10L15.6 13.6"></path></svg></span>
-      <h3>Gestão de Risco</h3>
-      <p>Orientações sobre como ganhar mais arriscando menos — da escolha da conta até a trava de segurança do BlackArrow.</p>
+      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8C15 2 18.5 3.4 19.3 4C19.6 8 19.8 13.4 18.5 16.5C17 19.8 14 21.4 12 21.8C10 21.3 7 19.7 5.6 16.4C4.3 13.3 4.5 8 4.8 4C5.7 3.3 9 2 12 2.8Z"></path><path d="M9.5 13.2L12.3 10L15.6 13.6"></path></svg></span>
+      <span class="home-card-text">
+        <h3>Gestão de Risco</h3>
+        <p>Orientações sobre como ganhar mais arriscando menos — da escolha da conta até a trava de segurança do BlackArrow.</p>
+      </span>
     </button>
 
     <button type="button" class="home-card" onclick="goToSection('educacional')">
-      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:34px;height:34px;"><path d="M3.2 9.6C6.5 8 9.5 6.5 12 5.3C14.6 6.6 17.6 8.1 20.8 9.6C17.5 11.1 14.6 12.6 12 13.9C9.4 12.6 6.4 11.1 3.2 9.6Z"></path><path d="M7.4 11.3C7.1 13.1 7.2 14.9 7.7 16.1C8.9 17.5 10.5 18.2 12 18.2C13.5 18.2 15.1 17.5 16.3 16.1C16.8 14.9 16.9 13.1 16.6 11.3"></path><path d="M20 10.4C20.2 12.4 19.9 14.6 20.3 16.6"></path></svg></span>
-      <h3>Educacional</h3>
-      <p>E-book, Sala ao Vivo, Revisão de Rota, Mentoria Individual e Aulas em Grupo.</p>
+      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:58px;height:58px;"><path d="M3.2 9.6C6.5 8 9.5 6.5 12 5.3C14.6 6.6 17.6 8.1 20.8 9.6C17.5 11.1 14.6 12.6 12 13.9C9.4 12.6 6.4 11.1 3.2 9.6Z"></path><path d="M7.4 11.3C7.1 13.1 7.2 14.9 7.7 16.1C8.9 17.5 10.5 18.2 12 18.2C13.5 18.2 15.1 17.5 16.3 16.1C16.8 14.9 16.9 13.1 16.6 11.3"></path><path d="M20 10.4C20.2 12.4 19.9 14.6 20.3 16.6"></path></svg></span>
+      <span class="home-card-text">
+        <h3>Educacional</h3>
+        <p>E-book, Sala ao Vivo, Revisão de Rota, Mentoria Individual e Aulas em Grupo.</p>
+      </span>
     </button>
 
     <button type="button" class="home-card" onclick="goToSection('sobre')">
-      <span class="home-card-icon"><svg viewBox="0 0 34 34" role="img" aria-label="Bússola Prumo" style="width:34px;height:34px;"><circle cx="17" cy="17" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><line x1="17" y1="8" x2="17" y2="5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="26" y1="17" x2="29" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="17" y1="26" x2="17" y2="29" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="8" y1="17" x2="5" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><polygon points="17,10 20,17 17,21 14,17" fill="currentColor"></polygon><circle cx="17" cy="17" r="1.3" fill="var(--accent-soft)"></circle></svg></span>
-      <h3>Sobre</h3>
-      <p>Quem somos e como entrar em contato.</p>
+      <span class="home-card-icon"><svg viewBox="0 0 34 34" role="img" aria-label="Bússola Prumo" style="width:58px;height:58px;"><circle cx="17" cy="17" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><line x1="17" y1="8" x2="17" y2="5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="26" y1="17" x2="29" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="17" y1="26" x2="17" y2="29" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="8" y1="17" x2="5" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><polygon points="17,10 20,17 17,21 14,17" fill="currentColor"></polygon><circle cx="17" cy="17" r="1.3" fill="var(--bg)"></circle></svg></span>
+      <span class="home-card-text">
+        <h3>Sobre</h3>
+        <p>Quem somos e como entrar em contato.</p>
+      </span>
     </button>
   </div>
 
@@ -3269,5 +3317,6 @@
   }
 </script>
 
+<div class="grain-overlay"></div>
 </body>
 </html>
