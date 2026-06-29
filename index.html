@@ -20,6 +20,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics (GA4) — substitua G-XXXXXXXXXX pelo seu Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  // send_page_view desativado: a navegação entre seções é controlada via JS (SPA),
+  // então cada "página" é disparada manualmente em activateSection()/goHome().
+  gtag('config', 'G-XXXXXXXXXX', { send_page_view: false });
+</script>
+
 <style>
   :root{
     --bg: #0f0f0f;
@@ -1724,6 +1736,36 @@
 </div>
 
 <script>
+  // ---------- GOOGLE ANALYTICS (GA4) ----------
+  // Disparo seguro de eventos: não quebra o site se o gtag ainda não carregou
+  // (ex.: ad-blocker) nem se o Measurement ID ainda não foi configurado.
+  function gaEvent(name, params) {
+    try {
+      if (typeof gtag === 'function') gtag('event', name, params || {});
+    } catch (e) { /* silencioso */ }
+  }
+
+  const SECTION_TITLES = {
+    home: 'Início',
+    rotina: 'Rotina Pré-Abertura',
+    mercado: 'Análise de Mercado',
+    diario: 'Diário de Trader',
+    sala: 'Gestão de Risco',
+    educacional: 'Educacional',
+    sobre: 'Sobre'
+  };
+
+  function gaPageView(sectionId) {
+    const title = SECTION_TITLES[sectionId] || sectionId;
+    const path = sectionId === 'home' ? '/' : '/' + sectionId;
+    gaEvent('page_view', {
+      page_title: 'Prumo — ' + title,
+      page_path: path,
+      page_location: location.origin + path
+    });
+    gaEvent('section_view', { section_name: sectionId });
+  }
+
   // ---------- API (backend de autenticação) ----------
   // IMPORTANTE: troque pela URL real do seu serviço depois de criá-lo no Render
   // (ex.: 'https://prumo-backend-xxxx.onrender.com/api').
@@ -1750,6 +1792,7 @@
     navButtons.forEach(b => b.classList.toggle('active', b.dataset.section === id));
     sections.forEach(s => s.classList.toggle('active', s.id === 'section-' + id));
     if (id === 'diario') jrUpdateAuthView();
+    gaPageView(id);
   }
 
   navButtons.forEach(btn => {
@@ -1766,7 +1809,11 @@
   function goHome() {
     document.getElementById('app-shell').classList.add('shell-hidden');
     document.getElementById('home-view').classList.remove('shell-hidden');
+    gaPageView('home');
   }
+
+  // pageview inicial: a home é a view exibida por padrão ao carregar o site
+  gaPageView('home');
 
   // ---------- DATA DE HOJE ----------
   const todayLabel = document.getElementById('today-label');
@@ -1810,6 +1857,7 @@
       localStorage.setItem(ADMIN_AUTH_KEY, JSON.stringify(data));
       document.getElementById('admin-password').value = '';
       unlockAdmin();
+      gaEvent('login', { method: 'admin' });
       showToast('Bem-vindo(a), ' + data.user.name + '.');
     } catch (err) {
       showToast(err.message, true);
@@ -1846,6 +1894,7 @@
       });
       localStorage.setItem(ADMIN_AUTH_KEY, JSON.stringify(data));
       unlockAdmin();
+      gaEvent('sign_up', { method: 'admin' });
       showToast('Conta de administrador criada. Bem-vindo(a), ' + data.user.name + '.');
     } catch (err) {
       showToast(err.message, true);
@@ -1924,6 +1973,7 @@
       document.getElementById('jr-login-password').value = '';
       jrUpdateAuthView();
       await jrFetchEntries();
+      gaEvent('login', { method: 'trader' });
       showToast('Bem-vindo(a), ' + data.user.name + '.');
     } catch (err) {
       showToast(err.message, true);
@@ -1949,6 +1999,7 @@
       document.getElementById('jr-register-password').value = '';
       jrUpdateAuthView();
       await jrFetchEntries();
+      gaEvent('sign_up', { method: 'trader' });
       showToast('Conta criada. Bem-vindo(a), ' + data.user.name + '.');
     } catch (err) {
       showToast(err.message, true);
@@ -2023,6 +2074,7 @@
           body: JSON.stringify({ name, email, message })
         });
         contactForm.reset();
+        gaEvent('contact_form_submit');
         showToast('Mensagem enviada! Vou te responder o quanto antes.');
       } catch (err) {
         showToast(err.message, true);
@@ -2466,6 +2518,7 @@
       setReportLiked(reportId, !alreadyLiked);
       const report = publishedReports.find(r => r.id === reportId);
       if (report) report.likeCount = data.likeCount;
+      gaEvent('report_like', { report_id: reportId, liked: !alreadyLiked });
       renderFeedFromCache();
     } catch (err) {
       showToast(err.message, true);
@@ -2488,6 +2541,7 @@
       });
       const report = publishedReports.find(r => r.id === reportId);
       if (report) report.comments.push(data.comment);
+      gaEvent('report_comment', { report_id: reportId });
       renderFeedFromCache();
     } catch (err) {
       showToast(err.message, true);
@@ -2552,6 +2606,7 @@
       alarmForm.style.display = 'none';
       alarmBtn.classList.add('active');
       alarmLabel.textContent = 'Alarme ativado';
+      gaEvent('newsletter_subscribe');
       showToast('Pronto! Seu e-mail foi salvo — o envio automático ainda está em construção.');
     } catch (err) {
       showToast(err.message, true);
@@ -2634,13 +2689,17 @@
     document.getElementById('routineProgressLabel').textContent = done + ' / ' + total;
 
     const banner = document.getElementById('routineReadyBanner');
-    if (done === total && total > 0) banner.classList.add('show');
+    if (done === total && total > 0) {
+      if (!banner.classList.contains('show')) gaEvent('routine_complete');
+      banner.classList.add('show');
+    }
     else banner.classList.remove('show');
   }
 
   function routineResetAll() {
     document.querySelectorAll('.routine-item').forEach(el => el.classList.remove('checked'));
     routineUpdateProgress();
+    gaEvent('routine_reset');
     showToast('Checklist resetado.');
   }
 
@@ -3043,6 +3102,7 @@
       });
       await jrFetchEntries();
       jrResetForm();
+      gaEvent('journal_entry_saved');
       showToast('Sessão salva.');
     } catch (err) {
       showToast('Não foi possível salvar a sessão: ' + err.message, true);
