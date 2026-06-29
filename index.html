@@ -81,7 +81,7 @@
   }
   .home-hero-deco{
     position:absolute;top:0;left:0;width:100%;height:520px;
-    opacity:0.08;color:var(--accent);z-index:0;pointer-events:none;
+    opacity:0.16;color:var(--accent);z-index:0;pointer-events:none;
   }
   .home-header{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:8px;position:relative;z-index:1;}
   .home-logo{
@@ -708,20 +708,10 @@
 <body>
 
 <div class="home-view" id="home-view">
-  <svg class="home-hero-deco" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <line x1="60" y1="60" x2="60" y2="340" stroke="var(--accent)" stroke-width="2"></line>
-    <rect x="44" y="160" width="32" height="90" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
-    <line x1="180" y1="20" x2="180" y2="300" stroke="var(--accent)" stroke-width="2"></line>
-    <rect x="164" y="90" width="32" height="130" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
-    <line x1="300" y1="100" x2="300" y2="380" stroke="var(--accent)" stroke-width="2"></line>
-    <rect x="284" y="200" width="32" height="100" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
-    <line x1="500" y1="40" x2="500" y2="320" stroke="var(--accent)" stroke-width="2"></line>
-    <rect x="484" y="120" width="32" height="140" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
-    <line x1="620" y1="120" x2="620" y2="360" stroke="var(--accent)" stroke-width="2"></line>
-    <rect x="604" y="200" width="32" height="90" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
-    <line x1="740" y1="60" x2="740" y2="300" stroke="var(--accent)" stroke-width="2"></line>
-    <rect x="724" y="100" width="32" height="120" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
-    <polyline points="60,200 180,150 300,250 500,180 620,240 740,160" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+  <svg class="home-hero-deco" viewBox="0 0 800 400" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M-10,130 C90,70 160,40 230,60 C260,68 245,95 215,100 C280,120 320,75 360,55 C400,38 450,45 480,75 C510,105 470,140 430,130 C480,160 540,150 580,120 C620,95 670,90 710,110 C740,124 770,118 810,100" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M-10,260 C100,200 170,150 250,150 C280,150 268,180 250,198 C225,228 175,255 125,248 C95,243 80,222 100,205 C145,170 215,178 270,205 C325,232 390,225 435,192 C470,167 510,158 550,168 C600,182 625,215 675,200 C715,188 740,222 800,208" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M0,355 C90,310 160,290 220,300 C250,305 240,330 220,345 C270,365 330,345 370,320 C420,290 480,282 530,295 C580,308 615,300 660,278 C700,258 740,265 790,250" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
   </svg>
 
   <div class="home-header">
