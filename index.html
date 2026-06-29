@@ -79,8 +79,8 @@
     min-height:100vh;display:flex;flex-direction:column;align-items:center;
     padding:28px 24px 56px;position:relative;overflow:hidden;
   }
-  .home-hero-deco{
-    position:absolute;top:0;left:0;width:100%;height:520px;
+  .site-wave-deco{
+    position:fixed;top:0;left:0;width:100%;height:520px;
     opacity:0.16;color:var(--accent);z-index:0;pointer-events:none;
   }
   .home-header{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:8px;position:relative;z-index:1;}
@@ -707,12 +707,13 @@
 </head>
 <body>
 
+<svg class="site-wave-deco" viewBox="0 0 800 400" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M-10,130 C90,70 160,40 230,60 C260,68 245,95 215,100 C280,120 320,75 360,55 C400,38 450,45 480,75 C510,105 470,140 430,130 C480,160 540,150 580,120 C620,95 670,90 710,110 C740,124 770,118 810,100" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M-10,260 C100,200 170,150 250,150 C280,150 268,180 250,198 C225,228 175,255 125,248 C95,243 80,222 100,205 C145,170 215,178 270,205 C325,232 390,225 435,192 C470,167 510,158 550,168 C600,182 625,215 675,200 C715,188 740,222 800,208" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M0,355 C90,310 160,290 220,300 C250,305 240,330 220,345 C270,365 330,345 370,320 C420,290 480,282 530,295 C580,308 615,300 660,278 C700,258 740,265 790,250" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+
 <div class="home-view" id="home-view">
-  <svg class="home-hero-deco" viewBox="0 0 800 400" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M-10,130 C90,70 160,40 230,60 C260,68 245,95 215,100 C280,120 320,75 360,55 C400,38 450,45 480,75 C510,105 470,140 430,130 C480,160 540,150 580,120 C620,95 670,90 710,110 C740,124 770,118 810,100" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-    <path d="M-10,260 C100,200 170,150 250,150 C280,150 268,180 250,198 C225,228 175,255 125,248 C95,243 80,222 100,205 C145,170 215,178 270,205 C325,232 390,225 435,192 C470,167 510,158 550,168 C600,182 625,215 675,200 C715,188 740,222 800,208" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-    <path d="M0,355 C90,310 160,290 220,300 C250,305 240,330 220,345 C270,365 330,345 370,320 C420,290 480,282 530,295 C580,308 615,300 660,278 C700,258 740,265 790,250" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-  </svg>
 
   <div class="home-header">
     <div class="home-logo">
@@ -732,8 +733,8 @@
 
 
   <div class="home-manifesto">
-    <p class="home-manifesto-text">A Prumo nasce de quem já operou o suficiente para saber que resultado é consequência, não ponto de partida. E nasce para quem quer entender o mercado norte-americano com profundidade — fluxo, volume, contexto — antes de tentar prevê-lo. Para quem prefere construir uma curva de capital sustentável a perseguir uma vitória pontual.</p>
-    <p class="home-manifesto-text">A Prumo não vende sinal, fórmula ou atalho. Aqui você não vai encontrar promessas de lucro ou garantias. Vai encontrar análises que ampliam sua visão e ferramentas para construir uma rotina sólida capaz de revelar e evoluir os seus padrões reais de comportamento — não os que você imagina ter. Um caminho de evolução medido pela sua dedicação e persistência.</p>
+    <p class="home-manifesto-text">A Prumo nasce de quem sabe que resultado é consequência, fruto de trabalho e aprendizado. E nasce para quem quer entender o mercado norte-americano com profundidade — fluxo, volume, contexto — antes de tentar prevê-lo. Para quem prefere construir uma curva de ganho sustentável a perseguir uma vitória pontual.</p>
+    <p class="home-manifesto-text">A Prumo não vende sinal, fórmula ou atalho. Aqui você não vai encontrar promessas de lucro ou garantias. Vai encontrar análises que ampliam sua visão e ferramentas gratuitas para construir uma rotina sólida capaz de revelar e evoluir os seus padrões reais de comportamento — não os que você imagina ter. Um caminho de evolução medido pela sua dedicação e persistência.</p>
     <p class="home-manifesto-quote">Faça por merecer o que o mercado tem a lhe oferecer.</p>
   </div>
 
