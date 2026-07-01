@@ -417,7 +417,7 @@
   .feed-report-body .preview-item{margin-bottom:20px;}
   .feed-report-body .preview-item:last-child{margin-bottom:0;}
   .feed-report-body .q{font-size:11px;font-family:var(--font-mono);font-weight:600;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em;}
-  .feed-report-body .a{font-size:15px;color:var(--text-secondary);line-height:1.75;white-space:pre-wrap;}
+  .feed-report-body .a{font-size:15px;color:var(--text-primary);line-height:1.75;white-space:pre-wrap;}
 
   .feed-eval-block{margin-top:32px;padding-top:24px;border-top:1px solid var(--border);}
   .feed-eval-label{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;}
@@ -592,16 +592,22 @@
   }
   select option{background:var(--bg-input);color:var(--text-primary);}
 
-  .jr-subnav{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+  .jr-subnav{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap;}
   .jr-subnav-btn{
-    background:var(--bg-elevated);border:1px solid var(--border-strong);color:var(--text-secondary);
-    border-radius:99px;padding:9px 18px;font-size:13.5px;font-weight:500;transition:background .15s,color .15s,border-color .15s;
+    background:transparent;border:none;border-bottom:2px solid transparent;
+    color:var(--text-tertiary);padding:6px 2px;font-size:13.5px;font-weight:500;
+    border-radius:0;transition:color .15s,border-color .15s;
   }
-  .jr-subnav-btn:hover{background:var(--bg-elevated-2);color:var(--text-primary);}
-  .jr-subnav-btn.active{background:var(--accent-soft);border-color:rgba(193,101,74,0.4);color:var(--accent);}
+  .jr-subnav-btn:hover{color:var(--text-primary);}
+  .jr-subnav-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
 
   .jr-view{display:none;}
   .jr-view.active{display:block;}
+
+  /* Blocos de formulário sem card */
+  .jr-form-block{margin-bottom:36px;padding-bottom:36px;border-bottom:1px solid var(--border);}
+  .jr-form-block:last-child{border-bottom:none;padding-bottom:0;}
+  .jr-form-block-title{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--text-primary);text-transform:uppercase;letter-spacing:0.01em;margin-bottom:20px;}
 
   .jr-filters{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
   .jr-filter-btn{
@@ -637,10 +643,12 @@
   .jr-pill:hover{border-color:var(--text-tertiary);color:var(--text-primary);}
   .jr-pill.sel{background:var(--accent-soft);border-color:rgba(193,101,74,0.4);color:var(--accent);}
 
-  .jr-day-card{padding:0;overflow:hidden;}
-  .jr-day-card-head{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;transition:background .15s;flex-wrap:wrap;}
-  .jr-day-card-head:hover{background:var(--bg-elevated-2);}
-  .jr-day-date{font-family:var(--font-display);font-size:13.5px;font-weight:600;color:var(--text-primary);min-width:84px;}
+  /* Histórico — linhas sem card */
+  .jr-day-card{padding:0;overflow:hidden;background:transparent;border:none;border-bottom:1px solid var(--border);border-radius:0;margin-bottom:0;}
+  .jr-day-card:first-child{border-top:1px solid var(--border);}
+  .jr-day-card-head{display:flex;align-items:center;gap:12px;padding:16px 4px;cursor:pointer;transition:opacity .15s;flex-wrap:wrap;}
+  .jr-day-card-head:hover{opacity:0.8;}
+  .jr-day-date{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--text-primary);min-width:84px;}
   .jr-day-ops{font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);letter-spacing:0.04em;}
   .jr-day-disc{display:flex;gap:4px;}
   .jr-dot{width:6px;height:6px;border-radius:50%;background:var(--border-strong);}
@@ -650,11 +658,11 @@
   .jr-day-result.neg{color:var(--danger);}
   .jr-day-result.zero{color:var(--text-tertiary);}
   .jr-day-chevron{color:var(--text-tertiary);font-size:11px;transition:transform .15s;}
-  .jr-day-card-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border);}
+  .jr-day-card-body{display:none;padding:16px 4px 24px;border-top:none;}
   .jr-day-card-body.open{display:block;}
 
   .jr-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;}
-  .jr-meta-item{background:var(--bg-elevated-2);border-radius:var(--radius-sm);padding:10px 12px;}
+  .jr-meta-item{background:var(--bg-elevated);border-radius:var(--radius-sm);padding:10px 12px;}
   .jr-meta-label{font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-tertiary);margin-bottom:3px;}
   .jr-meta-val{font-size:13px;color:var(--text-primary);}
   .jr-day-note{margin-top:12px;font-size:12.5px;color:var(--text-secondary);line-height:1.6;font-style:italic;}
@@ -668,20 +676,21 @@
   }
   .jr-delete-day:hover{border-color:var(--danger);color:var(--danger);}
 
-  .jr-kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
-  .jr-kpi{padding:18px 18px;}
-  .jr-kpi-label{font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-tertiary);margin-bottom:8px;}
-  .jr-kpi-val{font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--text-primary);line-height:1;}
+  /* Dashboard */
+  .jr-kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-bottom:36px;background:var(--border);}
+  .jr-kpi{padding:22px 20px;background:var(--bg);}
+  .jr-kpi-label{font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-tertiary);margin-bottom:10px;}
+  .jr-kpi-val{font-family:var(--font-display);font-size:28px;font-weight:800;color:var(--text-primary);line-height:1;}
   .jr-kpi-val.pos{color:var(--success);}
   .jr-kpi-val.neg{color:var(--danger);}
   .jr-kpi-sub{font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);margin-top:6px;}
 
-  .jr-chart-wrap{padding:20px;margin-bottom:18px;}
-  .jr-chart-title{font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:14px;}
+  .jr-chart-wrap{padding:0;margin-bottom:32px;}
+  .jr-chart-title{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--text-primary);text-transform:uppercase;letter-spacing:0.01em;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
 
-  .jr-behavior-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
-  .jr-beh-card{padding:16px 18px;}
-  .jr-beh-title{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-tertiary);margin-bottom:12px;}
+  .jr-behavior-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;}
+  .jr-beh-card{padding:0;background:transparent;border:none;}
+  .jr-beh-title{font-family:var(--font-display);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.01em;color:var(--text-primary);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
   .jr-beh-bar-wrap{margin-bottom:10px;}
   .jr-beh-bar-label{display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-primary);margin-bottom:4px;}
 
@@ -1491,8 +1500,9 @@
         <div id="jr-content" style="display:none;">
 
         <div class="services-intro">
-          <h2>Diário de Trader</h2>
-          <p id="jr-welcome-text">Registre a sessão, acompanhe o histórico e veja sua evolução — tudo num só lugar.</p>
+          <h2><span style="color:var(--text-primary)">Diário</span> <span style="color:var(--accent)">de Trader</span></h2>
+          <hr style="border:none;border-top:1px solid var(--border);margin:12px 0 8px;">
+          <p id="jr-welcome-text" style="margin-bottom:6px;">Registre a sessão, acompanhe o histórico e veja sua evolução — tudo num só lugar.</p>
           <button type="button" class="btn-logout" id="jr-logout-btn" style="margin-top:14px;">Sair</button>
         </div>
 
@@ -1505,11 +1515,8 @@
         <!-- ====== VIEW: REGISTRAR ====== -->
         <div class="jr-view active" id="jr-view-registrar">
 
-          <div class="card">
-            <div class="card-head">
-              <h3>Sessão de <span id="jr-date-display">hoje</span></h3>
-              <span class="status-badge">Preencher após as 13h</span>
-            </div>
+          <div class="jr-form-block">
+            <div class="jr-form-block-title">Sessão de <span id="jr-date-display">hoje</span></div>
             <div class="field">
               <label class="field-label">Data</label>
               <input type="date" id="jr-date">
@@ -1527,9 +1534,8 @@
             </div>
           </div>
 
-          <div class="card">
-            <div class="card-head"><h3>Resumo do BlackArrow</h3></div>
-
+          <div class="jr-form-block">
+            <div class="jr-form-block-title">Resumo do BlackArrow</div>
             <div class="upload-row">
               <label class="upload-btn-label" for="jr-pdf-input">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
@@ -1543,8 +1549,8 @@
             <div class="jr-pdf-grid" id="jr-pdf-grid" style="display:none;"></div>
           </div>
 
-          <div class="card">
-            <div class="card-head"><h3>Análise técnica</h3></div>
+          <div class="jr-form-block">
+            <div class="jr-form-block-title">Análise técnica</div>
             <div class="field">
               <label class="field-label">As regiões de suporte/resistência estavam corretas?</label>
               <select id="jr-vp">
@@ -1587,8 +1593,8 @@
             </div>
           </div>
 
-          <div class="card">
-            <div class="card-head"><h3>Comportamento &amp; Disciplina</h3></div>
+          <div class="jr-form-block">
+            <div class="jr-form-block-title">Comportamento &amp; Disciplina</div>
 
             <div class="field">
               <label class="field-label">Estado emocional durante a sessão</label>
@@ -1655,8 +1661,8 @@
             </div>
           </div>
 
-          <div class="card">
-            <div class="card-head"><h3>Reflexão</h3></div>
+          <div class="jr-form-block">
+            <div class="jr-form-block-title">Reflexão</div>
             <div class="field">
               <label class="field-label">O que funcionou hoje?</label>
               <textarea id="jr-good" placeholder="Descreva os acertos, mesmo que o resultado tenha sido negativo…"></textarea>
@@ -3313,7 +3319,7 @@
       const goodHTML = d.good ? '<div class="jr-tag-row-label" style="color:var(--success);">Acertos</div><div class="jr-day-note" style="font-style:normal;">' + escapeHtml(d.good) + '</div>' : '';
       const intentHTML = d.intent ? '<div class="jr-tag-row-label" style="color:var(--accent);">Intenção amanhã</div><div class="jr-day-note" style="font-style:normal;">' + escapeHtml(d.intent) + '</div>' : '';
 
-      return '<div class="card jr-day-card">' +
+      return '<div class="jr-day-card">' +
         '<div class="jr-day-card-head" onclick="jrToggleCard(this)">' +
         '<div class="jr-day-date">' + dateStr + '</div>' +
         '<div class="jr-day-ops">' + numOps + ' op' + (numOps !== 1 ? 's' : '') + '</div>' +
@@ -3408,17 +3414,17 @@
 
     el.innerHTML =
       '<div class="jr-kpi-grid">' +
-      '<div class="card jr-kpi"><div class="jr-kpi-label">Resultado ' + label + '</div><div class="jr-kpi-val ' + pnlClass + '">US$ ' + pnlStr + '</div><div class="jr-kpi-sub">' + items.length + ' sessões</div></div>' +
-      '<div class="card jr-kpi"><div class="jr-kpi-label">Win rate (dias)</div><div class="jr-kpi-val ' + (winRate >= 50 ? 'pos' : 'neg') + '">' + winRate + '%</div><div class="jr-kpi-sub">' + posDays + '+ / ' + negDays + '−</div></div>' +
-      '<div class="card jr-kpi"><div class="jr-kpi-label">Disc. média</div><div class="jr-kpi-val">' + avgDisc + '<span style="font-size:14px;color:var(--accent);">★</span></div><div class="jr-kpi-sub">de 5</div></div>' +
+      '<div class="jr-kpi"><div class="jr-kpi-label">Resultado ' + label + '</div><div class="jr-kpi-val ' + pnlClass + '">US$ ' + pnlStr + '</div><div class="jr-kpi-sub">' + items.length + ' sessões</div></div>' +
+      '<div class="jr-kpi"><div class="jr-kpi-label">Win rate (dias)</div><div class="jr-kpi-val ' + (winRate >= 50 ? 'pos' : 'neg') + '">' + winRate + '%</div><div class="jr-kpi-sub">' + posDays + '+ / ' + negDays + '−</div></div>' +
+      '<div class="jr-kpi"><div class="jr-kpi-label">Disc. média</div><div class="jr-kpi-val">' + avgDisc + '<span style="font-size:14px;color:var(--accent);">★</span></div><div class="jr-kpi-sub">de 5</div></div>' +
       '</div>' +
-      '<div class="card jr-chart-wrap"><div class="jr-chart-title">Resultado acumulado (US$)</div><canvas id="jr-pnl-chart" height="140"></canvas></div>' +
+      '<div class="jr-chart-wrap"><div class="jr-chart-title">Resultado acumulado (US$)</div><canvas id="jr-pnl-chart" height="140"></canvas></div>' +
       '<div class="jr-behavior-grid">' +
-      '<div class="card jr-beh-card"><div class="jr-beh-title">Disciplina nas regras</div>' +
+      '<div class="jr-beh-card"><div class="jr-beh-title">Disciplina nas regras</div>' +
       '<div class="jr-beh-bar-wrap"><div class="jr-beh-bar-label"><span>Regra 3 ops</span><span style="color:var(--accent);">' + rule3pct + '%</span></div><div class="progress-track"><div class="progress-fill" style="width:' + rule3pct + '%;"></div></div></div>' +
       '<div class="jr-beh-bar-wrap"><div class="jr-beh-bar-label"><span>Risco do dia</span><span style="color:var(--accent);">' + riskPct + '%</span></div><div class="progress-track"><div class="progress-fill" style="width:' + riskPct + '%;"></div></div></div>' +
       '</div>' +
-      '<div class="card jr-beh-card"><div class="jr-beh-title">Erros mais frequentes</div>' + errorsHTML + '</div>' +
+      '<div class="jr-beh-card"><div class="jr-beh-title">Erros mais frequentes</div>' + errorsHTML + '</div>' +
       '</div>' +
       dayBarsHTML;
 
@@ -3439,7 +3445,7 @@
         '<div class="jr-day-bar-fill" style="height:' + pct + 'px;background:' + col + ';"></div>' +
         '<div class="jr-day-bar-date">' + dl + '</div></div>';
     }).join('');
-    return '<div class="card jr-chart-wrap"><div class="jr-chart-title">Resultado por sessão (US$)</div><div class="jr-day-bars">' + bars + '</div></div>';
+    return '<div class="jr-chart-wrap"><div class="jr-chart-title">Resultado por sessão (US$)</div><div class="jr-day-bars">' + bars + '</div></div>';
   }
 
   function jrDrawChart(data) {
