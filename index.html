@@ -257,9 +257,11 @@
   /* ---------- ADMIN HEADER ---------- */
   .panel-header{
     display:flex;align-items:flex-start;justify-content:space-between;
-    margin-bottom:28px;gap:16px;flex-wrap:wrap;
+    margin-bottom:0;gap:16px;flex-wrap:wrap;
   }
-  .panel-header h1{font-family:var(--font-display);font-size:26px;font-weight:600;letter-spacing:-0.01em;color:var(--accent);}
+  .panel-header h1{font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:-0.01em;}
+  .panel-header h1 .white{color:var(--text-primary);}
+  .panel-header h1 .accent{color:var(--accent);}
   .panel-header .date-line{font-family:var(--font-mono);font-size:12px;color:var(--text-tertiary);margin-top:4px;text-transform:capitalize;}
   .btn-logout{
     background:transparent;border:1px solid var(--border);color:var(--text-tertiary);
@@ -595,7 +597,7 @@
   .jr-subnav{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap;}
   .jr-subnav-btn{
     background:transparent;border:none;border-bottom:2px solid transparent;
-    color:var(--text-tertiary);padding:6px 2px;font-size:13.5px;font-weight:500;
+    color:var(--text-tertiary);padding:8px 4px;font-size:16px;font-weight:600;
     border-radius:0;transition:color .15s,border-color .15s;
   }
   .jr-subnav-btn:hover{color:var(--text-primary);}
@@ -947,27 +949,28 @@
 
           <div class="panel-header">
             <div>
-              <h1>Painel do analista</h1>
+              <h1><span class="white">Painel</span> <span class="accent">do Analista</span></h1>
               <div class="date-line" id="today-label">—</div>
             </div>
             <button class="btn-logout" id="logout-btn">Sair</button>
           </div>
+          <hr style="border:none;border-top:1px solid var(--border);margin:12px 0 36px;">
 
-          <div class="card" id="subscribers-card">
-            <div class="card-head"><h3>Inscritos para aviso de nova análise</h3><span class="status-badge" id="subscribers-count">0</span></div>
+          <div class="jr-form-block" id="subscribers-card">
+            <div class="jr-form-block-title">Inscritos para aviso de nova análise <span class="status-badge" id="subscribers-count" style="font-size:11px;vertical-align:middle;margin-left:8px;">0</span></div>
             <div id="subscribers-list" class="jr-empty">Carregando...</div>
           </div>
 
-          <div class="card" id="contact-messages-card">
-            <div class="card-head"><h3>Mensagens de contato</h3><span class="status-badge" id="contact-messages-count">0</span></div>
+          <div class="jr-form-block" id="contact-messages-card">
+            <div class="jr-form-block-title">Mensagens de contato <span class="status-badge" id="contact-messages-count" style="font-size:11px;vertical-align:middle;margin-left:8px;">0</span></div>
             <div id="contact-messages-list" class="jr-empty">Carregando...</div>
           </div>
 
           <!-- FORM 1: Análise de Mercado -->
-          <form class="card" id="form-analise">
-            <div class="card-head">
-              <h3>Análise de Mercado do dia</h3>
-              <span class="status-badge" id="status-analise">Rascunho</span>
+          <form class="jr-form-block" id="form-analise">
+            <div class="jr-form-block-title">
+              Análise de Mercado do dia
+              <span class="status-badge" id="status-analise" style="font-size:11px;vertical-align:middle;margin-left:8px;">Rascunho</span>
             </div>
 
             <div class="progress-line">
@@ -1060,10 +1063,10 @@
           </form>
 
           <!-- FORM 2: Avaliação -->
-          <form class="card" id="form-avaliacao">
-            <div class="card-head">
-              <h3>Avaliação da análise</h3>
-              <span class="status-badge" id="status-avaliacao">Rascunho</span>
+          <form class="jr-form-block" id="form-avaliacao">
+            <div class="jr-form-block-title">
+              Avaliação da análise
+              <span class="status-badge" id="status-avaliacao" style="font-size:11px;vertical-align:middle;margin-left:8px;">Rascunho</span>
             </div>
             <div class="field">
               <label class="field-label" for="avaliacao-texto">Sua avaliação sobre como a análise se confirmou no mercado</label>
