@@ -403,11 +403,30 @@
   @keyframes pulseScale{0%{transform:scale(1);}50%{transform:scale(1.08);}100%{transform:scale(1);}}
 
   .alarm-wrap{display:flex;flex-direction:column;gap:8px;}
-  .alarm-wrap-standalone{margin-bottom:26px;align-items:flex-end;}
+  .alarm-wrap-standalone{margin-bottom:36px;align-items:flex-start;}
   .feed-entry{margin-bottom:8px;}
-  .feed-entry + .feed-entry{margin-top:30px;padding-top:30px;border-top:1px solid var(--border);}
+  .feed-entry + .feed-entry{margin-top:52px;padding-top:52px;border-top:1px solid var(--border);}
   .alarm-form{display:none;gap:8px;}
   .alarm-form input{width:200px;}
+
+  /* Feed sem card */
+  .feed-report-header{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+  .feed-report-title{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text-primary);text-transform:uppercase;letter-spacing:0.01em;}
+  .feed-report-date{font-family:var(--font-mono);font-size:10.5px;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;}
+  .feed-report-body{margin-bottom:0;}
+  .feed-report-body .preview-item{margin-bottom:20px;}
+  .feed-report-body .preview-item:last-child{margin-bottom:0;}
+  .feed-report-body .q{font-size:11px;font-family:var(--font-mono);font-weight:600;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em;}
+  .feed-report-body .a{font-size:15px;color:var(--text-secondary);line-height:1.75;white-space:pre-wrap;}
+
+  .feed-eval-block{margin-top:32px;padding-top:24px;border-top:1px solid var(--border);}
+  .feed-eval-label{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;}
+  .feed-eval-block .stars-readonly{display:flex;gap:3px;margin-bottom:10px;color:var(--accent);}
+  .feed-eval-block .stars-readonly svg{width:15px;height:15px;}
+  .feed-eval-block .a{font-size:14px;color:var(--text-secondary);line-height:1.65;}
+
+  .feed-comments-block{margin-top:32px;padding-top:24px;border-top:1px solid var(--border);}
+  .feed-comments-label{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:18px;}
 
   /* ---------- COMENTÁRIOS ---------- */
   .comment-form{display:flex;flex-direction:column;gap:10px;margin-bottom:22px;}
@@ -1074,13 +1093,18 @@
       <!-- ============ SEÇÃO 2: ANÁLISE DE MERCADO ============ -->
       <section class="section" id="section-mercado">
 
+        <div class="services-intro" id="mercado-header" style="display:none;">
+          <h2><span style="color:var(--text-primary)">Análise</span> <span style="color:var(--accent)">de Mercado</span></h2>
+          <hr style="border:none;border-top:1px solid var(--border);margin:12px 0 32px;">
+        </div>
+
         <div class="empty-state" id="mercado-empty">
           <div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg></div>
           <h2>Análise de Mercado</h2>
           <p>Nenhum relatório publicado ainda. Publique um relatório na área Admin para ele aparecer aqui.</p>
         </div>
 
-        <div id="mercado-content" style="display:none;max-width:680px;margin:0 auto;">
+        <div id="mercado-content" style="display:none;max-width:680px;">
 
           <div class="alarm-wrap alarm-wrap-standalone">
             <button type="button" class="action-btn" id="alarm-btn">
@@ -2460,6 +2484,7 @@
   // ---------- ÁREA PÚBLICA: FEED DE RELATÓRIOS ----------
   const mercadoEmpty = document.getElementById('mercado-empty');
   const mercadoContent = document.getElementById('mercado-content');
+  const mercadoHeader = document.getElementById('mercado-header');
   const mercadoFeed = document.getElementById('mercado-feed');
 
   function starsSvg(count) {
@@ -2501,10 +2526,12 @@
     if (publishedReports.length === 0) {
       mercadoEmpty.style.display = 'flex';
       mercadoContent.style.display = 'none';
+      mercadoHeader.style.display = 'none';
       return;
     }
     mercadoEmpty.style.display = 'none';
     mercadoContent.style.display = 'block';
+    mercadoHeader.style.display = 'block';
     mercadoFeed.innerHTML = publishedReports.map(renderFeedEntry).join('');
   }
 
@@ -2535,9 +2562,19 @@
     const liked = likedReportIds().includes(id);
 
     let html = '<div class="feed-entry" data-report-id="' + id + '">';
-    html += '<div class="card"><div class="card-head"><h3>Análise de Mercado</h3><div class="card-head-right"><span class="status-badge published">' +
-      'Publicado em ' + reportTime.toLocaleDateString('pt-BR') + ' às ' + reportTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) +
-      '</span>' + adminActions + '</div></div><div>' + body + '</div></div>';
+
+    // Header da análise (título + data + ações admin)
+    html += '<div class="feed-report-header">' +
+      '<span class="feed-report-title">Análise de Mercado</span>' +
+      '<span class="feed-report-date">' + reportTime.toLocaleDateString('pt-BR') + ' · ' + reportTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + '</span>' +
+      (isAdminAuthenticated ? '<div class="feed-admin-actions" style="margin-left:auto;">' +
+        '<button type="button" class="feed-admin-btn" onclick="editReport(' + id + ')">Editar</button>' +
+        '<button type="button" class="feed-admin-btn danger" onclick="deleteReport(' + id + ')">Excluir</button>' +
+        '</div>' : '') +
+      '</div>';
+
+    // Corpo da análise
+    html += '<div class="feed-report-body">' + body + '</div>';
 
     html += '<div class="actions-row">' +
       '<button type="button" class="action-btn' + (liked ? ' active' : '') + '" onclick="toggleLike(' + id + ')">' +
@@ -2545,12 +2582,14 @@
       '<span>' + report.likeCount + '</span> curtidas</button></div>';
 
     if (report.evaluation) {
-      html += '<div class="card"><div class="card-head"><h3>Avaliação do analista</h3></div><div>' +
+      html += '<div class="feed-eval-block">' +
+        '<div class="feed-eval-label">Avaliação do analista</div>' +
         '<div class="stars-readonly">' + starsSvg(report.evaluation.rating) + '</div>' +
-        '<div class="a">' + escapeHtml(report.evaluation.text) + '</div></div></div>';
+        '<div class="a">' + escapeHtml(report.evaluation.text) + '</div></div>';
     }
 
-    html += '<div class="card"><div class="card-head"><h3>Comentários</h3></div>' +
+    html += '<div class="feed-comments-block">' +
+      '<div class="feed-comments-label">Comentários</div>' +
       '<div class="comment-form">' +
       '<input type="text" id="comment-author-' + id + '" placeholder="Seu nome">' +
       '<textarea id="comment-text-' + id + '" placeholder="Deixe um comentário ou pergunta..."></textarea>' +
