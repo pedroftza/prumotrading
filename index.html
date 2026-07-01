@@ -1184,7 +1184,7 @@
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
               <div class="routine-item-title">Ler comportamento do overnight e futuros<span class="routine-tag">macro</span></div>
-              <div class="routine-item-note">ES/NQ em tendência, range ou gap? Abertura acima/abaixo do fechamento anterior muda a leitura inicial de viés.</div>
+              <div class="routine-item-note">SP500/Nasdaq em tendência, range ou gap? Abertura acima/abaixo do fechamento anterior muda a leitura inicial de viés.</div>
             </div>
           </div>
 
@@ -1206,7 +1206,7 @@
           <div class="routine-item" onclick="routineToggle(this)">
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
-              <div class="routine-item-title">Marcar POC, VAH e VAL da sessão anterior<span class="routine-tag">VP</span></div>
+              <div class="routine-item-title">Marcar a região de controle da sessão anterior<span class="routine-tag">VP</span></div>
               <div class="routine-item-note">Definir se o preço está dentro ou fora da área de valor. Isso orienta se o trade provável é de retorno ou de busca de novo valor.</div>
             </div>
           </div>
@@ -1231,7 +1231,7 @@
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
               <div class="routine-item-title">Definir viés direcional inicial (alta / baixa / lateral)<span class="routine-tag">VP</span></div>
-              <div class="routine-item-note">Onde está o preço em relação ao POC e VA? Tendência de aceitar ou rejeitar a área de valor atual? Viés neutro = aguardar confirmação.</div>
+              <div class="routine-item-note">Onde está o preço em relação a região de controle? Tendência de aceitar ou rejeitar a área de valor atual? Viés neutro = aguardar confirmação.</div>
             </div>
           </div>
         </div>
@@ -1262,23 +1262,39 @@
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
               <div class="routine-item-title">Marcar zonas de suporte e resistência no 100R alinhadas ao VP<span class="routine-tag">100R</span><span class="routine-tag">VP</span></div>
-              <div class="routine-item-note">Confluência entre estrutura Renko e VAH/VAL/POC = zonas de maior probabilidade. São os únicos pontos onde operar vale a pena.</div>
+              <div class="routine-item-note">Confluência entre estrutura renko e região de controle ou HVN = zonas de maior probabilidade. São os únicos pontos onde operar vale a pena. Regiões virgens têm maior probabilidade de reversão.</div>
             </div>
           </div>
 
           <div class="routine-item" onclick="routineToggle(this)">
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
-              <div class="routine-item-title">Preparar o Renko 50R para gatilho de entrada<span class="routine-tag">50R</span></div>
-              <div class="routine-item-note">Limpar o gráfico. Deixar visível apenas os níveis que já mapeou. Reduzir ruído antes da abertura — clareza > informação.</div>
+              <div class="routine-item-title">Identificar a região oposta correspondente a cada setup<span class="routine-tag">100R</span></div>
+              <div class="routine-item-note">Para cada região de demanda, qual é a região de oferta mais próxima? E vice-versa. Essa região oposta é o alvo natural da operação — anotar a borda de entrada dela antes do pregão abrir.</div>
             </div>
           </div>
 
           <div class="routine-item" onclick="routineToggle(this)">
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
-              <div class="routine-item-title">Definir os 2 setups potenciais do dia com alvo e stop estimados<span class="routine-tag">50R</span></div>
-              <div class="routine-item-note">Se o preço chegar em X e a estrutura mostrar Y → entro. Ter o "se… então" pronto antes evita decisão emocional na hora.</div>
+              <div class="routine-item-title">Validar risco/retorno dos setups mapeados<span class="routine-tag">100R</span></div>
+              <div class="routine-item-note">Distância até o alvo ÷ stop estimado ≥ 1,5:1? Se não atingir essa relação, o setup não entra no plano do dia. Stop estimado = largura típica da estrutura que se formará no 10R dentro da região.</div>
+            </div>
+          </div>
+
+          <div class="routine-item" onclick="routineToggle(this)">
+            <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="routine-item-body">
+              <div class="routine-item-title">Preparar os gráficos 30R e 10R para a sessão<span class="routine-tag">30R</span><span class="routine-tag">10R</span></div>
+              <div class="routine-item-note">Limpar o gráfico. Deixar visível apenas os níveis já mapeados. No pregão: 30R confirma esgotamento do movimento na região; 10R identifica a estrutura de topos e fundos e o rompimento de gatilho.</div>
+            </div>
+          </div>
+
+          <div class="routine-item" onclick="routineToggle(this)">
+            <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="routine-item-body">
+              <div class="routine-item-title">Definir os 2 setups potenciais do dia com plano completo<span class="routine-tag">100R</span></div>
+              <div class="routine-item-note">Para cada setup: "Se o preço chegar na região X → aguardo esgotamento no 30R → aguardo rompimento de estrutura no 10R → entro. Alvo: borda da região Y. Stop: abaixo do último fundo no 10R. R/R estimado: Z:1."</div>
             </div>
           </div>
         </div>
