@@ -1713,12 +1713,18 @@
 
         <!-- ====== VIEW: HISTÓRICO ====== -->
         <div class="jr-view" id="jr-view-historico">
-          <div class="jr-filters">
-            <button type="button" class="jr-filter-btn active" onclick="jrFilterHist('all',this)">Todas</button>
-            <button type="button" class="jr-filter-btn" onclick="jrFilterHist('week',this)">Esta semana</button>
-            <button type="button" class="jr-filter-btn" onclick="jrFilterHist('month',this)">Este mês</button>
-            <button type="button" class="jr-filter-btn" onclick="jrFilterHist('pos',this)">Positivas</button>
-            <button type="button" class="jr-filter-btn" onclick="jrFilterHist('neg',this)">Negativas</button>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+            <div class="jr-filters" style="margin-bottom:0;">
+              <button type="button" class="jr-filter-btn active" onclick="jrFilterHist('all',this)">Todas</button>
+              <button type="button" class="jr-filter-btn" onclick="jrFilterHist('week',this)">Esta semana</button>
+              <button type="button" class="jr-filter-btn" onclick="jrFilterHist('month',this)">Este mês</button>
+              <button type="button" class="jr-filter-btn" onclick="jrFilterHist('pos',this)">Positivas</button>
+              <button type="button" class="jr-filter-btn" onclick="jrFilterHist('neg',this)">Negativas</button>
+            </div>
+            <button type="button" class="btn-secondary" id="jr-export-pdf-btn" onclick="jrExportPDF()" style="display:flex;align-items:center;gap:7px;font-size:13px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Exportar PDF
+            </button>
           </div>
           <div id="jr-history-list"></div>
         </div>
@@ -3294,6 +3300,131 @@
   }
 
   // histórico
+  function jrExportPDF() {
+    if (!jrEntries || jrEntries.length === 0) { showToast('Nenhuma sessão registrada ainda.', true); return; }
+
+    const entries = [...jrEntries].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const totalPnl = entries.reduce((s, e) => s + (e.totalResult || 0), 0);
+    const posDays = entries.filter(e => (e.totalResult || 0) > 0).length;
+    const negDays = entries.filter(e => (e.totalResult || 0) < 0).length;
+    const winRate = entries.length ? Math.round(posDays / entries.length * 100) : 0;
+    const avgDisc = entries.length ? (entries.reduce((s, e) => s + (e.discRating || 0), 0) / entries.length).toFixed(1) : '—';
+    const firstDate = new Date(entries[0].date + 'T12:00:00').toLocaleDateString('pt-BR');
+    const lastDate = new Date(entries[entries.length - 1].date + 'T12:00:00').toLocaleDateString('pt-BR');
+
+    const pnlStr = v => (v >= 0 ? '+' : '') + 'US$ ' + Math.abs(v).toFixed(2);
+    const pnlColor = v => v > 0 ? '#2d6a4f' : v < 0 ? '#9b2226' : '#555';
+
+    // Gráfico de barras via canvas → base64
+    const canvas = document.createElement('canvas');
+    canvas.width = 900; canvas.height = 200;
+    const ctx = canvas.getContext('2d');
+    const vals = entries.map(e => e.totalResult || 0);
+    const maxAbs = Math.max(...vals.map(Math.abs), 1);
+    const barW = Math.max(8, Math.floor((canvas.width - 40) / vals.length) - 3);
+    ctx.fillStyle = '#f8f6f2';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = '#ddd'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(20, 100); ctx.lineTo(canvas.width - 20, 100); ctx.stroke();
+    vals.forEach((v, i) => {
+      const x = 20 + i * (barW + 3);
+      const h = Math.round((Math.abs(v) / maxAbs) * 90);
+      ctx.fillStyle = v >= 0 ? '#52b788' : '#e07a7a';
+      ctx.fillRect(x, v >= 0 ? 100 - h : 100, barW, h);
+    });
+    const chartImg = canvas.toDataURL('image/png');
+
+    // Sessões HTML
+    const sessionsHTML = entries.map(e => {
+      const d = new Date(e.date + 'T12:00:00').toLocaleDateString('pt-BR', { weekday:'short', day:'2-digit', month:'short', year:'numeric' });
+      const pnl = e.totalResult || 0;
+      const emotions = (e.emotions || []).join(', ') || '—';
+      const errors = (e.errors || []).join(', ') || '—';
+      return `
+        <div class="session-block">
+          <div class="session-head">
+            <span class="session-date">${d}</span>
+            <span class="session-pnl" style="color:${pnlColor(pnl)}">${pnlStr(pnl)}</span>
+          </div>
+          <table class="session-table">
+            <tr><td>Mercado</td><td>${e.market || '—'}</td><td>Operações</td><td>${e.opsCount != null ? e.opsCount : '—'}</td></tr>
+            <tr><td>Disciplina</td><td>${e.discRating ? '★'.repeat(e.discRating) + '☆'.repeat(5 - e.discRating) : '—'}</td><td>Regra 2 ops</td><td>${e.rule3 || '—'}</td></tr>
+            <tr><td>Estado emocional</td><td colspan="3">${emotions}</td></tr>
+            <tr><td>Erros</td><td colspan="3">${errors}</td></tr>
+            ${e.goodNotes ? `<tr><td>O que funcionou</td><td colspan="3">${e.goodNotes}</td></tr>` : ''}
+            ${e.improveNotes ? `<tr><td>O que melhorar</td><td colspan="3">${e.improveNotes}</td></tr>` : ''}
+            ${e.intentNotes ? `<tr><td>Intenção</td><td colspan="3">${e.intentNotes}</td></tr>` : ''}
+          </table>
+        </div>`;
+    }).join('');
+
+    const html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+    <title>Diário de Trader — Prumo</title>
+    <style>
+      *{box-sizing:border-box;margin:0;padding:0;}
+      body{font-family:'Helvetica Neue',Arial,sans-serif;background:#fff;color:#1a1a1a;font-size:12px;line-height:1.6;}
+      .page{max-width:860px;margin:0 auto;padding:48px 40px;}
+      /* Capa */
+      .cover{text-align:center;padding:60px 0 48px;border-bottom:2px solid #c1654a;margin-bottom:48px;}
+      .cover-logo{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#c1654a;margin-bottom:10px;}
+      .cover-title{font-size:32px;font-weight:700;color:#1a1a1a;margin-bottom:6px;}
+      .cover-sub{font-size:13px;color:#777;}
+      /* KPIs */
+      .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#e0ddd8;margin-bottom:48px;}
+      .kpi{background:#fff;padding:20px 16px;}
+      .kpi-label{font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:#999;margin-bottom:8px;}
+      .kpi-val{font-size:22px;font-weight:700;color:#1a1a1a;}
+      .kpi-val.pos{color:#2d6a4f;}
+      .kpi-val.neg{color:#9b2226;}
+      .kpi-sub{font-size:10px;color:#aaa;margin-top:4px;}
+      /* Gráfico */
+      .section-title{font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:#c1654a;font-weight:600;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #e8e4df;}
+      .chart-wrap{margin-bottom:48px;}
+      .chart-wrap img{width:100%;border-radius:6px;}
+      /* Sessões */
+      .sessions-wrap{margin-bottom:0;}
+      .session-block{margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid #ece9e4;}
+      .session-block:last-child{border-bottom:none;}
+      .session-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+      .session-date{font-size:13px;font-weight:600;color:#1a1a1a;text-transform:capitalize;}
+      .session-pnl{font-size:14px;font-weight:700;}
+      .session-table{width:100%;border-collapse:collapse;font-size:11px;}
+      .session-table td{padding:5px 8px;vertical-align:top;border-bottom:1px solid #f0ece8;}
+      .session-table td:first-child{color:#999;width:22%;white-space:nowrap;}
+      .session-table td:nth-child(3){color:#999;width:22%;white-space:nowrap;}
+      @media print{
+        body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+        .session-block{page-break-inside:avoid;}
+      }
+    </style>
+    </head><body><div class="page">
+      <div class="cover">
+        <div class="cover-logo">Prumo Trading</div>
+        <div class="cover-title">Diário de Trader</div>
+        <div class="cover-sub">${firstDate} — ${lastDate} · ${entries.length} sessões registradas</div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-label">Resultado total</div><div class="kpi-val ${totalPnl >= 0 ? 'pos' : 'neg'}">${pnlStr(totalPnl)}</div><div class="kpi-sub">${entries.length} sessões</div></div>
+        <div class="kpi"><div class="kpi-label">Win rate</div><div class="kpi-val ${winRate >= 50 ? 'pos' : 'neg'}">${winRate}%</div><div class="kpi-sub">${posDays}+ / ${negDays}−</div></div>
+        <div class="kpi"><div class="kpi-label">Dias positivos</div><div class="kpi-val pos">${posDays}</div><div class="kpi-sub">de ${entries.length}</div></div>
+        <div class="kpi"><div class="kpi-label">Disc. média</div><div class="kpi-val">${avgDisc}<span style="font-size:13px;color:#c1654a;">★</span></div><div class="kpi-sub">de 5</div></div>
+      </div>
+      <div class="chart-wrap">
+        <div class="section-title">Resultado por sessão</div>
+        <img src="${chartImg}" alt="Gráfico de resultado por sessão">
+      </div>
+      <div class="sessions-wrap">
+        <div class="section-title">Histórico completo</div>
+        ${sessionsHTML}
+      </div>
+    </div></body></html>`;
+
+    const win = window.open('', '_blank');
+    win.document.write(html);
+    win.document.close();
+    win.onload = () => { win.focus(); win.print(); };
+  }
+
   function jrFilterHist(type, btn) {
     jrCurrentFilter = type;
     document.querySelectorAll('#jr-view-historico .jr-filter-btn').forEach(b => b.classList.remove('active'));
