@@ -101,12 +101,14 @@
     display:flex;align-items:center;justify-content:center;margin-bottom:0;
   }
   .home-logo svg{width:96px;height:96px;}
-  .home-title{font-family:var(--font-display);font-size:58px;font-weight:700;color:var(--accent);letter-spacing:-0.02em;margin-top:-28px;margin-bottom:8px;}
+  .home-title{font-family:var(--font-display);font-size:58px;font-weight:700;letter-spacing:-0.02em;margin-top:-28px;margin-bottom:8px;background:linear-gradient(135deg,#c1654a 0%,#7a3d2d 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
   .home-tagline{font-family:var(--font-mono);font-size:14px;font-weight:500;color:var(--text-primary);text-transform:uppercase;letter-spacing:0.12em;}
   .home-manifesto{max-width:760px;width:100%;text-align:center;margin:32px auto 56px;position:relative;z-index:1;}
   .home-manifesto-text{font-size:16px;color:var(--text-secondary);line-height:1.7;margin-bottom:14px;}
   .home-manifesto-quote{
-    font-family:var(--font-display);font-size:32px;font-weight:700;color:var(--accent);
+    font-family:var(--font-display);font-size:32px;font-weight:700;
+    background:linear-gradient(135deg,#cc6e52 0%,#b05a40 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
     padding:18px 0 0;margin:18px auto 0;
     line-height:1.3;display:block;letter-spacing:-0.01em;
     width:max-content;white-space:nowrap;
@@ -131,9 +133,17 @@
     display:flex;align-items:center;justify-content:center;
   }
   .home-card-icon svg{width:50px;height:50px;}
+  .home-card-icon svg path,
+  .home-card-icon svg line,
+  .home-card-icon svg polyline,
+  .home-card-icon svg polygon,
+  .home-card-icon svg circle,
+  .home-card-icon svg rect{stroke:url(#iconGrad);}
   .home-card .home-card-text{display:flex;flex-direction:column;align-items:center;text-align:center;}
   .home-card h3{
-    font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--text-primary);
+    font-family:var(--font-display);font-size:22px;font-weight:700;
+    background:linear-gradient(135deg,#f5f4ef 0%,#c8c6c1 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
     letter-spacing:0.01em;text-transform:uppercase;margin-bottom:10px;line-height:1.3;
   }
   .home-card p{font-size:15px;color:var(--text-secondary);line-height:1.6;max-width:300px;}
@@ -156,6 +166,7 @@
     background:transparent;
     display:flex;flex-direction:column;
     padding:28px 24px;
+    position:sticky;top:0;height:100vh;overflow-y:auto;
   }
 
   .brand{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0;padding:8px 8px 4px;margin-bottom:40px;}
@@ -783,12 +794,18 @@
   <div class="home-header">
     <div class="home-logo">
       <svg viewBox="0 0 34 34" role="img" aria-label="Bússola Prumo">
-        <circle cx="17" cy="17" r="9" fill="none" stroke="var(--accent)" stroke-width="2"/>
-        <line x1="17" y1="8" x2="17" y2="5" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
-        <line x1="26" y1="17" x2="29" y2="17" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
-        <line x1="17" y1="26" x2="17" y2="29" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
-        <line x1="8" y1="17" x2="5" y2="17" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
-        <polygon points="17,10 20,17 17,21 14,17" fill="var(--accent)"/>
+        <defs>
+          <linearGradient id="logoStrokeGrad" x1="0" y1="0" x2="34" y2="34" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#c1654a"/>
+            <stop offset="100%" stop-color="#7a3d2d"/>
+          </linearGradient>
+        </defs>
+        <circle cx="17" cy="17" r="9" fill="none" stroke="url(#logoStrokeGrad)" stroke-width="2"/>
+        <line x1="17" y1="8" x2="17" y2="5" stroke="url(#logoStrokeGrad)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="26" y1="17" x2="29" y2="17" stroke="url(#logoStrokeGrad)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="17" y1="26" x2="17" y2="29" stroke="url(#logoStrokeGrad)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="8" y1="17" x2="5" y2="17" stroke="url(#logoStrokeGrad)" stroke-width="2" stroke-linecap="round"/>
+        <polygon points="17,10 20,17 17,21 14,17" fill="url(#logoStrokeGrad)"/>
         <circle cx="17" cy="17" r="1.3" fill="var(--bg)"/>
       </svg>
     </div>
@@ -802,6 +819,15 @@
     <p class="home-manifesto-text">A Prumo não vende sinal, fórmula ou atalho. Aqui você não vai encontrar promessas de lucro ou garantias. Vai encontrar análises que ampliam sua visão e ferramentas gratuitas para construir uma rotina sólida capaz de revelar e evoluir os seus padrões reais de comportamento — não os que você imagina ter. Um caminho de evolução medido pela sua dedicação e persistência.</p>
     <p class="home-manifesto-quote">Faça por merecer o que o mercado tem a lhe oferecer.</p>
   </div>
+
+  <svg width="0" height="0" style="position:absolute;">
+    <defs>
+      <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#c1654a"/>
+        <stop offset="100%" stop-color="#7a3d2d"/>
+      </linearGradient>
+    </defs>
+  </svg>
 
   <div class="home-grid">
     <button type="button" class="home-card" onclick="goToSection('rotina')">
