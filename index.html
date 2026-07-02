@@ -83,7 +83,7 @@
   }
 
   /* ---------- LAYOUT SHELL ---------- */
-  .shell{display:flex;min-height:100vh;}
+  .shell{display:flex;flex-direction:column;min-height:100vh;}
   .shell-hidden{display:none !important;}
 
   /* ---------- HOME ---------- */
@@ -161,50 +161,47 @@
     .home-manifesto-quote{font-size:22px;width:auto;white-space:normal;}
   }
 
-  .sidebar{
-    width:360px;flex-shrink:0;
-    background:transparent;
-    display:flex;flex-direction:column;
-    padding:28px 24px;
-    position:sticky;top:0;height:100vh;overflow-y:auto;
-  }
-
-  .brand{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0;padding:8px 8px 4px;margin-bottom:40px;}
-  .brand-mark{
-    width:102px;height:102px;border-radius:27px;flex-shrink:0;
-    background:transparent;
+  /* ---------- TOPBAR ---------- */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:
+      radial-gradient(circle at 50% -10%, rgba(193,101,74,0.13) 0%, rgba(193,101,74,0) 45%),
+      radial-gradient(circle at 92% 95%, rgba(193,101,74,0.06) 0%, rgba(193,101,74,0) 40%),
+      rgba(15,15,15,0.92);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     display:flex;align-items:center;justify-content:center;
+    padding:0 40px;height:64px;
   }
-  .brand-mark svg{width:72px;height:72px;}
-  .brand-text{display:flex;flex-direction:column;align-items:center;line-height:1.15;margin-top:-12px;}
-  .brand-name{font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.01em;color:var(--accent);}
-  .brand-sub{font-family:var(--font-mono);font-size:10.5px;color:var(--text-primary);text-transform:uppercase;letter-spacing:0.07em;margin-top:12px;}
-
-  .grain-overlay{
-    position:fixed;inset:0;z-index:999;pointer-events:none;
-    opacity:0.05;mix-blend-mode:overlay;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  .topbar-inner{
+    display:flex;align-items:center;justify-content:center;gap:40px;
   }
-  .nav-list{display:flex;flex-direction:column;gap:3px;flex:1;}
+  .topbar-nav{display:flex;align-items:center;gap:4px;}
+  .topbar-brand{
+    display:flex;align-items:center;gap:2px;
+    cursor:pointer;flex-shrink:0;text-decoration:none;
+  }
+  .topbar-brand-mark svg{width:42px;height:42px;margin-top:4px;}
+  .topbar-brand-text{display:flex;flex-direction:column;line-height:1.2;}
+  .topbar-brand-name{font-family:var(--font-display);font-weight:700;font-size:17px;letter-spacing:-0.01em;color:var(--accent);}
+  .topbar-brand-sub{font-family:var(--font-mono);font-size:8.5px;color:var(--text-primary);text-transform:uppercase;letter-spacing:0.1em;}
 
+  .topbar-nav{display:flex;align-items:center;gap:4px;}
   .nav-item{
-    display:flex;align-items:center;gap:11px;
-    padding:10px 12px;border-radius:var(--radius-sm);
-    background:transparent;border:none;
-    color:var(--text-secondary);font-size:14px;font-weight:500;
-    text-align:left;width:100%;
-    transition:background .15s,color .15s;
+    background:transparent;border:none;border-bottom:2px solid transparent;
+    color:var(--text-primary);font-size:13px;font-weight:500;
+    padding:8px 12px;border-radius:0;
+    display:flex;align-items:center;gap:7px;
+    transition:color .15s,border-color .15s,transform .2s;white-space:nowrap;
   }
-  .nav-item:hover{background:var(--accent-soft);color:var(--accent);}
-  .nav-item.active{background:var(--accent-soft);color:var(--accent);}
-  .nav-item .nav-icon{width:17px;height:17px;flex-shrink:0;}
+  .nav-item:hover{color:var(--text-primary);transform:translateY(-2px);}
+
+  .nav-item.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .nav-item .nav-icon{width:15px;height:15px;flex-shrink:0;}
   .nav-item .nav-icon svg{width:100%;height:100%;}
-  .nav-item .badge-lock{
-    margin-left:auto;width:13px;height:13px;color:var(--text-tertiary);flex-shrink:0;
-  }
+  .nav-item .badge-lock{width:11px;height:11px;color:var(--text-tertiary);flex-shrink:0;}
   .nav-item.active .badge-lock{color:var(--accent);}
 
-  .main{flex:1;display:flex;flex-direction:column;min-width:0;}
+  .main{flex:1;display:flex;flex-direction:column;min-width:0;padding-top:64px;}
   .content{flex:1;overflow-y:auto;padding:40px 48px 24px;}
   .site-footer{
     padding:16px 48px;
@@ -212,6 +209,17 @@
     text-align:center;
   }
 
+  @media (max-width:900px){
+    .topbar{padding:0 20px;gap:16px;}
+    .nav-item span:not(.nav-icon):not(.badge-lock){display:none;}
+    .nav-item{padding:8px 8px;}
+  }
+
+  .grain-overlay{
+    position:fixed;inset:0;z-index:999;pointer-events:none;
+    opacity:0.05;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
   .section{display:none;max-width:760px;width:100%;margin:0 auto;}
   .section.active{display:block;animation:fadeIn .25s ease;}
   @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
@@ -768,14 +776,6 @@
 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width:880px){
-    .shell{flex-direction:column;}
-    .sidebar{
-      width:100%;flex-direction:row;align-items:center;
-      padding:12px 14px;gap:10px;overflow-x:auto;
-    }
-    .brand{margin-bottom:0;}
-    .nav-list{flex-direction:row;flex:none;}
-    .nav-item{flex-direction:row;white-space:nowrap;}
     .content{padding:28px 20px;}
     .site-footer{padding:14px 20px;}
   }
@@ -806,7 +806,7 @@
         <line x1="17" y1="26" x2="17" y2="29" stroke="url(#logoStrokeGrad)" stroke-width="2" stroke-linecap="round"/>
         <line x1="8" y1="17" x2="5" y2="17" stroke="url(#logoStrokeGrad)" stroke-width="2" stroke-linecap="round"/>
         <polygon points="17,10 20,17 17,21 14,17" fill="url(#logoStrokeGrad)"/>
-        <circle cx="17" cy="17" r="1.3" fill="var(--bg)"/>
+        <circle cx="17" cy="17" r="1.3" fill="#1b1513"/>
       </svg>
     </div>
     <h1 class="home-title">Prumo</h1>
@@ -863,7 +863,7 @@
     </button>
 
     <button type="button" class="home-card" onclick="goToSection('educacional')">
-      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:58px;height:58px;"><path d="M3.2 9.6C6.5 8 9.5 6.5 12 5.3C14.6 6.6 17.6 8.1 20.8 9.6C17.5 11.1 14.6 12.6 12 13.9C9.4 12.6 6.4 11.1 3.2 9.6Z"></path><path d="M7.4 11.3C7.1 13.1 7.2 14.9 7.7 16.1C8.9 17.5 10.5 18.2 12 18.2C13.5 18.2 15.1 17.5 16.3 16.1C16.8 14.9 16.9 13.1 16.6 11.3"></path><path d="M20 10.4C20.2 12.4 19.9 14.6 20.3 16.6"></path></svg></span>
+      <span class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:65px;height:65px;"><path d="M3.2 9.6C6.5 8 9.5 6.5 12 5.3C14.6 6.6 17.6 8.1 20.8 9.6C17.5 11.1 14.6 12.6 12 13.9C9.4 12.6 6.4 11.1 3.2 9.6Z"></path><path d="M7.4 11.3C7.1 13.1 7.2 14.9 7.7 16.1C8.9 17.5 10.5 18.2 12 18.2C13.5 18.2 15.1 17.5 16.3 16.1C16.8 14.9 16.9 13.1 16.6 11.3"></path><path d="M20 10.4C20.2 12.4 19.9 14.6 20.3 16.6"></path></svg></span>
       <span class="home-card-text">
         <h3>Educacional</h3>
         <p>E-book, Sala ao Vivo, Revisão de Rota, Mentoria Individual e Aulas em Grupo.</p>
@@ -871,7 +871,7 @@
     </button>
 
     <button type="button" class="home-card" onclick="goToSection('sobre')">
-      <span class="home-card-icon"><svg viewBox="0 0 34 34" role="img" aria-label="Bússola Prumo" style="width:58px;height:58px;"><circle cx="17" cy="17" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><line x1="17" y1="8" x2="17" y2="5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="26" y1="17" x2="29" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="17" y1="26" x2="17" y2="29" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="8" y1="17" x2="5" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><polygon points="17,10 20,17 17,21 14,17" fill="currentColor"></polygon><circle cx="17" cy="17" r="1.3" fill="var(--bg)"></circle></svg></span>
+      <span class="home-card-icon"><svg viewBox="0 0 34 34" role="img" aria-label="Bússola Prumo" style="width:65px;height:65px;"><circle cx="17" cy="17" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><line x1="17" y1="8" x2="17" y2="5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="26" y1="17" x2="29" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="17" y1="26" x2="17" y2="29" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="8" y1="17" x2="5" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><polygon points="17,10 20,17 17,21 14,17" fill="currentColor"></polygon><circle cx="17" cy="17" r="1.3" fill="var(--bg)"></circle></svg></span>
       <span class="home-card-text">
         <h3>Sobre</h3>
         <p>Quem somos e como entrar em contato.</p>
@@ -884,10 +884,11 @@
 
 <div class="shell shell-hidden" id="app-shell">
 
-  <!-- ===================== SIDEBAR ===================== -->
-  <aside class="sidebar">
-    <div class="brand" onclick="goHome()" style="cursor:pointer;" title="Voltar para a página inicial">
-      <div class="brand-mark">
+  <!-- ===================== TOPBAR ===================== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+    <div class="topbar-brand" onclick="goHome()" title="Voltar para a página inicial">
+      <div class="topbar-brand-mark">
         <svg viewBox="0 0 34 34" role="img" aria-label="Bússola Prumo">
           <circle cx="17" cy="17" r="9" fill="none" stroke="var(--accent)" stroke-width="2"/>
           <line x1="17" y1="8" x2="17" y2="5" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
@@ -898,13 +899,13 @@
           <circle cx="17" cy="17" r="1.3" fill="var(--bg)"/>
         </svg>
       </div>
-      <div class="brand-text">
-        <span class="brand-name">Prumo</span>
-        <span class="brand-sub">Direção para o seu trading</span>
+      <div class="topbar-brand-text">
+        <span class="topbar-brand-name">Prumo</span>
+        <span class="topbar-brand-sub">Direção para o seu trading</span>
       </div>
     </div>
 
-    <nav class="nav-list">
+    <nav class="topbar-nav">
       <button class="nav-item active" data-section="admin">
         <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0110 0v4"></path></svg></span>
         <span>Analista</span>
@@ -912,15 +913,15 @@
       </button>
       <button class="nav-item" data-section="rotina">
         <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2C16 2.3 20.8 6 20 12C20.9 17.8 16.2 21.6 11.3 20.9C6.3 21.7 2.3 17.4 3.1 11.6C2.2 6.1 7.4 2.4 12 3.2Z"></path><path d="M7.8 12.6C8.8 13.9 9.6 15.1 10.2 15.8C11.6 13.6 13.8 10.6 16.3 8.4"></path></svg></span>
-        <span>Rotina Pré-Abertura</span>
+        <span>Rotina</span>
       </button>
       <button class="nav-item" data-section="mercado">
         <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 3.4C4.2 7 4.9 8 4.5 12C4.9 16 4.2 17.4 4.7 21"></path><path d="M3 9.3C4.6 8.7 6.1 8.8 4.5 9.2C2.9 9.7 4.9 10 6.1 9.5"></path><path d="M12.2 2.6C11.7 6.6 12.5 9 12 13C12.5 17 11.7 18.4 12.3 21.4"></path><path d="M10.5 6.4C12.3 5.7 14 5.8 12 6.3C10 6.9 12.5 7.1 14 6.6"></path><path d="M19.6 3.8C19.2 7.6 19.9 10 19.5 14C19.9 17 19.2 18.6 19.7 21"></path><path d="M17.8 11.6C19.6 11 21.2 11.1 19.3 11.5C17.4 12 19.8 12.3 21.2 11.8"></path></svg></span>
-        <span>Análise de Mercado</span>
+        <span>Mercado</span>
       </button>
       <button class="nav-item" data-section="diario">
         <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 3.4C5.2 8 5.6 14 5.3 20.4C9 21 14.5 20.8 18.6 20.3C18.9 14.4 18.6 8.8 18.8 3.6C14.8 3 9.6 2.9 5.5 3.4Z"></path><path d="M3.2 5.4C3.6 5.1 4.1 5 4.6 5.2"></path><path d="M3 9.2C3.5 8.9 4 8.8 4.5 9"></path><path d="M2.9 13.1C3.4 12.8 3.9 12.7 4.4 12.9"></path><path d="M3.1 17C3.6 16.7 4.1 16.6 4.6 16.8"></path><path d="M8.2 8.6C11 8.3 13.8 8.4 16 8.7"></path><path d="M8.1 12.3C10.5 12.1 13 12.2 15.3 12.5"></path><path d="M8 16C9.8 15.8 11.6 15.9 13.2 16.1"></path></svg></span>
-        <span>Diário de Trader</span>
+        <span>Diário</span>
       </button>
       <button class="nav-item" data-section="sala">
         <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8C15 2 18.5 3.4 19.3 4C19.6 8 19.8 13.4 18.5 16.5C17 19.8 14 21.4 12 21.8C10 21.3 7 19.7 5.6 16.4C4.3 13.3 4.5 8 4.8 4C5.7 3.3 9 2 12 2.8Z"></path><path d="M9.5 13.2L12.3 10L15.6 13.6"></path></svg></span>
@@ -931,11 +932,12 @@
         <span>Educacional</span>
       </button>
       <button class="nav-item" data-section="sobre">
-        <span class="nav-icon"><svg viewBox="0 0 34 34" role="img" aria-label="Bússola Prumo"><circle cx="17" cy="17" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><line x1="17" y1="8" x2="17" y2="5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="26" y1="17" x2="29" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="17" y1="26" x2="17" y2="29" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="8" y1="17" x2="5" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><polygon points="17,10 20,17 17,21 14,17" fill="currentColor"></polygon><circle cx="17" cy="17" r="1.3" fill="var(--bg)"></circle></svg></span>
+        <span class="nav-icon"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><line x1="17" y1="8" x2="17" y2="5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="26" y1="17" x2="29" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="17" y1="26" x2="17" y2="29" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><line x1="8" y1="17" x2="5" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line><polygon points="17,10 20,17 17,21 14,17" fill="currentColor"></polygon><circle cx="17" cy="17" r="1.3" fill="var(--bg)"></circle></svg></span>
         <span>Sobre</span>
       </button>
     </nav>
-  </aside>
+    </div><!-- /topbar-inner -->
+  </header>
 
   <!-- ===================== MAIN ===================== -->
   <main class="main">
@@ -1063,7 +1065,7 @@
               <div class="upload-preview" id="upload-preview">
                 <img id="upload-preview-img" alt="Pré-visualização do print enviado">
                 <div class="print-legend-wrap">
-                  <div class="legend-item-title">Gráfico de Renko 100R</div>
+                  <div class="legend-item-title">Gráfico de Renko 120R</div>
                   <div class="print-legend">
                     <div class="legend-col">
                       <div class="legend-item"><span class="legend-swatch" style="background:#563333;"></span>Resistência Principal</div>
@@ -1270,7 +1272,7 @@
         <div class="services-intro">
           <span class="routine-eyebrow">S&amp;P 500 · Day Trade · Volume Profile + Renko</span>
           <h2><span style="color:var(--text-primary)">Rotina</span> <span style="color:var(--accent)">Pré-Abertura</span></h2>
-          <p>Máx. 2 operações · Janela 10h30–13h00 · Renko 100R / 10R entrada</p>
+          <p>Máx. 2 operações · Janela 10h30–13h00 · Renko 120R / 10R entrada</p>
         </div>
 
         <div class="routine-progress-wrap">
@@ -1324,6 +1326,14 @@
           <div class="routine-item" onclick="routineToggle(this)">
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
+              <div class="routine-item-title">Mapear as VWAP's de fundo e de topo<span class="routine-tag">VP</span></div>
+              <div class="routine-item-note">As VWAPs ancoradas em fundos e topos relevantes funcionam como ímãs de preço — regiões onde as grandes instituições tendem a defender posição ou realizar lucro. Identificá-las antes da abertura permite antecipar onde o mercado pode frear ou reagir, em vez de descobrir no meio da operação.</div>
+            </div>
+          </div>
+
+          <div class="routine-item" onclick="routineToggle(this)">
+            <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="routine-item-body">
               <div class="routine-item-title">Marcar a região de controle da sessão anterior<span class="routine-tag">VP</span></div>
               <div class="routine-item-note">Definir se o preço está dentro ou fora da área de valor. Isso orienta se o trade provável é de retorno ou de busca de novo valor.</div>
             </div>
@@ -1345,13 +1355,6 @@
             </div>
           </div>
 
-          <div class="routine-item" onclick="routineToggle(this)">
-            <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <div class="routine-item-body">
-              <div class="routine-item-title">Definir viés direcional inicial (alta / baixa / lateral)<span class="routine-tag">VP</span></div>
-              <div class="routine-item-note">Onde está o preço em relação a região de controle? Tendência de aceitar ou rejeitar a área de valor atual? Viés neutro = aguardar confirmação.</div>
-            </div>
-          </div>
         </div>
 
         <div class="routine-phase">
@@ -1366,7 +1369,7 @@
           <div class="routine-item" onclick="routineToggle(this)">
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
-              <div class="routine-item-title">Analisar estrutura no Renko 100R — tendência ou range?<span class="routine-tag">100R</span></div>
+              <div class="routine-item-title">Analisar estrutura no renko 120R — tendência ou lateral?<span class="routine-tag">120R</span></div>
               <div class="routine-item-note">Série de topos e fundos. Renko em tendência: buscar pullbacks. Em range: operar nas bordas. Não tentar adivinhar rompimentos.</div>
             </div>
           </div>
@@ -1374,15 +1377,7 @@
           <div class="routine-item" onclick="routineToggle(this)">
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
-              <div class="routine-item-title">Identificar os VWAP's mensal, semanal e diário no gráfico<span class="routine-tag">VWAP</span></div>
-              <div class="routine-item-note">Cada VWAP funciona como referência de valor justo num horizonte de tempo diferente. O preço está perto ou distante delas?</div>
-            </div>
-          </div>
-
-          <div class="routine-item" onclick="routineToggle(this)">
-            <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <div class="routine-item-body">
-              <div class="routine-item-title">Marcar zonas de suporte e resistência no 100R alinhadas ao VP<span class="routine-tag">100R</span><span class="routine-tag">VP</span></div>
+              <div class="routine-item-title">Marcar zonas de suporte e resistência no 120R alinhadas ao VP<span class="routine-tag">120R</span><span class="routine-tag">VP</span></div>
               <div class="routine-item-note">Confluência entre estrutura renko e região de controle ou HVN = zonas de maior probabilidade. São os únicos pontos onde operar vale a pena. Regiões virgens têm maior probabilidade de reversão.</div>
             </div>
           </div>
@@ -1390,7 +1385,7 @@
           <div class="routine-item" onclick="routineToggle(this)">
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
-              <div class="routine-item-title">Identificar a região oposta correspondente a cada setup<span class="routine-tag">100R</span></div>
+              <div class="routine-item-title">Identificar a região oposta correspondente a cada setup<span class="routine-tag">120R</span></div>
               <div class="routine-item-note">Para cada região de demanda, qual é a região de oferta mais próxima? E vice-versa. Essa região oposta é o alvo natural da operação — anotar a borda de entrada dela antes do pregão abrir.</div>
             </div>
           </div>
@@ -1398,7 +1393,7 @@
           <div class="routine-item" onclick="routineToggle(this)">
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
-              <div class="routine-item-title">Validar risco/retorno dos setups mapeados<span class="routine-tag">100R</span></div>
+              <div class="routine-item-title">Validar risco/retorno dos setups mapeados<span class="routine-tag">120R</span></div>
               <div class="routine-item-note">Distância até o alvo ÷ stop estimado ≥ 1,5:1? Se não atingir essa relação, o setup não entra no plano do dia. Stop estimado = largura típica da estrutura que se formará no 10R dentro da região.</div>
             </div>
           </div>
@@ -1406,15 +1401,15 @@
           <div class="routine-item" onclick="routineToggle(this)">
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
-              <div class="routine-item-title">Preparar os gráficos 30R e 10R para a sessão<span class="routine-tag">30R</span><span class="routine-tag">10R</span></div>
-              <div class="routine-item-note">Limpar o gráfico. Deixar visível apenas os níveis já mapeados. No pregão: 30R confirma esgotamento do movimento na região; 10R identifica a estrutura de topos e fundos e o rompimento de gatilho.</div>
+              <div class="routine-item-title">Preparar o gráfico 10R para a sessão<span class="routine-tag">10R</span></div>
+              <div class="routine-item-note">Limpar o gráfico. Deixar visível apenas os níveis já mapeados. No pregão: 10R identifica a estrutura de topos e fundos e o rompimento de gatilho.</div>
             </div>
           </div>
 
           <div class="routine-item" onclick="routineToggle(this)">
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
-              <div class="routine-item-title">Definir os 2 setups potenciais do dia com plano completo<span class="routine-tag">100R</span></div>
+              <div class="routine-item-title">Definir os 2 setups potenciais do dia com plano completo<span class="routine-tag">120R</span></div>
               <div class="routine-item-note">Para cada setup: "Se o preço chegar na região X → aguardo esgotamento no 30R → aguardo rompimento de estrutura no 10R → entro. Alvo: borda da região Y. Stop: abaixo do último fundo no 10R. R/R estimado: Z:1."</div>
             </div>
           </div>
@@ -1422,8 +1417,8 @@
           <div class="routine-item" onclick="routineToggle(this)">
             <div class="routine-checkbox"><svg class="routine-checkmark" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="var(--bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="routine-item-body">
-              <div class="routine-item-title">Classificar a chegada esperada em cada região<span class="routine-tag">100R</span></div>
-              <div class="routine-item-note">A — Pullback com origem em região mapeada: setup de alta qualidade, execute o gatilho sem hesitar. B — Pullback sem origem clara: setup neutro, siga o critério normal (30R + 10R). C — Impulso direto sem pullback: exige mais paciência — só age se o esgotamento no 30R for inequívoco. Qualquer dúvida no 30R, fica de fora.</div>
+              <div class="routine-item-title">Classificar a chegada esperada em cada região<span class="routine-tag">120R</span></div>
+              <div class="routine-item-note">A — Pullback com origem em região mapeada: setup de alta qualidade, execute o gatilho sem hesitar. B — Pullback sem origem clara: setup neutro, siga o critério normal no 10R. C — Impulso direto sem pullback: exige mais paciência — só age se o esgotamento for inequívoco.</div>
             </div>
           </div>
         </div>
@@ -1473,7 +1468,7 @@
         <div class="card routine-rules-box">
           <div class="routine-rules-title">Regras inegociáveis durante o mercado</div>
           <ul class="routine-rules-list">
-            <li>Só entrar em confluência Renko 50R + Volume Profile. Setup isolado = pular.</li>
+            <li>Só entrar em confluência Renko 120R + Volume Profile + Gatilho no 10R. Setup isolado = pular.</li>
             <li>Stop definido antes da entrada. Mover stop contra a posição é proibido.</li>
             <li>Primeiros 5 minutos após 10h30: apenas observar, não operar (spike de abertura).</li>
             <li>2ª operação encerrada = fechar plataforma de ordens até o próximo dia.</li>
@@ -1951,7 +1946,7 @@
   }
 
   navButtons.forEach(btn => {
-    btn.addEventListener('click', () => activateSection(btn.dataset.section));
+    btn.addEventListener('click', () => { activateSection(btn.dataset.section); window.scrollTo({ top: 0, behavior: 'instant' }); });
   });
 
   // ---------- HOME ----------
@@ -1959,6 +1954,7 @@
     document.getElementById('home-view').classList.add('shell-hidden');
     document.getElementById('app-shell').classList.remove('shell-hidden');
     activateSection(id);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
   function goHome() {
@@ -2296,7 +2292,7 @@
 
   function printLegendHTML() {
     return '<div class="print-legend-wrap">' +
-      '<div class="legend-item-title">Gráfico de Renko 100R</div>' +
+      '<div class="legend-item-title">Gráfico de Renko 120R</div>' +
       '<div class="print-legend">' +
       '<div class="legend-col">' +
       '<div class="legend-item"><span class="legend-swatch" style="background:#563333;"></span>Resistência Principal</div>' +
