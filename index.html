@@ -145,6 +145,7 @@
     .home-card:nth-child(4) .home-card-icon svg{width:52px;height:52px;}
     .home-card{padding:16px 12px;gap:10px;min-height:70px;}
     .home-card-icon{width:48px;}
+    .home-grid{grid-template-columns:1fr 1fr;max-width:100%;}
   }
   @media (max-width:600px){
     .home-view{padding:20px;}
@@ -581,6 +582,10 @@
   .about-email svg{width:17px;height:17px;}
   .about-email:hover{text-decoration:underline;}
   .contact-form{margin-top:18px;}
+  input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, textarea:focus{
+    border-color:rgba(255,255,255,0.9);
+    outline:none;
+  }
   .contact-form input,
   .contact-form textarea{
     background:transparent;
@@ -817,6 +822,16 @@
     opacity:0;
     animation:homeFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
   }
+
+  @media (max-width:900px){
+    .anim-fade-up{animation-duration:0.6s;}
+    h1.anim-fade-up{animation-delay:0.05s !important;}
+    .home-subtitle.anim-fade-up{animation-delay:0.15s !important;}
+    .home-desc.anim-fade-up{animation-delay:0.25s !important;}
+    .home-card.anim-fade-up{animation-delay:0.35s !important;}
+    .home-footer.anim-fade-up{animation-delay:0.55s !important;}
+  }
+
   /* ---------- RESPONSIVE ---------- */
   @media (max-width:880px){
     .content{padding:28px 20px;}
