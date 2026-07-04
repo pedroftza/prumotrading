@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Prumo — direção para o seu trading">
 <meta name="twitter:description" content="Ferramentas e trilha educacional para day traders do S&amp;P 500 — processo e disciplina antes de qualquer promessa de resultado.">
 <meta name="twitter:image" content="https://prumotrading.com/og-image.png">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect width='34' height='34' rx='8' fill='%232e2d2b'/%3E%3Ccircle cx='17' cy='17' r='9' fill='none' stroke='%23d97757' stroke-width='2'/%3E%3Cline x1='17' y1='8' x2='17' y2='5' stroke='%23d97757' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='26' y1='17' x2='29' y2='17' stroke='%23d97757' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='17' y1='26' x2='17' y2='29' stroke='%23d97757' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='8' y1='17' x2='5' y2='17' stroke='%23d97757' stroke-width='2' stroke-linecap='round'/%3E%3Cpolygon points='17,10 20,17 17,21 14,17' fill='%23d97757'/%3E%3Ccircle cx='17' cy='17' r='1.3' fill='%232e2d2b'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect width='34' height='34' rx='8' fill='%232e2d2b'/%3E%3Ccircle cx='17' cy='17' r='9' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Cline x1='17' y1='8' x2='17' y2='5' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='26' y1='17' x2='29' y2='17' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='17' y1='26' x2='17' y2='29' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='8' y1='17' x2='5' y2='17' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3Cpolygon points='17,10 20,17 17,21 14,17' fill='%23ffffff'/%3E%3Ccircle cx='17' cy='17' r='1.3' fill='%232e2d2b'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -98,8 +98,8 @@
     position:fixed;inset:0;z-index:0;pointer-events:none;
     background:radial-gradient(ellipse 90% 75% at 0% 0%, rgba(200,90,50,0.45) 0%, rgba(180,70,35,0.18) 45%, transparent 72%);
   }
-  .home-logo{display:flex;justify-content:flex-start;padding:32px 0 0;}
-  .home-footer{font-size:11.5px;color:#aaa;text-align:center;padding:16px 0;font-family:var(--font-mono);}
+  .home-logo{display:flex;justify-content:flex-start;padding:32px 0 0;position:relative;z-index:1000;isolation:isolate;}
+  .home-footer{font-size:11.5px;color:#efefef;text-align:center;padding:16px 0;font-family:var(--font-mono);}
   .home-body{
     display:grid;grid-template-columns:1fr 1.5fr;gap:60px;align-items:center;flex:1;
   }
@@ -107,10 +107,10 @@
     font-family:var(--font-display);font-size:112px;font-weight:800;color:#fff;
     margin:0 0 4px;line-height:0.9;letter-spacing:-0.04em;text-indent:-0.04em;
   }
-  .home-subtitle{font-size:32px;font-weight:500;color:#fff;margin:0 0 36px;line-height:1.3;letter-spacing:0.01em;}
+  .home-subtitle{font-size:32px;font-weight:500;color:#fff;margin:0 0 14px;line-height:1.3;letter-spacing:0.01em;}
   .home-desc{font-size:16px;color:#c8c8c8;line-height:1.75;margin:0;font-weight:400;font-family:var(--font-body);width:100%;}
   .home-grid{
-    display:grid;grid-template-columns:1fr 1fr;gap:40px 6px;align-self:center;margin-left:100px;
+    display:grid;grid-template-columns:1fr 1fr;gap:40px 6px;align-self:center;margin-left:100px;margin-top:24px;
   }
   .home-card{
     background:transparent;border:none;border-radius:10px;
@@ -130,7 +130,7 @@
     fill:none;stroke-linecap:round;stroke-linejoin:round;
   }
   .home-card-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:4px;line-height:1.3;}
-  .home-card-desc{font-size:11.5px;color:#d0d0d0;line-height:1.5;margin:0;font-weight:400;}
+  .home-card-desc{font-size:14px;color:#d0d0d0;line-height:1.5;margin:0;font-weight:400;}
   .home-card-text{flex:1;padding-top:2px;}
   .home-card-arrow{display:none;}
   .home-card:nth-child(3),
@@ -283,7 +283,7 @@
   textarea.auto-resize{resize:none;overflow:hidden;}
 
   .btn-primary{
-    background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);
+    background:var(--accent);color:#111;border:none;border-radius:var(--radius-sm);
     padding:12px 20px;font-weight:600;font-size:14px;transition:background .15s;
   }
   .btn-primary:hover{background:var(--accent-hover);}
