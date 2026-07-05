@@ -88,10 +88,6 @@
     padding:28px 48px 48px;background:transparent;
     max-width:82vw;margin:0 auto 0 10vw;
   }
-  .home-topbar{
-    display:flex;justify-content:space-between;align-items:center;
-    margin-bottom:16px;
-  }
   .home-glow{
     position:fixed;inset:0;z-index:0;pointer-events:none;
     background:radial-gradient(ellipse 90% 75% at 0% 0%, rgba(200,90,50,0.45) 0%, rgba(180,70,35,0.18) 45%, transparent 72%);
@@ -129,7 +125,6 @@
   .home-card-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:4px;line-height:1.3;}
   .home-card-desc{font-size:14px;color:#d0d0d0;line-height:1.5;margin:0;font-weight:400;}
   .home-card-text{flex:1;padding-top:2px;}
-  .home-card-arrow{display:none;}
   .home-card:nth-child(3),
   .home-card:nth-child(4){transform:translateX(80px);}
   .home-card:nth-child(4) .home-card-icon svg{width:80px;height:80px;}
@@ -172,7 +167,6 @@
   .topbar-inner{
     display:flex;align-items:center;justify-content:center;gap:40px;
   }
-  .topbar-nav{display:flex;align-items:center;gap:4px;}
   .topbar-brand{
     display:flex;align-items:center;gap:2px;
     cursor:pointer;flex-shrink:0;text-decoration:none;
@@ -435,13 +429,6 @@
   .preview-item{margin-bottom:14px;}
   .preview-item .q{font-size:12.5px;font-weight:600;color:var(--accent);margin-bottom:3px;}
   .preview-item .a{font-size:13.5px;color:var(--text-primary);line-height:1.5;white-space:pre-wrap;}
-  .preview-eval{
-    margin-top:10px;padding-top:16px;border-top:1px solid var(--border);
-  }
-  .preview-eval .stars-readonly{display:flex;gap:3px;margin-bottom:6px;color:var(--accent);}
-  .preview-eval .stars-readonly svg{width:15px;height:15px;}
-  .preview-eval .label{font-family:var(--font-mono);font-size:11px;color:var(--text-tertiary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em;}
-
   /* ---------- AÇÕES PÚBLICAS (curtir / alarme) ---------- */
   .actions-row{display:flex;gap:12px;margin:18px 0 26px;flex-wrap:wrap;align-items:flex-start;}
   .action-btn{
@@ -540,11 +527,6 @@
     padding:28px 26px;margin-bottom:0;
   }
   .service-card-highlight{background:transparent;}
-  .service-tag{
-    align-self:flex-start;font-family:var(--font-mono);font-size:10.5px;color:var(--accent);
-    background:var(--accent-soft);border-radius:99px;padding:3px 10px;margin-bottom:10px;
-    text-transform:uppercase;letter-spacing:0.05em;
-  }
   .service-title{font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:8px;line-height:1.3;color:#ecd2c4;}
   .service-tagline{font-size:13.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:18px;flex:none;}
   .service-price{display:flex;align-items:baseline;gap:5px;margin-bottom:18px;flex-wrap:wrap;}
@@ -623,7 +605,7 @@
   .routine-item:hover{opacity:0.85;}
   .routine-item.checked{opacity:0.5;}
   .routine-checkbox{width:20px;height:20px;border:1.5px solid var(--border-strong);border-radius:50%;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-  .routine-item.checked .routine-checkbox{background:var(--success);border-color:var(--success);}
+  .routine-item.checked .routine-checkbox{background:#f5a882;border-color:#f5a882;}
   .routine-checkmark{display:none;width:10px;height:10px;}
   .routine-item.checked .routine-checkmark{display:block;}
   .routine-item-body{flex:1;}
@@ -634,7 +616,7 @@
 
   .routine-tag{display:inline-block;font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-left:7px;font-weight:500;vertical-align:middle;position:relative;top:-1px;background:var(--accent-soft);color:var(--accent);}
 
-  .routine-rules-box{background:var(--accent-soft);border:1px solid rgba(224,90,53,0.3);}
+  .routine-rules-box{background:rgba(224,90,53,0.15);border:1px solid rgba(224,90,53,0.4);}
   .routine-rules-title{font-family:var(--font-mono);font-size:11px;font-weight:500;color:#ecd2c4;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;}
   .routine-rules-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
   .routine-rules-list li{font-size:13px;color:var(--text-primary);padding-left:16px;position:relative;line-height:1.5;}
@@ -1323,7 +1305,7 @@
           <div class="routine-phase-header">
             <span class="routine-phase-number">01</span>
             <div class="routine-phase-meta">
-              <span class="routine-phase-time">09h30 – 09h40</span>
+              <span class="routine-phase-time">09h00 – 09h30</span>
               <span class="routine-phase-title">O Ambiente do Dia — Macro</span>
             </div>
           </div>
@@ -1359,7 +1341,7 @@
           <div class="routine-phase-header">
             <span class="routine-phase-number">02</span>
             <div class="routine-phase-meta">
-              <span class="routine-phase-time">09h40 – 09h50</span>
+              <span class="routine-phase-time">09h30 – 09h50</span>
               <span class="routine-phase-title">A Estrutura Técnica — 120R</span>
             </div>
           </div>
@@ -1439,7 +1421,7 @@
           <div class="routine-phase-header">
             <span class="routine-phase-number">04</span>
             <div class="routine-phase-meta">
-              <span class="routine-phase-time">09h55 – 10h15</span>
+              <span class="routine-phase-time">09h55 – 10h10</span>
               <span class="routine-phase-title">Setup no Renko</span>
             </div>
           </div>
@@ -1483,7 +1465,7 @@
           <div class="routine-phase-header">
             <span class="routine-phase-number">05</span>
             <div class="routine-phase-meta">
-              <span class="routine-phase-time">10h15 – 10h28</span>
+              <span class="routine-phase-time">10h10 – 10h20</span>
               <span class="routine-phase-title">Gestão e Mental</span>
             </div>
           </div>
@@ -1646,7 +1628,7 @@
             </div>
             <div class="field">
               <label class="field-label">O viés adotado na análise pré-abertura ajudou ou atrapalhou?</label>
-              <select id="jr-renko20">
+              <select id="jr-bias">
                 <option value="">Selecionar…</option>
                 <option>Ajudou — confirmou a leitura</option>
                 <option>Ajudou parcialmente</option>
@@ -1656,7 +1638,7 @@
             </div>
             <div class="field">
               <label class="field-label">O gráfico de renko 50R mostrou estrutura clara?</label>
-              <select id="jr-renko40">
+              <select id="jr-renko50">
                 <option value="">Selecionar…</option>
                 <option>Sim, tendência nítida</option>
                 <option>Sim, range nítido</option>
@@ -2568,7 +2550,7 @@
   }
 
   // ---------- AVALIAÇÃO / ESTRELAS ----------
-  const starButtons = Array.from(document.querySelectorAll('.star-btn'));
+  const starButtons = Array.from(document.querySelectorAll('#star-row .star-btn'));
   const ratingInput = document.getElementById('rating-value');
 
   function setRating(value) {
@@ -2682,13 +2664,6 @@
     if (report.resumo) {
       body += '<div class="preview-item"><div class="q">' + reportTitles['stage-resumo'] + '</div><div class="a">' + formatMarkup(report.resumo) + '</div></div>';
     }
-
-    const adminActions = isAdminAuthenticated
-      ? '<div class="feed-admin-actions">' +
-        '<button type="button" class="feed-admin-btn" onclick="editReport(' + id + ')">Editar</button>' +
-        '<button type="button" class="feed-admin-btn danger" onclick="deleteReport(' + id + ')">Excluir</button>' +
-        '</div>'
-      : '';
 
     const liked = likedReportIds().includes(id);
 
@@ -2842,10 +2817,15 @@
   renderFeed();
 
   // ---------- ALARME (e-mail salvo de verdade no banco) ----------
-  let alarmActive = false;
+  let alarmActive = localStorage.getItem('prumoAlarmActive') === '1';
   const alarmBtn = document.getElementById('alarm-btn');
   const alarmForm = document.getElementById('alarm-form');
   const alarmLabel = alarmBtn.querySelector('.alarm-label');
+
+  if (alarmActive) {
+    alarmBtn.classList.add('active');
+    alarmLabel.textContent = 'Alarme ativado';
+  }
 
   alarmBtn.addEventListener('click', () => {
     if (alarmActive) {
@@ -2863,6 +2843,7 @@
         body: JSON.stringify({ email })
       });
       alarmActive = true;
+      localStorage.setItem('prumoAlarmActive', '1');
       alarmForm.style.display = 'none';
       alarmBtn.classList.add('active');
       alarmLabel.textContent = 'Alarme ativado';
@@ -2967,10 +2948,8 @@
 
   // ---------- DIÁRIO DE TRADER (persistido no servidor, por usuário) ----------
   let jrEntries = [];
-  const jrDiscValues = {};
   let jrCurrentFilter = 'all';
   let jrCurrentPeriod = 'week';
-  let jrChartDrawn = false;
 
   function jrAuthHeader() {
     const auth = jrGetAuth();
@@ -3341,8 +3320,8 @@
       pdfStats,
       totalResult,
       vp: document.getElementById('jr-vp').value,
-      r40: document.getElementById('jr-renko40').value,
-      r20: document.getElementById('jr-renko20').value,
+      r40: document.getElementById('jr-renko50').value,
+      r20: document.getElementById('jr-bias').value,
       vwap: document.getElementById('jr-vwap').value,
       emotions,
       errors,
@@ -3398,7 +3377,7 @@
     const posDays = entries.filter(e => (e.totalResult || 0) > 0).length;
     const negDays = entries.filter(e => (e.totalResult || 0) < 0).length;
     const winRate = entries.length ? Math.round(posDays / entries.length * 100) : 0;
-    const avgDisc = entries.length ? (entries.reduce((s, e) => s + (e.discRating || 0), 0) / entries.length).toFixed(1) : '—';
+    const avgDisc = entries.length ? (entries.reduce((s, e) => s + (e.discStar || 0), 0) / entries.length).toFixed(1) : '—';
     const firstDate = new Date(entries[0].date + 'T12:00:00').toLocaleDateString('pt-BR');
     const lastDate = new Date(entries[entries.length - 1].date + 'T12:00:00').toLocaleDateString('pt-BR');
     const rule3Items = entries.filter(d => d.rule3);
@@ -3440,13 +3419,13 @@
       const pnl = e.totalResult || 0;
       return `<div class="session-block"><div class="session-head"><span class="session-date">${d}</span><span class="session-pnl" style="color:${pnlColor(pnl)}">${pnlStr(pnl)}</span></div>
         <table class="session-table">
-          <tr><td>Mercado</td><td>${e.market||'—'}</td><td>Operações</td><td>${e.opsCount!=null?e.opsCount:'—'}</td></tr>
-          <tr><td>Disciplina</td><td>${e.discRating?'★'.repeat(e.discRating)+'☆'.repeat(5-e.discRating):'—'}</td><td>Regra 2 ops</td><td>${e.rule3||'—'}</td></tr>
+          <tr><td>Mercado</td><td>${e.market||'—'}</td><td>Operações</td><td>${e.pdfStats?.numOperacoes??'—'}</td></tr>
+          <tr><td>Disciplina</td><td>${e.discStar?'★'.repeat(e.discStar)+'☆'.repeat(5-e.discStar):'—'}</td><td>Regra 2 ops</td><td>${e.rule3||'—'}</td></tr>
           <tr><td>Estado emocional</td><td colspan="3">${(e.emotions||[]).join(', ')||'—'}</td></tr>
           <tr><td>Erros</td><td colspan="3">${(e.errors||[]).join(', ')||'—'}</td></tr>
-          ${e.goodNotes?`<tr><td>O que funcionou</td><td colspan="3">${e.goodNotes}</td></tr>`:''}
-          ${e.improveNotes?`<tr><td>O que melhorar</td><td colspan="3">${e.improveNotes}</td></tr>`:''}
-          ${e.intentNotes?`<tr><td>Intenção</td><td colspan="3">${e.intentNotes}</td></tr>`:''}
+          ${e.good?`<tr><td>O que funcionou</td><td colspan="3">${e.good}</td></tr>`:''}
+          ${e.improve?`<tr><td>O que melhorar</td><td colspan="3">${e.improve}</td></tr>`:''}
+          ${e.intent?`<tr><td>Intenção</td><td colspan="3">${e.intent}</td></tr>`:''}
         </table></div>`;
     }).join('');
     const html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Diário de Trader — Prumo</title>
@@ -3559,7 +3538,7 @@
       const metaItems = [
         { label: 'Mercado', val: d.market || '—' },
         { label: 'Disciplina', val: '★'.repeat(d.discStar || 0) || '—' },
-        { label: 'Regra 3 ops', val: d.rule3 || '—' },
+        { label: 'Regra 2 ops', val: d.rule3 || '—' },
         { label: 'Risco do dia', val: d.riskRule || '—' }
       ];
       const metaHTML = metaItems.map(m => '<div class="jr-meta-item"><div class="jr-meta-label">' + m.label + '</div><div class="jr-meta-val">' + m.val + '</div></div>').join('');
@@ -3676,7 +3655,7 @@
       '<div class="jr-chart-wrap"><div class="jr-chart-title">Resultado acumulado (US$)</div><canvas id="jr-pnl-chart" height="140"></canvas></div>' +
       '<div class="jr-behavior-grid">' +
       '<div class="jr-beh-card"><div class="jr-beh-title">Disciplina nas regras</div>' +
-      '<div class="jr-beh-bar-wrap"><div class="jr-beh-bar-label"><span>Regra 3 ops</span><span style="color:var(--accent);">' + rule3pct + '%</span></div><div class="progress-track"><div class="progress-fill" style="width:' + rule3pct + '%;"></div></div></div>' +
+      '<div class="jr-beh-bar-wrap"><div class="jr-beh-bar-label"><span>Regra 2 ops</span><span style="color:var(--accent);">' + rule3pct + '%</span></div><div class="progress-track"><div class="progress-fill" style="width:' + rule3pct + '%;"></div></div></div>' +
       '<div class="jr-beh-bar-wrap"><div class="jr-beh-bar-label"><span>Risco do dia</span><span style="color:var(--accent);">' + riskPct + '%</span></div><div class="progress-track"><div class="progress-fill" style="width:' + riskPct + '%;"></div></div></div>' +
       '</div>' +
       '<div class="jr-beh-card"><div class="jr-beh-title">Erros mais frequentes</div>' + errorsHTML + '</div>' +
