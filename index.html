@@ -187,13 +187,15 @@
     background:transparent;border:none;border-bottom:2px solid transparent;
     color:var(--text-primary);font-size:13px;font-weight:500;
     padding:8px 12px;border-radius:0;
-    display:flex;align-items:center;gap:7px;
+    display:flex;align-items:center;gap:4px;
     transition:color .15s,border-color .15s,transform .2s;white-space:nowrap;
   }
   .nav-item:hover{color:var(--text-primary);transform:translateY(-2px);}
 
   .nav-item.active{color:var(--accent);border-bottom-color:var(--accent);}
-  .nav-item .nav-icon{width:15px;height:15px;flex-shrink:0;}
+  .nav-item .nav-icon{width:18px;height:18px;flex-shrink:0;}
+  .nav-item[data-section="educacional"] .nav-icon,
+  .nav-item[data-section="sobre"] .nav-icon{width:22px;height:22px;}
   .nav-item .nav-icon svg{width:100%;height:100%;}
   .nav-item .badge-lock{width:11px;height:11px;color:var(--text-tertiary);flex-shrink:0;}
   .nav-item.active .badge-lock{color:var(--accent);}
