@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia Prático — Como construir um sistema de daytrading discricionário para o SP500</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect width='34' height='34' rx='8' fill='%232e2d2b'/%3E%3Ccircle cx='17' cy='17' r='9' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Cline x1='17' y1='8' x2='17' y2='5' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='26' y1='17' x2='29' y2='17' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='17' y1='26' x2='17' y2='29' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='8' y1='17' x2='5' y2='17' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3Cpolygon points='17,10 20,17 17,21 14,17' fill='%23ffffff'/%3E%3Ccircle cx='17' cy='17' r='1.3' fill='%232e2d2b'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --bg-elevated: #2e2d2b;
+    --bg-elevated-2: #383735;
+    --bg-input: #1f1e1c;
+    --border: rgba(255,255,255,0.09);
+    --border-strong: rgba(255,255,255,0.16);
+    --text-primary: #ffffff;
+    --text-secondary: #ffffff;
+    --text-tertiary: #ffffff;
+    --accent: #ffffff;
+    --accent-hover: #e0e0e0;
+    --accent-soft: rgba(255,255,255,0.06);
+    --success: #e8894a;
+    --success-soft: rgba(200,98,42,0.12);
+    --danger: #c1666b;
+    --danger-soft: rgba(193,102,107,0.14);
+    --orange: rgba(200,90,50,1);
+    --font: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    text-align: justify;
+  }
+
+  ::selection { background: var(--accent-soft); color: var(--text-primary); }
+
+  h1, h2, .cover-label, .index-label, .why-label, .custom-label,
+  .topbar-brand-name, .topbar-brand-sub, .topbar-meta,
+  .step-number, .index-num, .index-name, .footer {
+    text-align: left;
+  }
+
+  /* -------- GLOW -------- */
+  .glow {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 55% at 0% 0%, rgba(200,90,50,0.55) 0%, rgba(180,70,35,0.22) 45%, transparent 70%);
+  }
+
+  /* -------- TOPBAR -------- */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 56px;
+    background: rgba(15,15,15,0.4);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .topbar-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    text-decoration: none;
+  }
+
+  .topbar-brand-name {
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    color: var(--accent);
+  }
+
+  .topbar-brand-sub {
+    font-size: 8px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-top: -3px;
+  }
+
+  .topbar-meta {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.04em;
+  }
+
+  /* -------- LAYOUT -------- */
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 64px 32px 96px;
+  }
+
+  /* -------- COVER -------- */
+  .cover {
+    padding: 2px 0 36px;
+    margin-bottom: 32px;
+  }
+
+  .cover-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 28px;
+  }
+
+  .cover h1 {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .cover-subtitle {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin-bottom: 32px;
+  }
+
+  .cover-disclaimer {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--danger-soft);
+    border: 1px solid rgba(193,102,107,0.25);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    font-size: 12.5px;
+    color: var(--danger);
+    line-height: 1.5;
+    max-width: 560px;
+  }
+
+  .cover-disclaimer svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* -------- INTRO SECTION -------- */
+  .intro {
+    margin-bottom: 32px;
+    padding-bottom: 0;
+  }
+
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  .body-text {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  .body-text + .body-text {
+    margin-top: 14px;
+  }
+
+  /* -------- STEP INDEX -------- */
+  .step-index {
+    margin-bottom: 32px;
+    padding-bottom: 0;
+  }
+
+  .index-label {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+
+  .index-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .index-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: transparent;
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .index-item:hover {
+    border-color: var(--border-strong);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .index-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-tertiary);
+    min-width: 20px;
+    letter-spacing: 0.04em;
+  }
+
+  .index-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+
+  /* -------- STEP CARD -------- */
+  .step {
+    margin-bottom: 12px;
+    scroll-margin-top: 72px;
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  .step-number {
+    font-family: var(--font);
+    font-size: 64px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
+    flex-shrink: 0;
+    letter-spacing: -0.04em;
+  }
+
+  .step-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+
+  .step-body {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  /* -------- POR QUE ISSO IMPORTA -------- */
+  .why-block {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+
+  .why-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--success);
+    margin-bottom: 10px;
+  }
+
+  .why-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.75;
+  }
+
+  /* -------- PERSONALIZAÇÃO -------- */
+  .custom-block {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: 20px 22px;
+  }
+
+  .custom-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 14px;
+  }
+
+  .custom-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .custom-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .custom-item:first-of-type {
+    padding-top: 0;
+  }
+
+  .custom-checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid var(--border-strong);
+    background: transparent;
+    flex-shrink: 0;
+    margin-top: 2px;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .custom-checkbox:checked {
+    background: var(--success);
+    border-color: var(--success);
+  }
+
+  .custom-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1.5px;
+    width: 5px;
+    height: 9px;
+    border: 2px solid #0f0f0f;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+  }
+
+  .custom-text {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    padding-top: 1px;
+  }
+
+  /* -------- DIVIDER -------- */
+  .step-divider {
+    display: none;
+  }
+
+  /* -------- FINAL -------- */
+  .final-block {
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: 0;
+    margin-top: 16px;
+  }
+
+  .final-block .section-title {
+    margin-bottom: 20px;
+  }
+
+  .final-disclaimer {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-tertiary);
+    line-height: 1.6;
+  }
+
+  /* -------- FOOTER -------- */
+  .footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 24px 0 40px;
+    font-size: 11.5px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.02em;
+    border-top: 1px solid var(--border);
+  }
+
+  /* -------- RESPONSIVE -------- */
+  @media (max-width: 680px) {
+    .topbar { padding: 0 20px; }
+    .wrapper { padding: 40px 20px 80px; }
+    .cover h1 { font-size: 36px; }
+    .cover-subtitle { font-size: 16px; }
+    .index-grid { grid-template-columns: 1fr; }
+    .final-block { padding: 24px 20px; }
+  }
+
+  @media print {
+    .glow, .topbar { display: none; }
+    .wrapper { max-width: 100%; padding: 24px; }
+    body { background: #fff; color: #111; }
+    .step, .why-block, .custom-block, .final-block {
+      break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a class="topbar-brand" href="https://prumotrading.com">
+    <span class="topbar-brand-name">Prumo</span>
+    <span class="topbar-brand-sub">Direção para o seu trading</span>
+  </a>
+  <span class="topbar-meta">Guia Prático · 15 passos</span>
+</header>
+
+<!-- CONTENT -->
+<main class="wrapper">
+
+  <!-- COVER -->
+  <section class="cover">
+    <span class="cover-label">Guia Prático</span>
+    <h1>Como construir um sistema de daytrading discricionário para o SP500</h1>
+    <p class="cover-subtitle">15 passos — cada um explicado no seu motivo e importância</p>
+    <div class="cover-disclaimer">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM8 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 018 5zm0 7a.875.875 0 110-1.75.875.875 0 010 1.75z" fill="currentColor"/>
+      </svg>
+      Este documento é material educacional e não constitui recomendação de investimento. Operar no mercado futuro envolve risco real de perda de capital.
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="intro">
+    <h2 class="section-title">COMO USAR ESTE GUIA</h2>
+    <p class="body-text">Este guia apresenta 15 passos sequenciais para construir um sistema de daytrading discricionário com regras de apoio, voltado exclusivamente para operações no índice futuro SP500 (E-mini S&P 500 ou Micro E-mini).</p>
+    <p class="body-text">Discricionário significa que as decisões finais de entrada e saída dependem da leitura do trader sobre o contexto do mercado — mas isso não significa operar sem regras. Pelo contrário: um sistema discricionário sólido é construído sobre regras de apoio muito claras que reduzem a improvisação e mantêm a consistência.</p>
+    <p class="body-text">Cada passo traz três elementos: o que fazer, por que isso importa (o raciocínio por trás da etapa) e um espaço para você registrar como pretende aplicar aquilo na sua operação. Recomendamos percorrer os passos na ordem, pois cada um constrói a base para o seguinte — por exemplo, não faz sentido definir um setup de entrada (passo 5) antes de saber em qual janela de horário você vai operar (passo 2).</p>
+    <p class="body-text">Trate este documento como um rascunho vivo. Um sistema discricionário nunca fica "pronto": ele é testado, revisado e refinado continuamente, como descrito no último passo.</p>
+  </section>
+
+  <!-- STEP INDEX -->
+  <section class="step-index">
+    <p class="index-label">Índice de Passos</p>
+    <div class="index-grid">
+      <a class="index-item" href="#passo-1"><span class="index-num">01</span><span class="index-name">Defina seu Perfil e Objetivo como Trader</span></a>
+      <a class="index-item" href="#passo-2"><span class="index-num">02</span><span class="index-name">Escolha o Horário e a Sessão de Operação</span></a>
+      <a class="index-item" href="#passo-3"><span class="index-num">03</span><span class="index-name">Estabeleça o Contexto de Mercado (Viés Diário)</span></a>
+      <a class="index-item" href="#passo-4"><span class="index-num">04</span><span class="index-name">Domine as Ferramentas de Leitura de Price Action</span></a>
+      <a class="index-item" href="#passo-5"><span class="index-num">05</span><span class="index-name">Defina o Setup de Entrada</span></a>
+      <a class="index-item" href="#passo-6"><span class="index-num">06</span><span class="index-name">Estabeleça as Regras de Confirmação (Gatilho)</span></a>
+      <a class="index-item" href="#passo-7"><span class="index-num">07</span><span class="index-name">Estabeleça a Gestão de Risco por Operação</span></a>
+      <a class="index-item" href="#passo-8"><span class="index-num">08</span><span class="index-name">Defina Stop e Alvo Antes da Entrada</span></a>
+      <a class="index-item" href="#passo-9"><span class="index-num">09</span><span class="index-name">Crie Regras para Gerenciar a Operação em Aberto</span></a>
+      <a class="index-item" href="#passo-10"><span class="index-num">10</span><span class="index-name">Estabeleça Limites Diários</span></a>
+      <a class="index-item" href="#passo-11"><span class="index-num">11</span><span class="index-name">Construa uma Rotina Pré-Mercado</span></a>
+      <a class="index-item" href="#passo-12"><span class="index-num">12</span><span class="index-name">Mantenha um Diário de Trading</span></a>
+      <a class="index-item" href="#passo-13"><span class="index-num">13</span><span class="index-name">Faça Backtesting Discricionário (Replay Manual)</span></a>
+      <a class="index-item" href="#passo-14"><span class="index-num">14</span><span class="index-name">Passe por uma Fase de Simulação (Paper Trading)</span></a>
+      <a class="index-item" href="#passo-15"><span class="index-num">15</span><span class="index-name">Estabeleça um Processo de Evolução Contínua</span></a>
+    </div>
+  </section>
+
+  <!-- PASSO 1 -->
+  <div class="step" id="passo-1">
+    <div class="step-header">
+      <div class="step-number">1</div>
+      <h2 class="step-title">Defina seu Perfil e Objetivo como Trader</h2>
+    </div>
+    <p class="step-body">Antes de desenhar qualquer regra de mercado, defina quem é você como trader: quanto capital está disposto a arriscar, quanto tempo por dia pode dedicar às operações, qual sua tolerância emocional a perdas sequenciais e qual objetivo real busca (renda complementar, renda principal, ou crescimento de patrimônio de longo prazo).</p>
+    <p class="step-body">Essa autoavaliação inclui também reconhecer seu perfil comportamental: você tende à impulsividade, à paralisia por análise, à necessidade de estar sempre operando? Um sistema que ignora esses traços tende a ser abandonado sob pressão.</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">Um sistema de trading não existe no vácuo — ele precisa se encaixar na pessoa que vai executá-lo. Um sistema tecnicamente perfeito, mas incompatível com sua rotina, capital disponível ou temperamento, será abandonado no primeiro momento de estresse. Definir o perfil primeiro evita construir uma estrutura de regras que você não conseguirá sustentar na prática.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Capital disponível para operar e capital máximo de risco por dia:</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Horas reais disponíveis para acompanhar o mercado:</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Objetivo principal (renda, crescimento, aprendizado):</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 2 -->
+  <div class="step" id="passo-2">
+    <div class="step-header">
+      <div class="step-number">2</div>
+      <h2 class="step-title">Escolha o Horário e a Sessão de Operação</h2>
+    </div>
+    <p class="step-body">O SP500 futuro (ES/MES) é negociado quase 24 horas, mas a liquidez e a volatilidade não são uniformes. As janelas mais relevantes para daytrading costumam ser: abertura do pregão regular de Nova York (9h30–11h, horário de Nova York), o período de menor liquidez do meio-dia, e o fechamento (últimas 1–2 horas do pregão regular).</p>
+    <p class="step-body">Escolha uma ou duas janelas específicas para operar, em vez de tentar cobrir o dia inteiro. Considere seu fuso horário (Brasil) e como isso se traduz nos horários de Nova York, já que isso afeta diretamente sua disponibilidade e estado de alerta.</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">Operar fora das janelas de maior liquidez expõe você a spreads maiores, movimentos erráticos e menor confiabilidade dos padrões de price action. Restringir o sistema a horários específicos também impõe disciplina: você só opera quando as condições estatisticamente favorecem seu setup, não o dia inteiro por ansiedade ou tédio.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Janela(s) de horário escolhida(s) (fuso de Brasília):</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Motivo da escolha (liquidez, compatibilidade de rotina, etc.):</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 3 -->
+  <div class="step" id="passo-3">
+    <div class="step-header">
+      <div class="step-number">3</div>
+      <h2 class="step-title">Estabeleça o Contexto de Mercado (Viés Diário)</h2>
+    </div>
+    <p class="step-body">Antes de procurar qualquer entrada, determine o contexto do dia: o SP500 está em tendência de alta, baixa ou em faixa lateral? Existem notícias macroeconômicas relevantes agendadas (payroll, CPI, decisões do Fed, resultados de mega-caps)? Qual foi o comportamento nos últimos pregões e onde estão os níveis-chave (máximas e mínimas recentes, zonas de valor)?</p>
+    <p class="step-body">Esse contexto forma seu "viés" do dia — uma inclinação inicial (comprado, vendido, ou neutro) que orienta que tipo de setup você vai priorizar, sem ser uma previsão fixa.</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">Operar sem contexto é como navegar sem saber a direção da maré: mesmo um bom setup de entrada tem taxa de acerto muito menor quando vai contra o fluxo dominante do dia. O viés diário funciona como um filtro que elimina operações de baixa probabilidade antes mesmo de você olhar para um gatilho de entrada.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Fontes que você usará para montar o contexto diário (calendário econômico, gráfico diário, etc.):</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Como você registrará o viés do dia antes do pregão:</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 4 -->
+  <div class="step" id="passo-4">
+    <div class="step-header">
+      <div class="step-number">4</div>
+      <h2 class="step-title">Domine as Ferramentas de Leitura de Price Action</h2>
+    </div>
+    <p class="step-body">Como o sistema é discricionário, sua principal ferramenta de análise é a leitura pura do preço: estrutura de mercado (topos e fundos ascendentes ou descendentes), zonas de suporte e resistência, volume nos movimentos, velas de exaustão ou de força, e comportamento em torno de níveis-chave (números redondos, VWAP, máxima/mínima do dia anterior).</p>
+    <p class="step-body">Escolha um conjunto limitado dessas ferramentas — três ou quatro no máximo — e aprofunde-se nelas, em vez de acumular indicadores.</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">Price action é a base de qualquer sistema discricionário porque reflete diretamente o comportamento de compradores e vendedores em tempo real, sem o atraso de indicadores derivados. Limitar as ferramentas evita "paralisia por análise", em que o trader olha para múltiplos indicadores conflitantes e perde a clareza necessária para decidir com rapidez — essencial no daytrading.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Ferramentas de price action escolhidas:</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Referências de estudo ou treino planejadas:</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 5 -->
+  <div class="step" id="passo-5">
+    <div class="step-header">
+      <div class="step-number">5</div>
+      <h2 class="step-title">Defina o Setup de Entrada</h2>
+    </div>
+    <p class="step-body">Um setup é o padrão específico de mercado que você vai procurar repetidamente — por exemplo, "rompimento de faixa de abertura com retorno e teste", ou "reversão em zona de suporte com vela de exaustão". Escreva o setup em termos objetivos: quais condições precisam estar presentes para você considerar que uma oportunidade existe.</p>
+    <p class="step-body">Escolha inicialmente apenas um ou dois setups. Você pode expandir depois de dominar o primeiro.</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">Ter um setup claramente definido é o que separa um sistema de uma simples improvisação. Sem um setup fixo, cada operação vira uma decisão nova, o que aumenta drasticamente o overtrading (operar demais, sem critério) e a inconsistência de resultados. Um setup bem definido também é a única forma de revisar e melhorar o sistema ao longo do tempo, já que você está testando a mesma coisa repetidamente.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Setup principal (descrição objetiva):</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Setup secundário, se houver:</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 6 -->
+  <div class="step" id="passo-6">
+    <div class="step-header">
+      <div class="step-number">6</div>
+      <h2 class="step-title">Estabeleça as Regras de Confirmação (Gatilho de Entrada)</h2>
+    </div>
+    <p class="step-body">Depois de identificar que um setup está se formando, defina o gatilho exato que autoriza a entrada — por exemplo, o fechamento de uma vela específica acima de um nível, ou um pullback até uma média antes da continuação. O gatilho é o momento exato do "aperte o botão", distinto da fase de observação do setup.</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">Separar a identificação da oportunidade (passo 5) da execução da entrada (este passo) evita duas armadilhas comuns: entrar cedo demais, antes da confirmação, por ansiedade; ou entrar tarde demais, depois que o movimento já ocorreu, por medo. O gatilho formal funciona como um checkpoint que impõe paciência entre ver algo interessante e agir sobre isso.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Gatilho de confirmação exato para o setup principal:</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 7 -->
+  <div class="step" id="passo-7">
+    <div class="step-header">
+      <div class="step-number">7</div>
+      <h2 class="step-title">Estabeleça a Gestão de Risco por Operação</h2>
+    </div>
+    <p class="step-body">Antes de definir quanto você quer ganhar, defina quanto está disposto a perder em cada operação — normalmente expresso como uma porcentagem fixa do capital de trading (por exemplo, 0,5% a 1% por operação) ou um valor fixo em pontos/dólares no contrato do SP500.</p>
+    <p class="step-body">Essa regra deve ser inflexível: o tamanho da posição (número de contratos) é calculado a partir do risco máximo aceito e da distância até o stop, nunca ao contrário.</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">A gestão de risco é o que determina se você sobrevive tempo suficiente no mercado para que sua vantagem estatística (se houver) se manifeste. Um sistema com boa taxa de acerto ainda pode quebrar a conta se o risco por operação for grande demais, porque sequências de perdas são estatisticamente inevitáveis mesmo em sistemas lucrativos no longo prazo. Definir o risco antes do potencial de lucro evita o erro clássico de dimensionar a posição pela ganância, não pela prudência.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Percentual ou valor máximo de risco por operação:</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Fórmula de cálculo do tamanho da posição:</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 8 -->
+  <div class="step" id="passo-8">
+    <div class="step-header">
+      <div class="step-number">8</div>
+      <h2 class="step-title">Defina Stop e Alvo Antes da Entrada</h2>
+    </div>
+    <p class="step-body">Para cada operação, determine — antes de executá-la — onde ficará o stop-loss (o nível que invalida sua tese e encerra a operação com perda controlada) e onde estará o alvo de saída (ou os alvos parciais). Calcule a relação risco/retorno resultante (por exemplo, arriscar 10 pontos para buscar 20, uma relação de 1:2).</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">Definir stop e alvo depois de já estar posicionado é uma das formas mais comuns de sabotagem do próprio sistema: sob a pressão emocional de uma operação em andamento, o trader tende a mover o stop para "dar mais espaço" ou fechar o alvo cedo demais por medo. Fixar esses níveis antes da entrada, com base em estrutura de mercado e não em emoção, protege a integridade do sistema.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Critério para posicionar o stop (ex.: abaixo/acima de estrutura, ATR, etc.):</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Relação risco/retorno mínima aceitável:</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 9 -->
+  <div class="step" id="passo-9">
+    <div class="step-header">
+      <div class="step-number">9</div>
+      <h2 class="step-title">Crie Regras para Gerenciar a Operação em Aberto</h2>
+    </div>
+    <p class="step-body">Defina como você vai se comportar enquanto a operação está em andamento: em que ponto move o stop para o zero a zero (breakeven), se e quando realiza saídas parciais, e que sinais de price action indicariam saída antecipada mesmo antes de bater o stop ou o alvo (por exemplo, perda de força do movimento, reversão de estrutura).</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">Entrar corretamente é apenas metade do trabalho — a forma como você administra a operação em aberto determina se os ganhos potenciais realmente se concretizam. Sem regras claras aqui, o trader tende a alternar entre dois extremos prejudiciais: sair cedo demais por ansiedade (deixando lucro na mesa) ou segurar perdas além do planejado por esperança. Regras pré-definidas de gestão tiram essa decisão da hora de maior pressão emocional.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Regra para mover o stop para breakeven:</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Regra para saídas parciais, se aplicável:</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 10 -->
+  <div class="step" id="passo-10">
+    <div class="step-header">
+      <div class="step-number">10</div>
+      <h2 class="step-title">Estabeleça Limites Diários (Stop Diário e Meta Diária)</h2>
+    </div>
+    <p class="step-body">Defina um limite máximo de perda para o dia (por exemplo, 2% a 3% do capital de trading) que, se atingido, encerra suas operações até o próximo pregão — sem exceções. Considere também definir uma meta diária ou um número máximo de operações, para evitar continuar operando após um resultado já satisfatório apenas por euforia.</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">O stop diário protege contra o efeito cascata em que uma sequência de perdas leva a decisões cada vez piores, tentando "recuperar" o prejuízo do dia (revenge trading). Da mesma forma, um limite de operações ou meta diária protege contra a euforia após ganhos, que também costuma levar a decisões de risco desproporcional. Esses limites protegem tanto o capital financeiro quanto o capital emocional do trader.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Stop diário (valor ou percentual):</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Número máximo de operações ou meta diária, se aplicável:</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 11 -->
+  <div class="step" id="passo-11">
+    <div class="step-header">
+      <div class="step-number">11</div>
+      <h2 class="step-title">Construa uma Rotina Pré-Mercado</h2>
+    </div>
+    <p class="step-body">Estabeleça uma sequência fixa de preparação antes de cada pregão: revisão do calendário econômico, análise do gráfico diário e da estrutura recente, definição do viés do dia (passo 3), revisão dos níveis-chave, e um checklist mental (ou escrito) de que você está em condições emocionais e físicas de operar.</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">A qualidade das decisões durante o pregão depende diretamente da preparação feita antes dele. Uma rotina fixa reduz o número de decisões que precisam ser tomadas sob pressão de tempo durante o mercado ao vivo, e funciona como um ritual que sinaliza ao cérebro a transição para o "modo operação" — o que, por si só, já melhora o foco e a disciplina.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Sequência de passos da sua rotina pré-mercado:</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Horário em que essa rotina começa, em relação à abertura:</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 12 -->
+  <div class="step" id="passo-12">
+    <div class="step-header">
+      <div class="step-number">12</div>
+      <h2 class="step-title">Mantenha um Diário de Trading e Faça Revisões Periódicas</h2>
+    </div>
+    <p class="step-body">Registre cada operação com: setup usado, contexto do dia, motivo da entrada, resultado, e — mais importante — uma nota sobre a qualidade da execução (você seguiu o sistema à risca, mesmo se o resultado foi negativo?). Reserve um momento fixo (semanal, por exemplo) para revisar esse diário em conjunto, buscando padrões.</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">Em um sistema discricionário, o diário é o que transforma experiência em expertise real, em vez de repetição de erros. Ele também permite separar duas coisas que os traders frequentemente confundem: um resultado ruim por má sorte (dentro do sistema) versus um resultado ruim por desvio do sistema. Sem esse registro, a evolução do trader fica refém da memória seletiva, que tende a lembrar mais dos acertos do que dos erros.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Formato do diário (planilha, aplicativo, caderno):</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Frequência da revisão:</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 13 -->
+  <div class="step" id="passo-13">
+    <div class="step-header">
+      <div class="step-number">13</div>
+      <h2 class="step-title">Faça Backtesting Discricionário (Replay Manual)</h2>
+    </div>
+    <p class="step-body">Usando um replay de gráficos (disponível na maioria das plataformas de negociação), percorra dados históricos do SP500 candle a candle, aplicando seu setup e suas regras como se estivesse operando ao vivo, sem saber o resultado futuro. Registre os resultados como faria no diário do passo 12.</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">Mesmo sistemas discricionários se beneficiam de validação histórica: o replay manual mostra se o seu setup realmente aparece com frequência suficiente no mercado, e se você consegue identificá-lo e executá-lo de forma consistente antes de arriscar capital real. Ele também constrói repertório visual — quanto mais vezes você viu o padrão se formar (e falhar), mais rápido e confiante fica seu reconhecimento em tempo real.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Quantidade de dias/semanas históricas que pretende revisar:</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Ferramenta de replay que usará:</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 14 -->
+  <div class="step" id="passo-14">
+    <div class="step-header">
+      <div class="step-number">14</div>
+      <h2 class="step-title">Passe por uma Fase de Simulação (Paper Trading)</h2>
+    </div>
+    <p class="step-body">Antes de operar com capital real, opere o sistema completo em uma conta simulada (paper trading), em tempo real, durante um período mínimo definido (por exemplo, 4 a 6 semanas ou um número mínimo de operações). Trate essa fase com a mesma seriedade de uma conta real — mesmos horários, mesmas regras, mesmo diário.</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">O replay manual (passo 13) testa o reconhecimento do padrão, mas não testa a pressão emocional real de decisões em tempo real, ainda que simuladas. O paper trading é a ponte entre a teoria do sistema e sua execução sob a incerteza do mercado ao vivo, permitindo identificar falhas de disciplina ou de regras antes que elas custem dinheiro real.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Duração mínima da fase de simulação:</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Critério objetivo para "passar" dessa fase para o capital real:</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- PASSO 15 -->
+  <div class="step" id="passo-15">
+    <div class="step-header">
+      <div class="step-number">15</div>
+      <h2 class="step-title">Estabeleça um Processo de Evolução Contínua do Sistema</h2>
+    </div>
+    <p class="step-body">Defina como e quando o sistema pode ser ajustado: normalmente, apenas após um número mínimo de operações ou um período de revisão (mensal ou trimestral), com base em padrões consistentes observados no diário — nunca em reação a uma única operação ruim ou uma única sequência de perdas.</p>
+    <div class="why-block">
+      <p class="why-label">Por que isso importa</p>
+      <p class="why-text">Um sistema de trading precisa evoluir, mas a maior causa de fracasso em traders discricionários é alterar regras por impulso, logo após um resultado ruim, sem dados suficientes para justificar a mudança. Estabelecer critérios e prazos claros para revisão do sistema — separando ajuste estratégico de reação emocional — é o que permite que o sistema melhore ao longo do tempo sem perder a consistência que o torna, antes de tudo, um sistema.</p>
+    </div>
+    <div class="custom-block">
+      <p class="custom-label">Sua Personalização</p>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Frequência de revisão formal do sistema:</span>
+      </label>
+      <label class="custom-item">
+        <input type="checkbox" class="custom-checkbox">
+        <span class="custom-text">Critério mínimo de dados (nº de operações) antes de qualquer ajuste:</span>
+      </label>
+    </div>
+  </div>
+
+  
+
+  <!-- CONSIDERAÇÕES FINAIS -->
+  <div class="final-block">
+    <div class="step-header">
+<h2 class="step-title">Considerações Finais</h2>
+    </div>
+    <p class="step-body">Um sistema de daytrading discricionário não é um conjunto de regras rígidas que elimina o julgamento do trader — é uma estrutura que canaliza esse julgamento para decisões consistentes e repetíveis. Os 15 passos deste guia seguem uma lógica deliberada: primeiro você se conhece, depois define quando e o que observar,  como confirmar e executar,  como proteger o capital, e só então como revisar e evoluir.</p>
+    <p class="step-body">Resista à tentação de pular etapas — especialmente o backtesting manual e o paper trading (passos 13 e 14). É tentador ir direto ao capital real, mas é justamente essa fase de validação que separa um sistema testado de uma aposta com aparência de sistema.</p>
+    <p class="step-body">Por fim, lembre-se de que consistência na execução do processo é o objetivo de curto prazo. Resultados financeiros consistentes são uma consequência de médio e longo prazo de um processo bem executado — não o contrário.</p>
+    <div class="final-disclaimer">
+      Aviso: Este material tem finalidade exclusivamente educacional. Operações no mercado futuro, incluindo o SP500, envolvem risco significativo de perda de capital. Este documento não constitui recomendação de investimento.
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  Prumo Trading · Material Educacional · prumotrading.com
+</footer>
