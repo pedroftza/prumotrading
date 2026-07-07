@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guia Prático — Como construir um sistema de daytrading discricionário para o SP500</title>
+<title>Guia Prático — Como construir um sistema de trading discricionário para o SP500</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,22 +11,16 @@
 <style>
   :root {
     --bg: #0f0f0f;
-    --bg-elevated: #2e2d2b;
-    --bg-elevated-2: #383735;
-    --bg-input: #1f1e1c;
     --border: rgba(255,255,255,0.09);
     --border-strong: rgba(255,255,255,0.16);
     --text-primary: #ffffff;
     --text-secondary: #ffffff;
     --text-tertiary: #ffffff;
     --accent: #ffffff;
-    --accent-hover: #e0e0e0;
     --accent-soft: rgba(255,255,255,0.06);
     --success: #e8894a;
-    --success-soft: rgba(200,98,42,0.12);
     --danger: #c1666b;
     --danger-soft: rgba(193,102,107,0.14);
-    --orange: rgba(200,90,50,1);
     --font: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
     --radius-sm: 8px;
     --radius-md: 12px;
@@ -112,7 +106,7 @@
     z-index: 1;
     max-width: 780px;
     margin: 0 auto;
-    padding: 64px 32px 96px;
+    padding: 64px 32px 8px;
   }
 
   /* -------- COVER -------- */
@@ -182,7 +176,7 @@
   }
 
   .body-text {
-    font-size: 15px;
+    font-size: 17px;
     color: var(--text-secondary);
     line-height: 1.8;
   }
@@ -230,7 +224,7 @@
   }
 
   .index-num {
-    font-size: 11px;
+    font-size: 18px;
     font-weight: 700;
     color: var(--text-tertiary);
     min-width: 20px;
@@ -277,7 +271,7 @@
   }
 
   .step-body {
-    font-size: 15px;
+    font-size: 17px;
     color: var(--text-secondary);
     line-height: 1.8;
     margin-bottom: 20px;
@@ -302,7 +296,7 @@
   }
 
   .why-text {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text-secondary);
     line-height: 1.75;
   }
@@ -379,11 +373,34 @@
     color: var(--text-secondary);
     line-height: 1.5;
     padding-top: 1px;
+    text-align: left;
   }
 
-  /* -------- DIVIDER -------- */
-  .step-divider {
-    display: none;
+  .custom-answer {
+    width: 100%;
+    margin-top: 8px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-strong);
+    border-radius: 0;
+    color: #ffffff;
+    font-family: var(--font);
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 6px 0;
+    resize: none;
+    outline: none;
+    min-height: 36px;
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+
+  .custom-answer:focus {
+    border-bottom-color: var(--success);
+  }
+
+  .custom-answer::placeholder {
+    color: rgba(255,255,255,0.25);
   }
 
   /* -------- FINAL -------- */
@@ -395,17 +412,39 @@
     margin-top: 16px;
   }
 
-  .final-block .section-title {
-    margin-bottom: 20px;
-  }
-
   .final-disclaimer {
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
+    margin-top: 12px;
+    padding-top: 0;
     font-size: 12px;
     color: var(--text-tertiary);
     line-height: 1.6;
+  }
+
+  /* -------- DOWNLOAD BUTTON -------- */
+  .download-wrap {
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    color: #ffffff;
+    font-family: var(--font);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 28px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .btn-download:hover {
+    border-color: var(--success);
+    background: rgba(255,255,255,0.04);
   }
 
   /* -------- FOOTER -------- */
@@ -413,11 +452,10 @@
     position: relative;
     z-index: 1;
     text-align: center;
-    padding: 24px 0 40px;
+    padding: 96px 0 40px;
     font-size: 11.5px;
     color: var(--text-tertiary);
     letter-spacing: 0.02em;
-    border-top: 1px solid var(--border);
   }
 
   /* -------- RESPONSIVE -------- */
@@ -459,8 +497,8 @@
   <!-- COVER -->
   <section class="cover">
     <span class="cover-label">Guia Prático</span>
-    <h1>Como construir um sistema de daytrading discricionário para o SP500</h1>
-    <p class="cover-subtitle">15 passos — cada um explicado no seu motivo e importância</p>
+    <h1>Como construir um sistema de trading discricionário para o SP500</h1>
+    <p class="cover-subtitle">15 passos</p>
     <div class="cover-disclaimer">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM8 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 018 5zm0 7a.875.875 0 110-1.75.875.875 0 010 1.75z" fill="currentColor"/>
@@ -472,7 +510,7 @@
   <!-- INTRO -->
   <section class="intro">
     <h2 class="section-title">COMO USAR ESTE GUIA</h2>
-    <p class="body-text">Este guia apresenta 15 passos sequenciais para construir um sistema de daytrading discricionário com regras de apoio, voltado exclusivamente para operações no índice futuro SP500 (E-mini S&P 500 ou Micro E-mini).</p>
+    <p class="body-text">Este guia apresenta 15 passos sequenciais para construir um sistema de trading discricionário com regras de apoio, voltado exclusivamente para operações no índice futuro SP500 (E-mini S&P 500 ou Micro E-mini).</p>
     <p class="body-text">Discricionário significa que as decisões finais de entrada e saída dependem da leitura do trader sobre o contexto do mercado — mas isso não significa operar sem regras. Pelo contrário: um sistema discricionário sólido é construído sobre regras de apoio muito claras que reduzem a improvisação e mantêm a consistência.</p>
     <p class="body-text">Cada passo traz três elementos: o que fazer, por que isso importa (o raciocínio por trás da etapa) e um espaço para você registrar como pretende aplicar aquilo na sua operação. Recomendamos percorrer os passos na ordem, pois cada um constrói a base para o seguinte — por exemplo, não faz sentido definir um setup de entrada (passo 5) antes de saber em qual janela de horário você vai operar (passo 2).</p>
     <p class="body-text">Trate este documento como um rascunho vivo. Um sistema discricionário nunca fica "pronto": ele é testado, revisado e refinado continuamente, como descrito no último passo.</p>
@@ -482,21 +520,21 @@
   <section class="step-index">
     <p class="index-label">Índice de Passos</p>
     <div class="index-grid">
-      <a class="index-item" href="#passo-1"><span class="index-num">01</span><span class="index-name">Defina seu Perfil e Objetivo como Trader</span></a>
-      <a class="index-item" href="#passo-2"><span class="index-num">02</span><span class="index-name">Escolha o Horário e a Sessão de Operação</span></a>
-      <a class="index-item" href="#passo-3"><span class="index-num">03</span><span class="index-name">Estabeleça o Contexto de Mercado (Viés Diário)</span></a>
-      <a class="index-item" href="#passo-4"><span class="index-num">04</span><span class="index-name">Domine as Ferramentas de Leitura de Price Action</span></a>
-      <a class="index-item" href="#passo-5"><span class="index-num">05</span><span class="index-name">Defina o Setup de Entrada</span></a>
-      <a class="index-item" href="#passo-6"><span class="index-num">06</span><span class="index-name">Estabeleça as Regras de Confirmação (Gatilho)</span></a>
-      <a class="index-item" href="#passo-7"><span class="index-num">07</span><span class="index-name">Estabeleça a Gestão de Risco por Operação</span></a>
-      <a class="index-item" href="#passo-8"><span class="index-num">08</span><span class="index-name">Defina Stop e Alvo Antes da Entrada</span></a>
-      <a class="index-item" href="#passo-9"><span class="index-num">09</span><span class="index-name">Crie Regras para Gerenciar a Operação em Aberto</span></a>
-      <a class="index-item" href="#passo-10"><span class="index-num">10</span><span class="index-name">Estabeleça Limites Diários</span></a>
-      <a class="index-item" href="#passo-11"><span class="index-num">11</span><span class="index-name">Construa uma Rotina Pré-Mercado</span></a>
-      <a class="index-item" href="#passo-12"><span class="index-num">12</span><span class="index-name">Mantenha um Diário de Trading</span></a>
-      <a class="index-item" href="#passo-13"><span class="index-num">13</span><span class="index-name">Faça Backtesting Discricionário (Replay Manual)</span></a>
-      <a class="index-item" href="#passo-14"><span class="index-num">14</span><span class="index-name">Passe por uma Fase de Simulação (Paper Trading)</span></a>
-      <a class="index-item" href="#passo-15"><span class="index-num">15</span><span class="index-name">Estabeleça um Processo de Evolução Contínua</span></a>
+      <a class="index-item" href="#passo-1"><span class="index-num">01</span><span class="index-name">Defina seu perfil e objetivo como trader</span></a>
+      <a class="index-item" href="#passo-2"><span class="index-num">02</span><span class="index-name">Escolha o horário e a sessão de operação</span></a>
+      <a class="index-item" href="#passo-3"><span class="index-num">03</span><span class="index-name">Estabeleça o contexto de mercado (viés diário)</span></a>
+      <a class="index-item" href="#passo-4"><span class="index-num">04</span><span class="index-name">Domine as ferramentas de leitura de price action</span></a>
+      <a class="index-item" href="#passo-5"><span class="index-num">05</span><span class="index-name">Defina o setup de entrada</span></a>
+      <a class="index-item" href="#passo-6"><span class="index-num">06</span><span class="index-name">Estabeleça as regras de confirmação (gatilho)</span></a>
+      <a class="index-item" href="#passo-7"><span class="index-num">07</span><span class="index-name">Estabeleça a gestão de risco por operação</span></a>
+      <a class="index-item" href="#passo-8"><span class="index-num">08</span><span class="index-name">Defina stop e alvo antes da entrada</span></a>
+      <a class="index-item" href="#passo-9"><span class="index-num">09</span><span class="index-name">Crie regras para gerenciar a operação em aberto</span></a>
+      <a class="index-item" href="#passo-10"><span class="index-num">10</span><span class="index-name">Estabeleça limites diários</span></a>
+      <a class="index-item" href="#passo-11"><span class="index-num">11</span><span class="index-name">Construa uma rotina pré-mercado</span></a>
+      <a class="index-item" href="#passo-12"><span class="index-num">12</span><span class="index-name">Mantenha um diário de trading</span></a>
+      <a class="index-item" href="#passo-13"><span class="index-num">13</span><span class="index-name">Faça backtesting discricionário (replay manual)</span></a>
+      <a class="index-item" href="#passo-14"><span class="index-num">14</span><span class="index-name">Passe por uma fase de simulação (paper trading)</span></a>
+      <a class="index-item" href="#passo-15"><span class="index-num">15</span><span class="index-name">Estabeleça um processo de evolução contínua</span></a>
     </div>
   </section>
 
@@ -514,18 +552,27 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Capital disponível para operar e capital máximo de risco por dia:</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Capital disponível para operar e capital máximo de risco por dia:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Horas reais disponíveis para acompanhar o mercado:</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Horas reais disponíveis para acompanhar o mercado:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Objetivo principal (renda, crescimento, aprendizado):</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Objetivo principal (renda, crescimento, aprendizado):</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -545,14 +592,20 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Janela(s) de horário escolhida(s) (fuso de Brasília):</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Janela(s) de horário escolhida(s) (fuso de Brasília):</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Motivo da escolha (liquidez, compatibilidade de rotina, etc.):</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Motivo da escolha (liquidez, compatibilidade de rotina, etc.):</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -572,14 +625,20 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Fontes que você usará para montar o contexto diário (calendário econômico, gráfico diário, etc.):</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Fontes que você usará para montar o contexto diário (calendário econômico, gráfico diário, etc.):</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Como você registrará o viés do dia antes do pregão:</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Como você registrará o viés do dia antes do pregão:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -599,14 +658,20 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Ferramentas de price action escolhidas:</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Ferramentas de price action escolhidas:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Referências de estudo ou treino planejadas:</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Referências de estudo ou treino planejadas:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -626,14 +691,20 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Setup principal (descrição objetiva):</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Setup principal (descrição objetiva):</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Setup secundário, se houver:</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Setup secundário, se houver:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -652,10 +723,13 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Gatilho de confirmação exato para o setup principal:</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Gatilho de confirmação exato para o setup principal:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -675,14 +749,20 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Percentual ou valor máximo de risco por operação:</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Percentual ou valor máximo de risco por operação:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Fórmula de cálculo do tamanho da posição:</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Fórmula de cálculo do tamanho da posição:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -701,14 +781,20 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Critério para posicionar o stop (ex.: abaixo/acima de estrutura, ATR, etc.):</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Critério para posicionar o stop (ex.: abaixo/acima de estrutura, ATR, etc.):</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Relação risco/retorno mínima aceitável:</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Relação risco/retorno mínima aceitável:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -727,14 +813,20 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Regra para mover o stop para breakeven:</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Regra para mover o stop para breakeven:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Regra para saídas parciais, se aplicável:</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Regra para saídas parciais, se aplicável:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -753,14 +845,20 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Stop diário (valor ou percentual):</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Stop diário (valor ou percentual):</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Número máximo de operações ou meta diária, se aplicável:</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Número máximo de operações ou meta diária, se aplicável:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -779,14 +877,20 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Sequência de passos da sua rotina pré-mercado:</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Sequência de passos da sua rotina pré-mercado:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Horário em que essa rotina começa, em relação à abertura:</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Horário em que essa rotina começa, em relação à abertura:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -805,14 +909,20 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Formato do diário (planilha, aplicativo, caderno):</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Formato do diário (planilha, aplicativo, caderno):</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Frequência da revisão:</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Frequência da revisão:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -831,14 +941,20 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Quantidade de dias/semanas históricas que pretende revisar:</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Quantidade de dias/semanas históricas que pretende revisar:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Ferramenta de replay que usará:</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Ferramenta de replay que usará:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -857,14 +973,20 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Duração mínima da fase de simulação:</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Duração mínima da fase de simulação:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Critério objetivo para "passar" dessa fase para o capital real:</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Critério objetivo para "passar" dessa fase para o capital real:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -883,14 +1005,20 @@
     </div>
     <div class="custom-block">
       <p class="custom-label">Sua Personalização</p>
-      <label class="custom-item">
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Frequência de revisão formal do sistema:</span>
-      </label>
-      <label class="custom-item">
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Frequência de revisão formal do sistema:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
+      <div class="custom-item">
         <input type="checkbox" class="custom-checkbox">
-        <span class="custom-text">Critério mínimo de dados (nº de operações) antes de qualquer ajuste:</span>
-      </label>
+        <div style="flex:1;text-align:left;">
+          <span class="custom-text">Critério mínimo de dados (nº de operações) antes de qualquer ajuste:</span>
+          <textarea class="custom-answer" placeholder="Digite sua resposta aqui..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -901,7 +1029,7 @@
     <div class="step-header">
 <h2 class="step-title">Considerações Finais</h2>
     </div>
-    <p class="step-body">Um sistema de daytrading discricionário não é um conjunto de regras rígidas que elimina o julgamento do trader — é uma estrutura que canaliza esse julgamento para decisões consistentes e repetíveis. Os 15 passos deste guia seguem uma lógica deliberada: primeiro você se conhece, depois define quando e o que observar,  como confirmar e executar,  como proteger o capital, e só então como revisar e evoluir.</p>
+    <p class="step-body">Um sistema de trading discricionário não é um conjunto de regras rígidas que elimina o julgamento do trader — é uma estrutura que canaliza esse julgamento para decisões consistentes e repetíveis. Os 15 passos deste guia seguem uma lógica deliberada: primeiro você se conhece, depois define quando e o que observar,  como confirmar e executar,  como proteger o capital, e só então como revisar e evoluir.</p>
     <p class="step-body">Resista à tentação de pular etapas — especialmente o backtesting manual e o paper trading (passos 13 e 14). É tentador ir direto ao capital real, mas é justamente essa fase de validação que separa um sistema testado de uma aposta com aparência de sistema.</p>
     <p class="step-body">Por fim, lembre-se de que consistência na execução do processo é o objetivo de curto prazo. Resultados financeiros consistentes são uma consequência de médio e longo prazo de um processo bem executado — não o contrário.</p>
     <div class="final-disclaimer">
@@ -910,7 +1038,90 @@
   </div>
 
 </main>
+  <!-- DOWNLOAD PDF -->
+  <div class="download-wrap">
+    <button class="btn-download" onclick="downloadPDF()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Baixar minhas respostas em PDF
+    </button>
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+  const pageW = doc.internal.pageSize.getWidth();
+  const pageH = doc.internal.pageSize.getHeight();
+  const margin = 20;
+  const maxW = pageW - margin * 2;
+  let y = margin;
+
+  function checkPage(needed) {
+    if (y + needed > pageH - margin) {
+      doc.addPage();
+      y = margin;
+    }
+  }
+
+  function addText(text, size, style, color, indent) {
+    doc.setFontSize(size);
+    doc.setFont('helvetica', style);
+    doc.setTextColor(...color);
+    const lines = doc.splitTextToSize(text, maxW - (indent || 0));
+    checkPage(lines.length * size * 0.4 + 4);
+    doc.text(lines, margin + (indent || 0), y);
+    y += lines.length * size * 0.4 + 4;
+  }
+
+  // White background
+  doc.setFillColor(255, 255, 255);
+  doc.rect(0, 0, pageW, pageH, 'F');
+
+  // Title
+  addText('Como construir um sistema de trading discricionário para o SP500', 16, 'bold', [0,0,0]);
+  addText('Minhas respostas — Guia Prático Prumo Trading', 10, 'normal', [100,100,100]);
+  y += 6;
+
+  // Collect all steps
+  const steps = document.querySelectorAll('.step, .final-block');
+  steps.forEach(step => {
+    const titleEl = step.querySelector('.step-title');
+    const numEl = step.querySelector('.step-number');
+    if (!titleEl) return;
+
+    const num = numEl ? numEl.textContent.trim() + '. ' : '';
+    const title = num + titleEl.textContent.trim();
+
+    // Check if step has any filled answers
+    const answers = step.querySelectorAll('.custom-answer');
+    const hasContent = Array.from(answers).some(a => a.value.trim());
+    if (!hasContent) return;
+
+    y += 4;
+    checkPage(12);
+
+    // Step title bar
+    doc.setFillColor(240, 240, 240);
+    doc.rect(margin, y - 5, maxW, 10, 'F');
+    addText(title, 11, 'bold', [0,0,0]);
+
+    answers.forEach(textarea => {
+      const label = textarea.closest('div[style]')?.querySelector('.custom-text')?.textContent?.trim();
+      const value = textarea.value.trim();
+      if (!value) return;
+
+      y += 2;
+      addText('• ' + label, 9, 'bold', [80,80,80], 2);
+      addText(value, 9, 'normal', [0,0,0], 4);
+    });
+  });
+
+  doc.save('meu-sistema-de-trading-prumo.pdf');
+}
+</script>
 
 <footer class="footer">
-  Prumo Trading · Material Educacional · prumotrading.com
+  ©2026 Prumo Trading. Todos os direitos reservados.
 </footer>
