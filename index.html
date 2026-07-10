@@ -433,7 +433,7 @@
   .actions-row{display:flex;gap:12px;margin:18px 0 26px;flex-wrap:wrap;align-items:flex-start;}
   .action-btn{
     display:inline-flex;align-items:center;gap:8px;
-    background:var(--bg-elevated);border:1px solid var(--border-strong);
+    background:transparent;border:1px solid var(--border-strong);
     border-radius:99px;padding:9px 16px;font-size:13.5px;font-weight:500;
     color:var(--text-primary);transition:background .15s,border-color .15s,color .15s;
   }
@@ -815,6 +815,11 @@
     .home-card.anim-fade-up{animation-delay:0.35s !important;}
     .home-footer.anim-fade-up{animation-delay:0.55s !important;}
   }
+
+  /* ---------- GESTÃO DE RISCO: TEXTO BRANCO ---------- */
+  #section-sala .about-text,
+  #section-sala .risk-block-body .about-text,
+  #section-sala .risk-closing-block .about-text{color:#ffffff;}
 
   /* ---------- TEXTO JUSTIFICADO NAS SEÇÕES INTERNAS ---------- */
   #section-rotina p, #section-mercado p, #section-diario p,
@@ -1801,7 +1806,7 @@
           </div>
 
           <div class="card service-card service-card-highlight">
-            <h3 class="service-title">Como construir um sistema de trading</h3>
+            <h3 class="service-title">Guia - Como construir um sistema de trading</h3>
             <p class="service-tagline">Um guia prático de 15 passos para construir um sistema discricionário de trading para o SP500.</p>
             <div class="service-price"><span class="price-value">Gratuito</span></div>
             <ul class="service-features">
