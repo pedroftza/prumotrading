@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guia Prático — Como construir um sistema de trading discricionário para o SP500</title>
+<title>Guia Prático — Como construir um sistema de trading discricionário para o Nasdaq</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -497,7 +497,7 @@
   <!-- COVER -->
   <section class="cover">
     <span class="cover-label">Guia Prático</span>
-    <h1>Como construir um sistema de trading discricionário para o SP500</h1>
+    <h1>Como construir um sistema de trading discricionário para o Nasdaq</h1>
     <p class="cover-subtitle">15 passos</p>
     <div class="cover-disclaimer">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -510,7 +510,7 @@
   <!-- INTRO -->
   <section class="intro">
     <h2 class="section-title">COMO USAR ESTE GUIA</h2>
-    <p class="body-text">Este guia apresenta 15 passos sequenciais para construir um sistema de trading discricionário com regras de apoio, voltado exclusivamente para operações no índice futuro SP500 (E-mini S&P 500 ou Micro E-mini).</p>
+    <p class="body-text">Este guia apresenta 15 passos sequenciais para construir um sistema de trading discricionário com regras de apoio, voltado exclusivamente para operações no índice futuro Nasdaq (E-mini Nasdaq ou Micro E-mini).</p>
     <p class="body-text">Discricionário significa que as decisões finais de entrada e saída dependem da leitura do trader sobre o contexto do mercado — mas isso não significa operar sem regras. Pelo contrário: um sistema discricionário sólido é construído sobre regras de apoio muito claras que reduzem a improvisação e mantêm a consistência.</p>
     <p class="body-text">Cada passo traz três elementos: o que fazer, por que isso importa (o raciocínio por trás da etapa) e um espaço para você registrar como pretende aplicar aquilo na sua operação. Recomendamos percorrer os passos na ordem, pois cada um constrói a base para o seguinte — por exemplo, não faz sentido definir um setup de entrada (passo 5) antes de saber em qual janela de horário você vai operar (passo 2). Ao final, você poderá baixar em PDF todas as respostas que escrever ao longo do guia.</p>
     <p class="body-text">Trate este documento como um rascunho vivo. Um sistema discricionário nunca fica "pronto": ele é testado, revisado e refinado continuamente, como descrito no último passo.</p>
@@ -584,7 +584,7 @@
       <div class="step-number">2</div>
       <h2 class="step-title">Escolha o Horário e a Sessão de Operação</h2>
     </div>
-    <p class="step-body">O SP500 futuro (ES/MES) é negociado quase 24 horas, mas a liquidez e a volatilidade não são uniformes. As janelas mais relevantes para daytrading costumam ser: abertura do pregão regular de Nova York (9h30–11h, horário de Nova York), o período de menor liquidez do meio-dia, e o fechamento (últimas 1–2 horas do pregão regular).</p>
+    <p class="step-body">O Nasdaq futuro (NQ/MNQ) é negociado quase 24 horas, mas a liquidez e a volatilidade não são uniformes. As janelas mais relevantes para daytrading costumam ser: abertura do pregão regular de Nova York (9h30–11h, horário de Nova York), o período de menor liquidez do meio-dia, e o fechamento (últimas 1–2 horas do pregão regular).</p>
     <p class="step-body">Escolha uma ou duas janelas específicas para operar, em vez de tentar cobrir o dia inteiro. Considere seu fuso horário (Brasil) e como isso se traduz nos horários de Nova York, já que isso afeta diretamente sua disponibilidade e estado de alerta.</p>
     <div class="why-block">
       <p class="why-label">Por que isso importa</p>
@@ -617,7 +617,7 @@
       <div class="step-number">3</div>
       <h2 class="step-title">Estabeleça o Contexto de Mercado (Viés Diário)</h2>
     </div>
-    <p class="step-body">Antes de procurar qualquer entrada, determine o contexto do dia: o SP500 está em tendência de alta, baixa ou em faixa lateral? Existem notícias macroeconômicas relevantes agendadas (payroll, CPI, decisões do Fed, resultados de mega-caps)? Qual foi o comportamento nos últimos pregões e onde estão os níveis-chave (máximas e mínimas recentes, zonas de valor)?</p>
+    <p class="step-body">Antes de procurar qualquer entrada, determine o contexto do dia: o Nasdaq está em tendência de alta, baixa ou em faixa lateral? Existem notícias macroeconômicas relevantes agendadas (payroll, CPI, decisões do Fed, resultados de mega-caps)? Qual foi o comportamento nos últimos pregões e onde estão os níveis-chave (máximas e mínimas recentes, zonas de valor)?</p>
     <p class="step-body">Esse contexto forma seu "viés" do dia — uma inclinação inicial (comprado, vendido, ou neutro) que orienta que tipo de setup você vai priorizar, sem ser uma previsão fixa.</p>
     <div class="why-block">
       <p class="why-label">Por que isso importa</p>
@@ -741,7 +741,7 @@
       <div class="step-number">7</div>
       <h2 class="step-title">Estabeleça a Gestão de Risco por Operação</h2>
     </div>
-    <p class="step-body">Antes de definir quanto você quer ganhar, defina quanto está disposto a perder em cada operação — normalmente expresso como uma porcentagem fixa do capital de trading (por exemplo, 0,5% a 1% por operação) ou um valor fixo em pontos/dólares no contrato do SP500.</p>
+    <p class="step-body">Antes de definir quanto você quer ganhar, defina quanto está disposto a perder em cada operação — normalmente expresso como uma porcentagem fixa do capital de trading (por exemplo, 0,5% a 1% por operação) ou um valor fixo em pontos/dólares no contrato do Nasdaq.</p>
     <p class="step-body">Essa regra deve ser inflexível: o tamanho da posição (número de contratos) é calculado a partir do risco máximo aceito e da distância até o stop, nunca ao contrário.</p>
     <div class="why-block">
       <p class="why-label">Por que isso importa</p>
@@ -934,7 +934,7 @@
       <div class="step-number">13</div>
       <h2 class="step-title">Faça Backtesting Discricionário (Replay Manual)</h2>
     </div>
-    <p class="step-body">Usando um replay de gráficos (disponível na maioria das plataformas de negociação), percorra dados históricos do SP500 candle a candle, aplicando seu setup e suas regras como se estivesse operando ao vivo, sem saber o resultado futuro. Registre os resultados como faria no diário do passo 12.</p>
+    <p class="step-body">Usando um replay de gráficos (disponível na maioria das plataformas de negociação), percorra dados históricos do Nasdaq candle a candle, aplicando seu setup e suas regras como se estivesse operando ao vivo, sem saber o resultado futuro. Registre os resultados como faria no diário do passo 12.</p>
     <div class="why-block">
       <p class="why-label">Por que isso importa</p>
       <p class="why-text">Mesmo sistemas discricionários se beneficiam de validação histórica: o replay manual mostra se o seu setup realmente aparece com frequência suficiente no mercado, e se você consegue identificá-lo e executá-lo de forma consistente antes de arriscar capital real. Ele também constrói repertório visual — quanto mais vezes você viu o padrão se formar (e falhar), mais rápido e confiante fica seu reconhecimento em tempo real.</p>
@@ -1033,7 +1033,7 @@
     <p class="step-body">Resista à tentação de pular etapas — especialmente o backtesting manual e o paper trading (passos 13 e 14). É tentador ir direto ao capital real, mas é justamente essa fase de validação que separa um sistema testado de uma aposta com aparência de sistema.</p>
     <p class="step-body">Por fim, lembre-se de que consistência na execução do processo é o objetivo de curto prazo. Resultados financeiros consistentes são uma consequência de médio e longo prazo de um processo bem executado — não o contrário.</p>
     <div class="final-disclaimer">
-      Aviso: Este material tem finalidade exclusivamente educacional. Operações no mercado futuro, incluindo o SP500, envolvem risco significativo de perda de capital. Este documento não constitui recomendação de investimento.
+      Aviso: Este material tem finalidade exclusivamente educacional. Operações no mercado futuro, incluindo o Nasdaq, envolvem risco significativo de perda de capital. Este documento não constitui recomendação de investimento.
     </div>
   </div>
 
@@ -1080,7 +1080,7 @@ function downloadPDF() {
   doc.rect(0, 0, pageW, pageH, 'F');
 
   // Title
-  addText('Como construir um sistema de trading discricionário para o SP500', 16, 'bold', [0,0,0]);
+  addText('Como construir um sistema de trading discricionário para o Nasdaq', 16, 'bold', [0,0,0]);
   addText('Minhas respostas — Guia Prático Prumo Trading', 10, 'normal', [100,100,100]);
   y += 6;
 
