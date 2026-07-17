@@ -102,6 +102,7 @@
     width:77%;height:130vh;z-index:-1;pointer-events:none;
   }
   .home-triangle svg{width:100%;height:100%;display:block;}
+  .home-triangle-line{filter:drop-shadow(0 6px 14px rgba(29,161,242,0.65));}
   .home-left{margin-top:10px;}
   .home-left h1{
     font-family:var(--font-display);font-size:112px;font-weight:800;color:#fff;
@@ -144,7 +145,7 @@
     .home-left h1{font-size:60px;}
     .home-grid{margin-left:0;margin-top:0;}
     .home-card:nth-child(3):hover,.home-card:nth-child(4):hover{transform:translateY(-3px);}
-    .home-card-icon svg{width:52px;height:52px;}
+    .home-card-icon svg,.home-card:nth-child(n) .home-card-icon svg{width:52px;height:52px;}
     .home-card:nth-child(3),.home-card:nth-child(4),.home-card:nth-child(5),.home-card:nth-child(6){transform:none;}
     .home-card{padding:20px 16px;gap:12px;min-height:90px;align-items:center;}
     .home-card-icon{width:58px;justify-content:center;}
@@ -166,7 +167,7 @@
   /* ---------- TOPBAR ---------- */
   .topbar{
     position:fixed;top:0;left:0;right:0;z-index:100;
-    background:rgba(10,8,8,0.45);
+    background:rgba(22,26,40,0.65);
     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     display:flex;align-items:center;justify-content:center;
     padding:0 40px;height:64px;
@@ -441,7 +442,7 @@
   }
   .action-btn svg{width:16px;height:16px;flex-shrink:0;}
   .action-btn:hover{background:var(--bg-elevated-2);}
-  .action-btn.active{background:var(--accent-soft);border-color:rgba(224,90,53,0.4);color:var(--accent);}
+  .action-btn.active{background:var(--accent-soft);border-color:rgba(29,161,242,0.4);color:var(--accent);}
 
   .alarm-wrap{display:flex;flex-direction:column;gap:8px;}
   .alarm-wrap-standalone{margin-bottom:36px;align-items:flex-start;}
@@ -509,7 +510,7 @@
 
   .risk-divider{border:none;border-top:1px solid var(--border);margin:0 0 52px;}
 
-  .risk-closing-block{padding:28px 32px;border:1px dashed rgba(224,90,53,0.4);border-radius:var(--radius-lg);margin-bottom:52px;}
+  .risk-closing-block{padding:28px 32px;border:1px dashed rgba(29,161,242,0.4);border-radius:var(--radius-lg);margin-bottom:52px;}
   .risk-closing-block .about-text{font-size:14px;color:var(--text-tertiary);line-height:1.75;}
 
   .risk-suggestion{padding:0;margin-bottom:0;}
@@ -527,7 +528,7 @@
     padding:28px 26px;margin-bottom:0;
   }
   .service-card-highlight{background:transparent;}
-  .service-title{font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:8px;line-height:1.3;color:#ecd2c4;}
+  .service-title{font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:8px;line-height:1.3;color:#c4ddec;}
   .service-tagline{font-size:13.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:18px;flex:none;}
   .service-price{display:flex;align-items:baseline;gap:5px;margin-bottom:18px;flex-wrap:wrap;}
   .service-price .price-value{font-family:var(--font-display);font-size:25px;font-weight:600;color:var(--accent);}
@@ -552,7 +553,7 @@
   .about-text{font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:0;}
   .about-text + .about-text{margin-top:14px;}
   .about-role{font-family:var(--font-mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:20px;}
-  .inline-link{color:#d9947a;text-decoration:none;cursor:pointer;}
+  .inline-link{color:#7ab5d9;text-decoration:none;cursor:pointer;}
   .inline-link:hover{text-decoration:underline;}
 
   .about-email{
@@ -602,7 +603,7 @@
   .routine-item:hover{opacity:0.85;}
   .routine-item.checked{opacity:0.5;}
   .routine-checkbox{width:20px;height:20px;border:1.5px solid var(--border-strong);border-radius:50%;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-  .routine-item.checked .routine-checkbox{background:#f5a882;border-color:#f5a882;}
+  .routine-item.checked .routine-checkbox{background:#82c9f5;border-color:#82c9f5;}
   .routine-checkmark{display:none;width:10px;height:10px;}
   .routine-item.checked .routine-checkmark{display:block;}
   .routine-item-body{flex:1;}
@@ -614,7 +615,7 @@
   .routine-tag{display:inline-block;font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-left:7px;font-weight:500;vertical-align:middle;position:relative;top:-1px;background:var(--accent-soft);color:var(--accent);}
 
   .routine-rules-box{background:transparent;border:1px solid #ffffff;}
-  .routine-rules-title{font-family:var(--font-mono);font-size:11px;font-weight:500;color:#ecd2c4;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;}
+  .routine-rules-title{font-family:var(--font-mono);font-size:11px;font-weight:500;color:#c4ddec;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;}
   .routine-rules-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
   .routine-rules-list li{font-size:13px;color:var(--text-primary);padding-left:16px;position:relative;line-height:1.5;}
   .routine-rules-list li::before{content:'—';position:absolute;left:0;color:var(--accent);}
@@ -655,7 +656,7 @@
     border-radius:99px;padding:7px 14px;font-size:12.5px;font-weight:500;transition:background .15s,color .15s,border-color .15s;
   }
   .jr-filter-btn:hover{background:var(--bg-elevated-2);color:var(--text-primary);}
-  .jr-filter-btn.active{background:var(--accent-soft);border-color:rgba(224,90,53,0.4);color:var(--accent);}
+  .jr-filter-btn.active{background:var(--accent-soft);border-color:rgba(29,161,242,0.4);color:var(--accent);}
 
   #jr-pdf-input{display:none;}
   .jr-csv-hint{font-size:12px;color:var(--text-tertiary);margin-top:8px;line-height:1.5;}
@@ -681,7 +682,7 @@
     font-size:12.5px;color:var(--text-secondary);cursor:pointer;transition:background .15s,color .15s,border-color .15s;
   }
   .jr-pill:hover{border-color:var(--text-tertiary);color:var(--text-primary);}
-  .jr-pill.sel{background:var(--accent-soft);border-color:rgba(224,90,53,0.4);color:var(--accent);}
+  .jr-pill.sel{background:var(--accent-soft);border-color:rgba(29,161,242,0.4);color:var(--accent);}
 
   /* Histórico — linhas sem card */
   .jr-day-card{padding:0;overflow:hidden;background:transparent;border:none;border-bottom:1px solid var(--border);border-radius:0;margin-bottom:0;}
@@ -845,7 +846,8 @@
   <div class="home-body">
     <div class="home-triangle anim-fade-up" aria-hidden="true" style="animation-delay:0.1s;">
       <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
-        <polyline points="20,20 250,200 20,380" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
+        <polyline class="home-triangle-line" points="20,20 250,200" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
+        <polyline class="home-triangle-line" points="250,200 20,380" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
       </svg>
     </div>
     <div class="home-left">
@@ -3423,7 +3425,7 @@
     const errBarsHTML = topErrors.length
       ? topErrors.map(([err, cnt]) => {
           const pct = Math.round(cnt / maxErr * 100);
-          return `<div class="beh-bar-wrap"><div class="beh-bar-label"><span>${err}</span><span style="color:#e05a35;font-weight:600;">${cnt}×</span></div><div class="beh-track"><div class="beh-fill" style="width:${pct}%;background:#e05a35;"></div></div></div>`;
+          return `<div class="beh-bar-wrap"><div class="beh-bar-label"><span>${err}</span><span style="color:#1DA1F2;font-weight:600;">${cnt}×</span></div><div class="beh-track"><div class="beh-fill" style="width:${pct}%;background:#1DA1F2;"></div></div></div>`;
         }).join('')
       : '<p style="font-size:11px;color:#aaa;">Sem erros registrados.</p>';
     const sessionsHTML = entries.map(e => {
@@ -3445,8 +3447,8 @@
       *{box-sizing:border-box;margin:0;padding:0;}
       body{font-family:'Helvetica Neue',Arial,sans-serif;background:#fff;color:#1a1a1a;font-size:12px;line-height:1.6;}
       .page{max-width:860px;margin:0 auto;padding:48px 40px;}
-      .cover{text-align:center;padding:60px 0 48px;border-bottom:2px solid #e05a35;margin-bottom:48px;}
-      .cover-logo{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#e05a35;margin-bottom:10px;}
+      .cover{text-align:center;padding:60px 0 48px;border-bottom:2px solid #1DA1F2;margin-bottom:48px;}
+      .cover-logo{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#1DA1F2;margin-bottom:10px;}
       .cover-title{font-size:32px;font-weight:700;color:#1a1a1a;margin-bottom:6px;}
       .cover-sub{font-size:13px;color:#777;}
       .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#e0ddd8;margin-bottom:48px;}
@@ -3455,7 +3457,7 @@
       .kpi-val{font-size:22px;font-weight:700;color:#1a1a1a;}
       .kpi-val.pos{color:#2d6a4f;} .kpi-val.neg{color:#9b2226;}
       .kpi-sub{font-size:10px;color:#aaa;margin-top:4px;}
-      .section-title{font-size:10px;text-transform:uppercase;letter-spacing:0.14em;color:#e05a35;font-weight:600;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e8e4df;}
+      .section-title{font-size:10px;text-transform:uppercase;letter-spacing:0.14em;color:#1DA1F2;font-weight:600;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e8e4df;}
       .chart-wrap{margin-bottom:48px;} .chart-wrap img{width:100%;border-radius:4px;}
       .beh-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:48px;}
       .beh-col-title{font-size:10px;text-transform:uppercase;letter-spacing:0.12em;font-weight:600;color:#1a1a1a;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e8e4df;}
@@ -3483,7 +3485,7 @@
         <div class="kpi"><div class="kpi-label">Resultado total</div><div class="kpi-val ${totalPnl>=0?'pos':'neg'}">${pnlStr(totalPnl)}</div><div class="kpi-sub">${entries.length} sessões</div></div>
         <div class="kpi"><div class="kpi-label">Win rate</div><div class="kpi-val ${winRate>=50?'pos':'neg'}">${winRate}%</div><div class="kpi-sub">${posDays}+ / ${negDays}−</div></div>
         <div class="kpi"><div class="kpi-label">Dias positivos</div><div class="kpi-val pos">${posDays}</div><div class="kpi-sub">de ${entries.length}</div></div>
-        <div class="kpi"><div class="kpi-label">Disc. média</div><div class="kpi-val">${avgDisc}<span style="font-size:13px;color:#e05a35;">★</span></div><div class="kpi-sub">de 5</div></div>
+        <div class="kpi"><div class="kpi-label">Disc. média</div><div class="kpi-val">${avgDisc}<span style="font-size:13px;color:#1DA1F2;">★</span></div><div class="kpi-sub">de 5</div></div>
       </div>
       <div class="chart-wrap">
         <div class="section-title">Resultado por sessão</div>
