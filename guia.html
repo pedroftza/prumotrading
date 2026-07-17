@@ -48,15 +48,6 @@
     text-align: left;
   }
 
-  /* -------- GLOW -------- */
-  .glow {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background: radial-gradient(ellipse 70% 55% at 0% 0%, rgba(200,90,50,0.55) 0%, rgba(180,70,35,0.22) 45%, transparent 70%);
-  }
-
   /* -------- TOPBAR -------- */
   .topbar {
     position: sticky;
@@ -469,7 +460,7 @@
   }
 
   @media print {
-    .glow, .topbar { display: none; }
+    .topbar { display: none; }
     .wrapper { max-width: 100%; padding: 24px; }
     body { background: #fff; color: #111; }
     .step, .why-block, .custom-block, .final-block {
@@ -479,8 +470,6 @@
 </style>
 </head>
 <body>
-
-<div class="glow"></div>
 
 <!-- TOPBAR -->
 <header class="topbar">
